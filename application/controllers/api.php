@@ -26,7 +26,6 @@ class Api extends CI_Controller {
                 } else {
                     $array['category_image'] = base_url() . 'assets/images/No-Image.png';
                 }
-
                 $categories[] = $array;
             }
             $json = array("categories" => $categories);
