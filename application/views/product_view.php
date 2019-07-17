@@ -19,9 +19,9 @@
                             <table id="product_table" class="display nowrap table table-hover table-striped table-bordered cms-table table-hover">
                                 <thead>
                                     <tr>
-                                        <th>Title</th>
-                                        <th>Description</th>
-                                        <th>Price</th>                                            
+                                        <th>Name</th>
+                                        <th>Category</th>
+                                        <th>Sub Category</th>                                            
                                         <th>Status</th>                                            
                                         <th>Action</th>                                            
                                     </tr>
@@ -50,9 +50,9 @@
                                         "type": 'POST',
                                     },
                                     "columns": [
-                                        {'data': 'title'},
-                                        {'data': 'description'},
-                                        {'data': 'price'},
+                                        {'data': 'product_name'},
+                                        {'data': 'category'},
+                                        {'data': 'sub_category'},
                                         {'data': 'status'},
                                         {'data': 'action', 'orderable': false},
                                     ]

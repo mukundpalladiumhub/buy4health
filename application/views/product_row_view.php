@@ -15,9 +15,9 @@
                         <h3 class="box-title">Product id- <?php echo $id; ?></h3>
                     </div>
                     <div class="box-body">
-                        <label>Title:- </label><br><?php echo $title; ?><br><br>
-                        <label>Description:- </label><br><?php echo $description; ?><br><br>
-                        <label>Price:- </label><br><?php echo $price; ?><br><br>
+                        <label>Product Name:- </label><br><?php echo $product_name; ?><br><br>
+                        <label>Category:- </label><br><?php echo $category; ?><br><br>
+                        <label>Sub Category:- </label><br><?php echo $sub_category; ?><br><br>
                         <label>Status:- </label><br>
                         <?php
                         if ($status == 1) {

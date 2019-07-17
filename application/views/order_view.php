@@ -20,7 +20,7 @@
                                 <thead>
                                     <tr>
                                         <th>User Name</th>
-                                        <th>Product Title</th>
+                                        <th>Product Name</th>
                                         <th>Order Amount</th>
                                         <th>Transaction ID</th>
                                         <th>Status</th>
@@ -51,7 +51,7 @@
                                     },
                                     "columns": [
                                         {'data': 'full_name'},
-                                        {'data': 'title'},
+                                        {'data': 'product_name'},
                                         {'data': 'order_amount'},
                                         {'data': 'transaction_id'},
                                         {'data': 'status', orderable: false},

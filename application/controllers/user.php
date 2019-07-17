@@ -8,6 +8,15 @@ class User extends CI_Controller {
     }
 
     public function index() {
+        if ($this->session->userdata('user_id')) {
+            $abcd = $this->session->get_userdata('user_name');
+            $this->load->view('layout/header.php');
+            $this->load->view('layout/sidebar.php');
+            $this->load->view('user_view.php');
+            $this->load->view('layout/footer.php');
+        } else {
+            return redirect('login');
+        }
         $post = $this->input->post();
         if (!empty($post)) {
             $this->user_model->search = isset($post['search']['value']) ? $post['search']['value'] : '';
@@ -21,31 +30,31 @@ class User extends CI_Controller {
             $this->user_model->column = isset($post['order'][0]['column']) ? $colnum[$post['order'][0]['column']] : '';
             $this->user_model->dire = isset($post['order'][0]['dir']) ? $post['order'][0]['dir'] : '';
             $conn = FALSE;
-            $abc = $this->user_model->show($conn);
+            $count = $this->user_model->UserList($conn);
             $conn = true;
-            $result = $this->user_model->show($conn);
-            $user = array();
+            $result = $this->user_model->UserList($conn);
+            $user_data = array();
             foreach ($result as $array) {
                 $id = $array['id'];
                 $data['name'] = $array['full_name'];
                 $data['email'] = $array['user_name'];
                 $data['password'] = $array['password'];
-                $user[] = $data;
+                $user_data[] = $data;
             }
             $json = array(
                 "draw" => $_POST['draw'],
-                "data" => $user,
-                "recordsFiltered" => intval($abc),
-                "recordsTotal" => intval($abc),
+                "data" => $user_data,
+                "recordsFiltered" => intval($count),
+                "recordsTotal" => intval($count),
             );
             echo json_encode($json);
             exit;
         }
-        $abcd = $this->session->get_userdata('user_name');
-        $this->load->view('layout/header.php');
-        $this->load->view('layout/sidebar.php');
-        $this->load->view('user_view.php');
-        $this->load->view('layout/footer.php');
+    }
+
+    public function logout() {
+        $this->session->unset_userdata('user_id');
+        redirect(base_url() . 'login');
     }
 
 }

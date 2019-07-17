@@ -15,8 +15,8 @@
                         <h3 class="box-title">Order id- <?php echo $id; ?></h3>
                     </div>
                     <div class="box-body">
-                        <label>User Name:- </label><br><?php echo $user_name; ?><br><br>
-                        <label>Title:- </label><br><?php echo $title; ?><br><br>
+                        <label>Full Name:- </label><br><?php echo $full_name; ?><br><br>
+                        <label>Product Name:- </label><br><?php echo $product_name; ?><br><br>
                         <label>Order Amount:- </label><br><?php echo $order_amount; ?><br><br>
                         <label>Transaction ID:- </label><br><?php echo $transaction_id; ?><br><br>
                         <label>Status:- </label><br>

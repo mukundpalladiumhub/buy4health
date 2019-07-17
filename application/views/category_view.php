@@ -20,7 +20,8 @@
                                 <thead>
                                     <tr>
                                         <th>Full Name</th>
-                                        <th>Description</th>
+                                        <th>Tag</th>
+                                        <th>Image</th>
                                         <th>Status</th>                                            
                                         <!--<th>Action</th>-->                                            
                                     </tr>
@@ -49,9 +50,10 @@
                                         "type": 'POST',
                                     },
                                     "columns": [
-                                        {'data': 'name'},
-                                        {'data': 'description'},
-                                        {'data': 'status'},
+                                        {'data': 'category_name'},
+                                        {'data': 'category_tag'},
+                                        {'data': 'category_image'},
+                                        {'data': 'status', orderable: false},
                                     ]
                                 });
                             }

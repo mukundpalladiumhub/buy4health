@@ -12,7 +12,7 @@ class Category_model extends CI_Model {
         parent::__construct();
     }
 
-    public function show($conn) {
+    public function CategoryList($conn) {
         $this->db->select('*');
         $this->db->from('category');
         if ($conn == FALSE) {
@@ -25,8 +25,10 @@ class Category_model extends CI_Model {
             $column = $this->column;
             $dire = $this->dire;
             if (isset($search) && $search != '') {
-                $this->db->like('name', $search);
-                $this->db->or_like('description', $search);
+                $this->db->like('category_name', $search);
+                $this->db->or_like('category_description', $search);
+                $this->db->or_like('category_tag', $search);
+                $this->db->or_like('category_image', $search);
             }
             if (isset($column) && $column != '') {
                 $this->db->order_by($column, $dire);
@@ -37,6 +39,15 @@ class Category_model extends CI_Model {
         }
         $query = $this->db->get()->result_array();
         return $query;
+    }
+
+    public function getCategoryList() {
+        $this->db->select('*');
+        $this->db->from('category');
+        $this->db->where('status', 1);
+        $resultQuery = $this->db->get();
+        $resultCategoryList = $resultQuery->result_array();
+        return $resultCategoryList;
     }
 
 }

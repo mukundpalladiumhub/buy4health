@@ -12,7 +12,7 @@ class User_model extends CI_Model {
         parent::__construct();
     }
 
-    public function show($conn) {
+    public function UserList($conn) {
         $this->db->select('*');
         $this->db->from('user_details');
         if ($conn == FALSE) {
