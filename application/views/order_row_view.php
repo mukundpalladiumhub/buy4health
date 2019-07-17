@@ -1,11 +1,11 @@
 <div class="content-wrapper">
     <section class="content-header">
         <h1>Order View<small>advanced tables</small></h1>
-        <ol class="breadcrumb">
+<!--        <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
             <li><a href="#">Tables</a></li>
             <li class="active">Order View</li>
-        </ol>
+        </ol>-->
     </section>
     <section class="content">
         <div class="row">

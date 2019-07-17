@@ -39,7 +39,7 @@ class Order extends CI_Controller {
                 $data['order_amount'] = $array['order_amount'];
                 $data['transaction_id'] = $array['transaction_id'];
                 $data['status'] = $array['status'];
-                $data['action'] = '<a href="' . base_url() . 'index.php/order/view/' . $id . '" class="btn btn-xs btn-info"> View</a>';
+                $data['action'] = '<a href="' . base_url() . 'order/view/' . $id . '" class="btn btn-xs btn-info"> View</a>';
                 $user[] = $data;
             }
             $json = array(
@@ -54,7 +54,7 @@ class Order extends CI_Controller {
         $abcd = $this->session->get_userdata('user_name');
         $this->load->view('layout/header.php');
         $this->load->view('layout/sidebar.php');
-        $this->load->view('layout/order_view.php');
+        $this->load->view('order_view.php');
         $this->load->view('layout/footer.php');
     }
 
@@ -63,7 +63,7 @@ class Order extends CI_Controller {
         $abcd = $this->session->get_userdata('user_name');
         $this->load->view('layout/header.php');
         $this->load->view('layout/sidebar.php');
-        $this->load->view('layout/order_row_view.php', $data);
+        $this->load->view('order_row_view.php', $data);
         $this->load->view('layout/footer.php');
     }
 

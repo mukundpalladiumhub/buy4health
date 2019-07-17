@@ -1,13 +1,12 @@
 <?php
 
-class Category extends CI_Controller {
+class Api extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->model('category_model');
     }
 
-    public function index() {
+    public function getKCcategoriesList() {
         $post = $this->input->post();
         if (!empty($post)) {
             $this->category_model->search = isset($post['search']['value']) ? $post['search']['value'] : '';
@@ -52,5 +51,7 @@ class Category extends CI_Controller {
         $this->load->view('category_view.php');
         $this->load->view('layout/footer.php');
     }
+
 }
+
 ?>

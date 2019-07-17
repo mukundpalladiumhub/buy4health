@@ -37,7 +37,7 @@ class Product extends CI_Controller {
                 $data['description'] = $array['description'];
                 $data['price'] = $array['price'];
                 $data['status'] = $array['status'];
-                $data['action'] = '<a href="' . base_url() . 'index.php/product/view/' . $id . '" class="btn btn-xs btn-info"> View</a>';
+                $data['action'] = '<a href="' . base_url() . 'product/view/' . $id . '" class="btn btn-xs btn-info"> View</a>';
                 $user[] = $data;
             }
             $json = array(
@@ -52,7 +52,7 @@ class Product extends CI_Controller {
         $abcd = $this->session->get_userdata('user_name');
         $this->load->view('layout/header.php');
         $this->load->view('layout/sidebar.php');
-        $this->load->view('layout/product_view.php');
+        $this->load->view('product_view.php');
         $this->load->view('layout/footer.php');
     }
     
@@ -61,7 +61,7 @@ class Product extends CI_Controller {
         $abcd = $this->session->get_userdata('user_name');
         $this->load->view('layout/header.php');
         $this->load->view('layout/sidebar.php');
-        $this->load->view('layout/product_row_view.php', $data);
+        $this->load->view('product_row_view.php', $data);
         $this->load->view('layout/footer.php');
     }
 

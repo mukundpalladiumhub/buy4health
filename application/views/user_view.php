@@ -1,29 +1,27 @@
 <div class="content-wrapper">
     <section class="content-header">
-        <h1>Product Tables<small>advanced tables</small></h1>
-        <ol class="breadcrumb">
+        <h1>User List<small>advanced tables</small></h1>
+<!--        <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
             <li><a href="#">Tables</a></li>
-            <li class="active">Product tables</li>
-        </ol>
+            <li class="active">User tables</li>
+        </ol>-->
     </section>
     <section class="content">
         <div class="row">
             <div class="col-xs-12">
                 <div class="box">
                     <div class="box-header">
-                        <h3 class="box-title">Product Data Table</h3>
+                        <h3 class="box-title">User Data Table</h3>
                     </div>
                     <div class="box-body">
                         <div class="div_table">
-                            <table id="product_table" class="display nowrap table table-hover table-striped table-bordered cms-table table-hover">
+                            <table id="user_table" class="display nowrap table table-hover table-striped table-bordered cms-table table-hover">
                                 <thead>
                                     <tr>
-                                        <th>Title</th>
-                                        <th>Description</th>
-                                        <th>Price</th>                                            
-                                        <th>Status</th>                                            
-                                        <th>Action</th>                                            
+                                        <th>Full Name</th>
+                                        <th>Email ID</th>
+                                        <th>Password</th>                                            
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -31,12 +29,13 @@
                                 </tbody>
                             </table>
                         </div>
+
                         <script>
                             $(document).ready(function () {
                                 showtable();
                             });
                             function showtable() {
-                                $("#product_table").DataTable({
+                                $("#user_table").DataTable({
                                     "processing": true,
                                     "serverSide": true,
                                     "paging": true,
@@ -46,15 +45,13 @@
                                     "destroy": true,
                                     "processData": false,
                                     "ajax": {
-                                        "url": '<?php echo base_url(); ?>index.php/product',
+                                        "url": '<?php echo base_url(); ?>user',
                                         "type": 'POST',
                                     },
                                     "columns": [
-                                        {'data': 'title'},
-                                        {'data': 'description'},
-                                        {'data': 'price'},
-                                        {'data': 'status'},
-                                        {'data': 'action'},
+                                        {'data': 'name'},
+                                        {'data': 'email'},
+                                        {'data': 'password'},
                                     ]
                                 });
                             }

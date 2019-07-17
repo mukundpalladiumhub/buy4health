@@ -44,7 +44,7 @@ class User extends CI_Controller {
         $abcd = $this->session->get_userdata('user_name');
         $this->load->view('layout/header.php');
         $this->load->view('layout/sidebar.php');
-        $this->load->view('layout/user_view.php');
+        $this->load->view('user_view.php');
         $this->load->view('layout/footer.php');
     }
 

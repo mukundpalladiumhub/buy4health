@@ -1,33 +1,33 @@
 <div class="content-wrapper">
     <section class="content-header">
-        <h1>Order Tables<small>advanced tables</small></h1>
-        <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li><a href="#">Tables</a></li>
-            <li class="active">Order tables</li>
-        </ol>
+        <h1>Product List<small>advanced tables</small></h1>
+        <!--        <ol class="breadcrumb">
+                    <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                    <li><a href="#">Tables</a></li>
+                    <li class="active">Product tables</li>
+                </ol>-->
     </section>
     <section class="content">
         <div class="row">
             <div class="col-xs-12">
                 <div class="box">
                     <div class="box-header">
-                        <h3 class="box-title">Order Data Table</h3>
+                        <h3 class="box-title">Product Data Table</h3>
                     </div>
                     <div class="box-body">
                         <div class="div_table">
-                            <table id="order_table" class="display nowrap table table-hover table-striped table-bordered cms-table table-hover">
+                            <table id="product_table" class="display nowrap table table-hover table-striped table-bordered cms-table table-hover">
                                 <thead>
                                     <tr>
-                                        <th>User Name</th>
-                                        <th>Product Title</th>
-                                        <th>Order Amount</th>
-                                        <th>Transaction ID</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
+                                        <th>Title</th>
+                                        <th>Description</th>
+                                        <th>Price</th>                                            
+                                        <th>Status</th>                                            
+                                        <th>Action</th>                                            
                                     </tr>
                                 </thead>
                                 <tbody>
+
                                 </tbody>
                             </table>
                         </div>
@@ -36,7 +36,7 @@
                                 showtable();
                             });
                             function showtable() {
-                                $("#order_table").DataTable({
+                                $("#product_table").DataTable({
                                     "processing": true,
                                     "serverSide": true,
                                     "paging": true,
@@ -46,16 +46,15 @@
                                     "destroy": true,
                                     "processData": false,
                                     "ajax": {
-                                        "url": '<?php echo base_url(); ?>index.php/order',
+                                        "url": '<?php echo base_url(); ?>product',
                                         "type": 'POST',
                                     },
                                     "columns": [
-                                        {'data': 'full_name'},
                                         {'data': 'title'},
-                                        {'data': 'order_amount'},
-                                        {'data': 'transaction_id'},
-                                        {'data': 'status', orderable: false},
-                                        {'data': 'action', orderable: false},
+                                        {'data': 'description'},
+                                        {'data': 'price'},
+                                        {'data': 'status'},
+                                        {'data': 'action', 'orderable': false},
                                     ]
                                 });
                             }
