@@ -44,9 +44,10 @@ class Product_model extends CI_Model {
     }
 
     public function view($id) {
-        $this->db->select('*');
-        $this->db->from('product');
-        $this->db->where('id', $id);
+        $this->db->from('product as p');
+        $this->db->join('category as c', 'c.id = p.category', 'left');
+        $this->db->select('p.*, c.category_name');
+        $this->db->where('p.id', $id);
         $query = $this->db->get()->row();
         return $query;
     }

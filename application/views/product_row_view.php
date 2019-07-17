@@ -16,7 +16,7 @@
                     </div>
                     <div class="box-body">
                         <label>Product Name:- </label><br><?php echo $product_name; ?><br><br>
-                        <label>Category:- </label><br><?php echo $category; ?><br><br>
+                        <label>Category:- </label><br><?php echo $category_name; ?><br><br>
                         <label>Sub Category:- </label><br><?php echo $sub_category; ?><br><br>
                         <label>Status:- </label><br>
                         <?php
