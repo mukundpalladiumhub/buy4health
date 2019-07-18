@@ -52,10 +52,11 @@ class Product_model extends CI_Model {
         return $query;
     }
 
-    public function getProductList() {
+    public function getProductListbyid($id) {
         $this->db->select('*');
         $this->db->from('product');
         $this->db->where('status', 1);
+        $this->db->where('id', $id);
         $resultQuery = $this->db->get();
         $resultProductList = $resultQuery->result_array();
         return $resultProductList;

@@ -54,3 +54,7 @@ $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 $route['my-stripe'] = "Makepayment";
 $route['stripePost']['post'] = "Makepayment/stripePost";
+$route['buy4health/getProductDetails/(:num)']  = "buy4health/getProductDetails/$1";
+
+
+

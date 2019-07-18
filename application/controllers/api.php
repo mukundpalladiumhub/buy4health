@@ -34,11 +34,11 @@ class Api extends CI_Controller {
         }
     }
 
-    public function getProductList() {
+    public function getProductDetails($id) {
         $post = $this->input->post();
         $post = array("start" => 5);
         if (!empty($post)) {
-            $product_details = $this->product_model->getProductList();
+            $product_details = $this->product_model->getProductListbyid($id);
             foreach ($product_details as $key => $detail) {
                 $products = array();
                 $product_rent_details = array();
@@ -61,10 +61,10 @@ class Api extends CI_Controller {
                 } else {
                     $detail['status'] = 'Inactive';
                 }
-                $product_details_all[] = $detail;
-                $product_details_all[$key]['product_image'] = $product_image;
-                $product_details_all[$key]['product_price_details'] = $product_price_details;
-                $product_details_all[$key]['product_rent_details'] = $product_rent_details;
+                $product_details_all = $detail;
+                $product_details_all['product_image'] = $product_image;
+                $product_details_all['product_price_details'] = $product_price_details;
+                $product_details_all['product_rent_details'] = $product_rent_details;
             }
             $json = array("product" => $product_details_all);
             echo json_encode($json);
