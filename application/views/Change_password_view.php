@@ -36,10 +36,10 @@
                         </form>
                         <script>
                             $(document).ready(function () {
-//                                $.validate({
-//                                    form: '#change_password',
-//                                    modules: 'security',
-//                                    onSuccess: function ($form) {
+                                $.validate({
+                                    form: '#change_password',
+                                    modules: 'security',
+                                    onSuccess: function ($form) {
                                         $("#submit").on('click', function () {
                                             $.ajax({
                                                 url: '<?php echo base_url(); ?>user/ChangePasswordbyid',
@@ -56,8 +56,8 @@
                                                 }
                                             });
                                         });
-//                                    },
-//                                });
+                                    },
+                                });
                             });
                         </script>
                     </div>
