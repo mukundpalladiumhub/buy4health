@@ -53,6 +53,30 @@ class User extends CI_Controller {
         }
     }
 
+    public function change_password() {
+        $abcd = $this->session->get_userdata('user_name');
+        $this->load->view('layout/header.php', $abcd);
+        $this->load->view('layout/sidebar.php', $abcd);
+        $this->load->view('change_view.php');
+        $this->load->view('layout/footer.php');
+    }
+
+    public function password_id() {
+        $old_pass = $this->input->post('old_pass');
+        $new_pass = $this->input->post('password');
+        $id = $this->session->userdata('user_id');
+        $user = $this->new_model->change_pass($old_pass, $new_pass, $id);
+        if ($user != $old_pass) {
+            $result['status'] = 1;
+            $result['msg'] = 'Password change successfully';
+        } else {
+            $result['status'] = 0;
+            $result['msg'] = 'Old password dose not match';
+        }
+        echo json_encode($result);
+        exit;
+    }
+    
     public function logout() {
         $this->session->unset_userdata('user_id');
         redirect(base_url() . 'login');

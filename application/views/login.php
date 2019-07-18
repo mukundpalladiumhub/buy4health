@@ -34,7 +34,7 @@
                                     <!--<a href="<?php echo base_url(); ?>index.php/login_form/signup" class="text-center">Register a new membership</a>-->
                                 </label>
                                 <label>
-                                    <!--<a href="<?php echo base_url(); ?>index.php/login_form/forgot" class="text-center">Forgot Password</a>-->
+                                    <a href="<?php echo base_url(); ?>login/forgot_password" class="text-center">Forgot Password</a>
                                 </label>
                             </div>
                             <p id="msg"></p>

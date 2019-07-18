@@ -96,10 +96,13 @@
                                     </li>
                                     <!-- Menu Footer-->
                                     <li class="user-footer">
-                                        <div class="pull-left">
+                                        <div class="pull col-sm-4">
                                             <a href="#" class="btn btn-default btn-flat">Profile</a>
                                         </div>
-                                        <div class="pull-right">
+                                        <div class="pull col-sm-4">
+                                            <a href="<?php echo base_url(); ?>user/change_password" class="btn btn-default btn-flat">Change</a>
+                                        </div>
+                                        <div class="pull col-sm-4">
                                             <a href="<?php echo base_url(); ?>user/logout" class="btn btn-default btn-flat">Sign out</a>
                                         </div>
                                     </li>

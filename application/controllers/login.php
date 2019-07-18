@@ -1,4 +1,5 @@
 <?php
+
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class login extends CI_Controller {
@@ -8,7 +9,6 @@ class login extends CI_Controller {
         $this->load->model('Login_model');
         $this->load->helper('form');
         $this->load->helper('url');
-        echo "TEst";exit;
     }
 
     public function index() {
@@ -31,8 +31,8 @@ class login extends CI_Controller {
             $user_name = $this->input->post('user_name');
             $password = $this->input->post('password');
             $decode_password = md5($password);
-            $id = $this->login_model->login($user_name, $decode_password);
-            $userbyid = $this->login_model->userbyid($id);
+            $id = $this->Login_model->login($user_name, $decode_password);
+            $userbyid = $this->Login_model->userbyid($id);
             if ($id != FALSE) {
                 $this->load->library('session');
                 $this->session->set_userdata('user_id', $id);
@@ -43,7 +43,7 @@ class login extends CI_Controller {
                 $result['msg'] = 'Login Successfully';
                 $result['redirect'] = base_url() . "/user";
             } else {
-                $user = $this->login_model->alltable();
+                $user = $this->Login_model->alltable();
                 foreach ($user as $data) {
                     if ($data['user_name'] != $user_name) {
                         $b = 'Invalid Username or Password';
@@ -57,6 +57,83 @@ class login extends CI_Controller {
         }
         echo json_encode($result);
         exit;
+    }
+
+    public function forgot_password() {
+        $this->load->view('forgot_view.php');
+    }
+
+    public function check_email() {
+        $user_name = $this->input->post('user_name');
+        $data = $this->Login_model->check_id($user_name);
+        $a = 1;
+        if ($data != '') {
+            $set = '12345687890abcdefghijklmnopqrstuvwxyz';
+            $code = substr(str_shuffle($set), 0, 12);
+            $this->Login_model->update_code($code, $user_name);
+            $this->sendMail($user_name, $code, $a, $data);
+            $result['status'] = 1;
+            $result['msg'] = 'Mail verified';
+        } else {
+            $result['status'] = 0;
+            $result['msg'] = "Invalid E-mail id";
+        }
+        echo json_encode($result);
+        exit;
+    }
+
+    function sendMail($user_name, $code, $a, $data) {
+        $config = Array(
+            'protocol' => 'smtp',
+            'smtp_host' => 'ssl://smtp.googlemail.com',
+            'smtp_port' => 465,
+            'smtp_user' => 'sunny.patel477@gmail.com',
+            'smtp_pass' => 'S1u7n3ny_',
+            'mailtype' => 'html',
+            'charset' => 'iso-8859-1',
+            'wordwrap' => TRUE
+        );
+        $data['code'] = $code;
+        $data['user_name'] = $user_name;
+        $data['image'] = base_url() . RENT4HEALTH;
+        if ($a == 1) {
+            $subject = 'Change your password';
+            $message = $this->load->view('password_mail.php', $data, TRUE);
+        } else if ($a == 0) {
+            $subject = 'Signup Verification Email';
+            $message = $this->load->view('check_mail.php', $data, TRUE);
+        }
+        $this->load->library('email', $config);
+        $this->email->set_newline("\r\n");
+        $this->email->from('niravpatel26oct@gmail.com');
+        $this->email->to($user_name);
+        $this->email->subject($subject);
+        $this->email->message($message);
+        if ($this->email->send()) {
+            $this->session->set_flashdata('message', 'Activation code sent to email');
+        } else {
+            $this->session->set_flashdata('message', $this->email->print_debugger());
+        }
+    }
+
+    public function change_pass() {
+        $code = $this->uri->segment(3);
+        $user = array();
+        $user = $this->Login_model->userbycode($code);
+        if ($user['code'] == $code) {
+            $this->load->view('change_password.php', $user);
+        } else {
+            echo "Code dose not match";
+            exit;
+        }
+    }
+
+    public function change() {
+        $id = $this->input->post('id');
+        $password = $this->input->post('password');
+        $decode_password = md5($password);
+        $this->Login_model->update_password($decode_password, $id);
+        return;
     }
 
 }
