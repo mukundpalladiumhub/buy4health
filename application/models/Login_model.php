@@ -59,12 +59,8 @@ class Login_model extends CI_Model {
         $this->db->select('*');
         $this->db->from('user_details');
         $this->db->where('user_name', $data);
-        $nos = $this->db->get();
-        if ($nos->num_rows()) {
-            return $nos->row()->id;
-        } else {
-            return FALSE;
-        }
+        $nos = $this->db->get()->row_array();
+        return $nos;
     }
 
     public function update_code($code, $user_name) {
@@ -73,8 +69,8 @@ class Login_model extends CI_Model {
         $this->db->update('user_details');
     }
 
-    public function update_pass($pass, $id) {
-        $this->db->set('password', $pass);
+    public function update_password($password, $id) {
+        $this->db->set('password', $password);
         $this->db->set('status', '1');
         $this->db->where('id', $id);
         $this->db->update('user_details');
