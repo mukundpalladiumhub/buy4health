@@ -85,4 +85,4 @@ defined('EXIT__AUTO_MIN')      OR define('EXIT__AUTO_MIN', 9); // lowest automat
 defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
 define('RENT4HEALTH', 'assets/images/value4health_logo.png');  
 
-if (!defined('RENT4HEALTH')) define('RENT4HEALTH', 1);
+if (!defined('RENT4HEALTHID')) define('RENT4HEALTH', 1);

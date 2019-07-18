@@ -52,14 +52,14 @@ class Cron extends CI_Controller {
                         $check_product_exist = $this->db->select('product_code,id')
                                         ->where("product_code", $product_value['product_code'])
                                         ->where("product_name", $product_value['product_name'])
-                                        ->where("site_id", RENT4HEALTH)
+                                        ->where("site_id", RENT4HEALTHID)
                                         ->where('category', $category_id)
                                         ->get('product')->row_array();
 
                         $product_id_live_db = $product_value['id'];
                         unset($product_value['id']);
 
-                        $product_value['site_id'] = RENT4HEALTH;
+                        $product_value['site_id'] = RENT4HEALTHID;
                         $product_value['category'] = $category_id;
 
                         if (empty($check_product_exist)) {
