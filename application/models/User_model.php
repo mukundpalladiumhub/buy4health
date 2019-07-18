@@ -28,12 +28,12 @@ class User_model extends CI_Model {
         if (isset($column) && $column != '') {
             $this->db->order_by($column, $dire);
         }
-        if (isset($start) && $start != '') {
-            $this->db->limit($length, $start);
-        }
         if ($conn == FALSE) {
             $nos = $this->db->get()->num_rows();
             return $nos;
+        }
+        if (isset($start) && $start != '') {
+            $this->db->limit($length, $start);
         }
         $query = $this->db->get()->result_array();
         return $query;
