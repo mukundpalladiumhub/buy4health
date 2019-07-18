@@ -91,18 +91,20 @@ class Cron extends CI_Controller {
                                     $image_name = str_replace(' ', '%20', $productImg_value['product_image']);
                                     $path = 'assets/uploads/product/' . $productImg_value['product_image'];
                                     $myfile = file_get_contents('https://www.rent4health.com/uploads/product_images/' . $image_name);
+                                    
                                     $uploadfile = file_put_contents($path, $myfile);
+                                    unset($productImg_value['id']);
+                                    $productImg_value['product_id'] = $product_id;
+
+                                    if (empty($check_productImg_exist)) {
+                                        $this->db->insert('product_images', $productImg_value);
+                                    } else {
+                                        $this->db->where('id', $check_productImg_exist['id']);
+                                        $this->db->update('product_images', $productImg_value);
+                                    }
+                                    
                                 }
 
-                                unset($productImg_value['id']);
-                                $productImg_value['product_id'] = $product_id;
-
-                                if (empty($check_productImg_exist)) {
-                                    $this->db->insert('product_images', $productImg_value);
-                                } else {
-                                    $this->db->where('id', $check_productImg_exist['id']);
-                                    $this->db->update('product_images', $productImg_value);
-                                }
                             }
                         }
                         /*                         * ***** End Product Images ****** */
