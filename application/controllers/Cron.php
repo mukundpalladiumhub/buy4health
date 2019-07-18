@@ -7,7 +7,6 @@ class Cron extends CI_Controller {
     public function __construct() {
         parent::__construct();
 
-        define('RENT4HEALTH', 1);
     }
 
     public function index() {
