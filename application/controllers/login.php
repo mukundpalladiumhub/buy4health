@@ -98,10 +98,10 @@ class login extends CI_Controller {
         $data['image'] = base_url() . RENT4HEALTH;
         if ($a == 1) {
             $subject = 'Change your password';
-            $message = $this->load->view('password_mail.php', $data, TRUE);
+            $message = $this->load->view('templates/password_mail.php', $data, TRUE);
         } else if ($a == 0) {
             $subject = 'Signup Verification Email';
-            $message = $this->load->view('check_mail.php', $data, TRUE);
+            $message = $this->load->view('templates/check_mail.php', $data, TRUE);
         }
         $this->load->library('email', $config);
         $this->email->set_newline("\r\n");

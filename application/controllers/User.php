@@ -57,16 +57,18 @@ class User extends CI_Controller {
         $abcd = $this->session->get_userdata('user_name');
         $this->load->view('layout/header.php', $abcd);
         $this->load->view('layout/sidebar.php', $abcd);
-        $this->load->view('change_view.php');
+        $this->load->view('change_password_view.php');
         $this->load->view('layout/footer.php');
     }
 
-    public function password_id() {
+    public function ChangePasswordbyid() {
         $old_pass = $this->input->post('old_pass');
         $new_pass = $this->input->post('password');
+        $decoded_old_password = md5($old_pass);
+        $decoded_new_password = md5($new_pass);
         $id = $this->session->userdata('user_id');
-        $user = $this->new_model->change_pass($old_pass, $new_pass, $id);
-        if ($user != $old_pass) {
+        $user = $this->user_model->change_password($decoded_old_password, $decoded_new_password, $id);
+        if ($user != $decoded_old_password) {
             $result['status'] = 1;
             $result['msg'] = 'Password change successfully';
         } else {
