@@ -15,32 +15,30 @@ class Product_model extends CI_Model {
     public function ViewList($conn) {
         $this->db->from('product as p');
         $this->db->join('category as c', 'c.id = p.category', 'left');
-        $this->db->select('p.*, c.category_name');
+        $this->db->select("p.*, c.category_name ,IF(p.status = 1,'Active','Inactive') as status");
 
-        $search = $this->search;
-        $length = $this->length;
-        $start = $this->start;
-        $column = $this->column;
-        $dire = $this->dire;
-        if (isset($search) && $search != '') {
-            $this->db->like('p.product_type', $search);
-            $this->db->or_like('p.product_code', $search);
-            $this->db->or_like('p.product_name', $search);
-            $this->db->or_like('c.category_name', $search);
-            $this->db->or_like('p.sub_category', $search);
+        if (isset($this->search) && $this->search != '') {
+            $this->db->group_start()
+                    ->like('p.product_type', $this->search)
+                    ->or_like('p.product_code', $this->search)
+                    ->or_like('p.product_name', $this->search)
+                    ->or_like('c.category_name', $this->search)
+                    ->or_like('p.sub_category', $this->search)
+                    ->group_end();
         }
-        if (isset($column) && $column != '') {
-            $this->db->order_by($column, $dire);
-        }
+
         if ($conn == FALSE) {
-            $nos = $this->db->get()->num_rows();
-            return $nos;
+            $result = $this->db->get();
+            return $result->num_rows();
+        } else {
+            if (isset($this->column) && $this->column != '') {
+                $this->db->order_by($this->column, $this->dire);
+            }
+
+            $this->db->limit($this->length, $this->start);
+            $result = $this->db->get();
+            return $result->result_array();
         }
-        if (isset($start) && $start != '') {
-            $this->db->limit($length, $start);
-        }
-        $query = $this->db->get()->result_array();
-        return $query;
     }
 
     public function view($id) {
