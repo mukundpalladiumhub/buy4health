@@ -1,4 +1,5 @@
 <?php
+
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Product extends CI_Controller {
@@ -51,7 +52,10 @@ class Product extends CI_Controller {
                 $data['category'] = $array['category_name'];
                 $data['sub_category'] = $array['sub_category'];
                 $data['status'] = $array['status'];
-                $data['action'] = '<a href="' . base_url() . 'product/view/' . $id . '" class="btn btn-xs btn-info"> View</a>';
+                $data['action'] = '<div class="col-sm-3"><a class="btn btn-xs btn-info viewbtn"> View</a></div>';
+                $data['action'] .= '<div class="col-sm-3"><a href="' . base_url() . 'product/image/' . $id . '" class="btn btn-xs btn-success imagebtn"> Images</a></div>';
+                $data['action'] .= '<div class="col-sm-3"><a href="' . base_url() . 'product/price/' . $id . '" class="btn btn-xs btn-warning pricebtn"> Prices</a></div>';
+                $data['action'] .= '<div class="col-sm-3"><a href="' . base_url() . 'product/rent/' . $id . '" class="btn btn-xs btn-primary rentbtn"> Rent</a></div>';
                 $product_data[] = $data;
             }
             $json = array(
@@ -67,6 +71,42 @@ class Product extends CI_Controller {
 
     public function view($id) {
         $data = $this->product_model->view($id);
+        $session_username = $this->session->get_userdata('user_name');
+        $this->load->view('layout/header.php', $session_username);
+        $this->load->view('layout/sidebar.php', $session_username);
+        $this->load->view('product_row_view.php', $data);
+        $this->load->view('layout/footer.php');
+    }
+    
+    public function image($id) {
+        $data = $this->product_model->image($id);
+        echo "<pre>";
+        print_r($data);
+        die;
+        $session_username = $this->session->get_userdata('user_name');
+        $this->load->view('layout/header.php', $session_username);
+        $this->load->view('layout/sidebar.php', $session_username);
+        $this->load->view('product_row_view.php', $data);
+        $this->load->view('layout/footer.php');
+    }
+    
+    public function price($id) {
+        $data = $this->product_model->price($id);
+        echo "<pre>";
+        print_r($data);
+        die;
+        $session_username = $this->session->get_userdata('user_name');
+        $this->load->view('layout/header.php', $session_username);
+        $this->load->view('layout/sidebar.php', $session_username);
+        $this->load->view('product_row_view.php', $data);
+        $this->load->view('layout/footer.php');
+    }
+    
+    public function rent($id) {
+        $data = $this->product_model->rent($id);
+        echo "<pre>";
+        print_r($data);
+        die;
         $session_username = $this->session->get_userdata('user_name');
         $this->load->view('layout/header.php', $session_username);
         $this->load->view('layout/sidebar.php', $session_username);

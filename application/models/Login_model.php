@@ -11,19 +11,8 @@ class Login_model extends CI_Model {
         $this->db->where('user_name', $user_name);
         $this->db->where('status', '1');
         $this->db->where('password', $password);
-        $nos = $this->db->get();
-        if ($nos->num_rows()) {
-            return $nos->row()->id;
-        } else {
-            return FALSE;
-        }
-    }
-
-    public function alltable() {
-        $this->db->select('*');
-        $this->db->from('user_details');
-        $result = $this->db->get()->result_array();
-        return $result;
+        $user = $this->db->get()->row_array();
+        return $user;
     }
 
     public function signup($data) {
@@ -47,13 +36,13 @@ class Login_model extends CI_Model {
         return $result;
     }
 
-    public function userbyid($id) {
-        $this->db->select('*');
-        $this->db->from('user_details');
-        $this->db->where('id', $id);
-        $result = $this->db->get()->row_array();
-        return $result;
-    }
+//    public function userbyid($id) {
+//        $this->db->select('*');
+//        $this->db->from('user_details');
+//        $this->db->where('id', $id);
+//        $result = $this->db->get()->row_array();
+//        return $result;
+//    }
 
     public function check_id($data) {
         $this->db->select('*');

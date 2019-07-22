@@ -6,7 +6,7 @@ class Login extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->model('login_model');
+        $this->load->model('Login_model');
         $this->load->helper('form');
         $this->load->helper('url');
     }
@@ -31,28 +31,17 @@ class Login extends CI_Controller {
             $user_name = $this->input->post('user_name');
             $password = $this->input->post('password');
             $decode_password = md5($password);
-            $id = $this->Login_model->login($user_name, $decode_password);
-            $userbyid = $this->Login_model->userbyid($id);
-            if ($id != FALSE) {
+            $user = $this->Login_model->login($user_name, $decode_password);
+            if (!empty($user)) {
                 $this->load->library('session');
                 $this->session->set_userdata('user_id', $id);
                 $this->session->set_userdata('user_name', $userbyid['full_name']);
                 $this->session->set_userdata('photo', $userbyid['profile_image']);
-
                 $result['status'] = 1;
                 $result['msg'] = 'Login Successfully';
-                $result['redirect'] = base_url() . "/user";
             } else {
-                $user = $this->Login_model->alltable();
-                foreach ($user as $data) {
-                    if ($data['user_name'] != $user_name) {
-                        $b = 'Invalid Username or Password';
-                    } elseif ($data['status'] == 0) {
-                        $b = 'E-mail is not Verified';
-                    }
-                }
                 $result['status'] = 0;
-                $result['msg'] = $b;
+                $result['msg'] = 'Invalid Username or Password';
             }
         }
         echo json_encode($result);
@@ -66,7 +55,6 @@ class Login extends CI_Controller {
     public function check_email() {
         $user_name = $this->input->post('user_name');
         $data = $this->Login_model->check_id($user_name);
-        $a = 1;
         if ($data != '') {
             $set = '12345687890abcdefghijklmnopqrstuvwxyz';
             $code = substr(str_shuffle($set), 0, 12);
@@ -82,7 +70,7 @@ class Login extends CI_Controller {
         exit;
     }
 
-    function sendMail($user_name, $code, $a, $data) {
+    function sendMail($user_name, $code, $data) {
         $config = Array(
             'protocol' => 'smtp',
             'smtp_host' => 'ssl://smtp.googlemail.com',
@@ -96,13 +84,8 @@ class Login extends CI_Controller {
         $data['code'] = $code;
         $data['user_name'] = $user_name;
         $data['image'] = base_url() . RENT4HEALTH;
-        if ($a == 1) {
-            $subject = 'Change your password';
-            $message = $this->load->view('templates/password_mail.php', $data, TRUE);
-        } else if ($a == 0) {
-            $subject = 'Signup Verification Email';
-            $message = $this->load->view('templates/check_mail.php', $data, TRUE);
-        }
+        $subject = 'Change your password';
+        $message = $this->load->view('templates/password_mail.php', $data, TRUE);
         $this->load->library('email', $config);
         $this->email->set_newline("\r\n");
         $this->email->from('niravpatel26oct@gmail.com');

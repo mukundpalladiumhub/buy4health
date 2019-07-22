@@ -59,10 +59,7 @@
                                     method: 'post',
                                     data: $("#user_form").serialize(),
                                     success: function (data) {
-                                        var result = JSON.parse(data);
-                                        if (result.status == 0) {
-                                            window.location.href = '<?php echo base_url(); ?>user';
-                                        }
+                                        window.location.href = '<?php echo base_url(); ?>user';
                                     }
                                 });
                             },

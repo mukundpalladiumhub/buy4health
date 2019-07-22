@@ -71,11 +71,12 @@
                         contentType: false,
                         success: function (data) {
                             var result = JSON.parse(data);
-                            if (result.status == 0) {
-                                $("#msg").html(result.msg);
-                            } else if (result.status == 1) {
+                            if (result.status == 1) {
                                 $("#msg").html(result.msg);
                                 window.location.href = '<?php echo base_url(); ?>user';
+                            } else if (result.status == 1) {
+                                $("#msg").html(result.msg);
+                                
                             }
                         }
                     });

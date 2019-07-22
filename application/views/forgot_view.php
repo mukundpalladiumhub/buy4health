@@ -44,6 +44,30 @@
                             increaseArea: '20%' /* optional */
                         });
                     });
+                    $(document).ready(function () {
+                        $.validate({
+                            form: '#forgot_form',
+                            modules: 'security',
+                            onSuccess: function ($form) {
+                                var form = $("#forgot_form").serialize();
+                                $.ajax({
+                                    url: '<?php echo base_url(); ?>/login/check_email',
+                                    method: 'post',
+                                    data: form,
+                                    success: function (data) {
+                                        var result = JSON.parse(data);
+                                        if (result.status == 0) {
+                                            $("#msg").html(result.msg);
+                                        }
+                                        else {
+                                            alert('verify  Email-id');
+                                            window.location.href = '<?php echo base_url(); ?>login';
+                                        }
+                                    }
+                                });
+                            },
+                        });
+                    });
         </script>
     </body>
 </html>

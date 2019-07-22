@@ -58,6 +58,35 @@
                                     ]
                                 });
                             }
+                            $('body').on('click', '.viewbtn', function () {
+                                alert('aef');
+                                var id = $(this).data('id');
+                                showtable_view(id);
+                            }
+                            );
+                            function showtable_view(id) {
+                                $("#product_table").DataTable({
+                                    "processing": true,
+                                    "serverSide": true,
+                                    "paging": true,
+                                    "searching": true,
+                                    "order": [],
+                                    "pageLength": 10,
+                                    "destroy": true,
+                                    "processData": false,
+                                    "ajax": {
+                                        "url": '<?php echo base_url(); ?>product/view/' + id,
+                                        "type": 'POST',
+                                    },
+                                    "columns": [
+                                        {'data': 'product_name'},
+                                        {'data': 'category'},
+                                        {'data': 'sub_category'},
+                                        {'data': 'status'},
+                                        {'data': 'action', 'orderable': false},
+                                    ]
+                                });
+                            }
                         </script>
                     </div>
                 </div>
