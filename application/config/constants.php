@@ -83,6 +83,15 @@ defined('EXIT_USER_INPUT')     OR define('EXIT_USER_INPUT', 7); // invalid user 
 defined('EXIT_DATABASE')       OR define('EXIT_DATABASE', 8); // database error
 defined('EXIT__AUTO_MIN')      OR define('EXIT__AUTO_MIN', 9); // lowest automatically-assigned error code
 defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
-define('RENT4HEALTH', 'assets/images/value4health_logo.png');  
+define('EMAIL_LOGO', 'assets/images/value4health_logo.png');  
 
-if (!defined('RENT4HEALTHID')) define('RENT4HEALTHID', 1);
+define('RENT4HEALTHID', 1);
+
+define('ADMIN_ROLE', 1);
+define('USER_ROLE', 2);
+
+define('SMTP_HOST', 'smtp.gmail.com');
+define('SMTP_USER', 'sunny.patel477@gmail.com');
+define('SMTP_PASSWORD', 'S1u7n3ny_');
+
+
