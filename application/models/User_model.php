@@ -14,16 +14,22 @@ class User_model extends CI_Model {
 
     public function UserList($conn) {
         $this->db->select('*');
-        $this->db->from('user_details');
+        $this->db->from('users');
         $search = $this->search;
         $length = $this->length;
         $start = $this->start;
         $column = $this->column;
         $dire = $this->dire;
         if (isset($search) && $search != '') {
-            $this->db->like('full_name', $search);
-            $this->db->or_like('user_name', $search);
-            $this->db->or_like('password', $search);
+            $this->db->like('first_name', $search);
+            $this->db->or_like('last_name', $search);
+            $this->db->or_like('email', $search);
+            $this->db->or_like('address1', $search);
+            $this->db->or_like('zipcode', $search);
+            $this->db->or_like('city', $search);
+            $this->db->or_like('state', $search);
+            $this->db->or_like('mobile', $search);
+            $this->db->or_like('phone', $search);
         }
         if (isset($column) && $column != '') {
             $this->db->order_by($column, $dire);
@@ -41,12 +47,12 @@ class User_model extends CI_Model {
 
     public function change_password($old_pass, $new_pass, $id) {
         $this->db->where('id', $id);
-        $nos = $this->db->get('user_details')->row_array();
+        $nos = $this->db->get('users')->row_array();
         if ($nos['password'] == $old_pass) {
             $this->db->set('password', $new_pass);
             $this->db->where('id', $id);
-            $this->db->update('user_details');
-            return $nos['full_name'];
+            $this->db->update('users');
+            return $nos['first_name'];
         } else {
             return $old_pass;
         }

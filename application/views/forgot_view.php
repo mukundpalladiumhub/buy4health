@@ -23,12 +23,13 @@
                 <form id="forgot_form" method="post" onsubmit="return false;" enctype="multipart/form-data">
                     <!--<input type="hidden" id="id" name="id"/>-->
                     <div class="form-group has-feedback">
-                        <input type="text" name="user_name" id="user_name" class="form-control" data-validation="required" placeholder="E-Mail id">
+                        <input type="text" name="email" id="email" class="form-control" data-validation="required" placeholder="E-Mail id">
                         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                     </div>
+                    <p id="msg"></p>
                     <div class="row">
                         <div class="col-xs-5">
-                            <button type="submit" id="submit" name="submit" class="btn btn-primary btn-block btn-flat">Verify email-id</button>
+                            <button type="submit" id="submit" name="submit" class="btn btn-primary btn-block btn-flat">Submit</button>
                         </div>
                     </div>
                 </form>
@@ -49,19 +50,19 @@
                             form: '#forgot_form',
                             modules: 'security',
                             onSuccess: function ($form) {
-                                var form = $("#forgot_form").serialize();
                                 $.ajax({
                                     url: '<?php echo base_url(); ?>/login/check_email',
                                     method: 'post',
-                                    data: form,
+                                    data: $("#forgot_form").serialize(),
                                     success: function (data) {
                                         var result = JSON.parse(data);
-                                        if (result.status == 0) {
+                                        if (result.status == 1) {
                                             $("#msg").html(result.msg);
+                                            window.location.href = '<?php echo base_url(); ?>login';
                                         }
                                         else {
-                                            alert('verify  Email-id');
-                                            window.location.href = '<?php echo base_url(); ?>login';
+                                            $("#msg").html(result.msg);
+
                                         }
                                     }
                                 });

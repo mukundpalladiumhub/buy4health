@@ -20,7 +20,7 @@
             </div>
             <div class="register-box-body">
                 <p class="login-box-msg">Change Passwrod</p>
-                <form id="user_form" method="post" onsubmit="return false;" enctype="multipart/form-data">
+                <form id="change_form" method="post" onsubmit="return false;" enctype="multipart/form-data">
                     <input type="hidden" id="id" name="id" value="<?php echo $id; ?>"/>
                     <div class="form-group has-feedback">
                         <input type="password" name="password_confirmation" id="password" data-validation="length" data-validation-length="min3" class="form-control" placeholder="Password">
@@ -51,13 +51,13 @@
 
                     $(document).ready(function () {
                         $.validate({
-                            form: '#user_form',
+                            form: '#change_form',
                             modules: 'security',
                             onSuccess: function ($form) {
                                 $.ajax({
                                     url: '<?php echo base_url(); ?>login/change',
                                     method: 'post',
-                                    data: $("#user_form").serialize(),
+                                    data: $("#change_form").serialize(),
                                     success: function (data) {
                                         window.location.href = '<?php echo base_url(); ?>user';
                                     }

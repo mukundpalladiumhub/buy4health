@@ -20,11 +20,11 @@
                 <p class="login-box-msg">Sign in to start your session</p>
                 <form id="user_form" method="post" onsubmit="return false;" enctype="multipart/form-data" action="">
                     <div class="form-group has-feedback">
-                        <input type="text" id="user_name" name="user_name" class="form-control" placeholder="Email">
+                        <input type="text" id="email" name="email" class="form-control" data-validation="required" placeholder="Email">
                         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                     </div>
                     <div class="form-group has-feedback">
-                        <input type="password" id="password" name="password" class="form-control" placeholder="Password">
+                        <input type="password" id="password" name="password" class="form-control" data-validation="required" placeholder="Password">
                         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                     </div>
                     <div class="row">
@@ -47,6 +47,7 @@
             </div>
         </div>
         <script src="<?php echo base_url(); ?>/assets/bower_components/jquery/dist/jquery.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
         <script src="<?php echo base_url(); ?>/assets/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
         <script src="<?php echo base_url(); ?>/assets/plugins/iCheck/icheck.min.js"></script>
         <script>
@@ -60,27 +61,42 @@
         </script>
         <script>
             $(document).ready(function () {
-                $("#submit").on('click', function () {
-                    var form = $("#user_form").serialize();
-                    var fdata = new FormData($("#user_form")[0]);
-                    $.ajax({
-                        url: '<?php echo base_url(); ?>login/login_action',
-                        method: 'post',
-                        data: fdata,
-                        processData: false,
-                        contentType: false,
-                        success: function (data) {
-                            var result = JSON.parse(data);
-                            if (result.status == 1) {
-                                $("#msg").html(result.msg);
-                                window.location.href = '<?php echo base_url(); ?>user';
-                            } else if (result.status == 1) {
-                                $("#msg").html(result.msg);
-                                
+                $.validate({
+                    form: '#user_form',
+                    modules: 'security',
+                    onSuccess: function ($form) {
+                        $.ajax({
+                            url: '<?php echo base_url(); ?>login/login_action',
+                            method: 'post',
+                            data: $("#user_form").serialize(),
+                            success: function (data) {
+                                var result = JSON.parse(data);
+                                if (result.status == 1) {
+                                    $("#msg").html(result.msg);
+                                    window.location.href = '<?php echo base_url(); ?>user';
+                                } else {
+                                    $("#msg").html(result.msg);
+                                }
                             }
-                        }
-                    });
+                        });
+                    },
                 });
+//                $("#submit").on('click', function () {
+//                    $.ajax({
+//                        url: '<?php echo base_url(); ?>login/login_action',
+//                        method: 'post',
+//                        data: $("#user_form").serialize(),
+//                        success: function (data) {
+//                            var result = JSON.parse(data);
+//                            if (result.status == 1) {
+//                                $("#msg").html(result.msg);
+//                                window.location.href = '<?php echo base_url(); ?>user';
+//                            } else {
+//                                $("#msg").html(result.msg);
+//                            }
+//                        }
+//                    });
+//                });
             });
         </script>
     </body>

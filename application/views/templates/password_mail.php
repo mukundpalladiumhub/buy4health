@@ -160,14 +160,15 @@
                                     <tr>
                                         <td class="content-cell">
                                             <h1>Verify for Change password</h1>
-                                            <p>Hi <?php echo $full_name; ?>,<br>
+                                            <p>Hi <?php echo $first_name; ?>,<br>
                                                     We received a request to reset your Rent4Health password.
                                                     Click the following button to password reset code:</p>
                                             <table class="body-action" align="center" width="100%" cellpadding="0" cellspacing="0">
                                                 <tr>
                                                     <td align="center">
                                                         <div>
-                                                            <a href='<?php echo base_url(); ?>login/change_pass/<?php echo $code; ?>' class="button button--blue" style="color: white;">Change Password</a>
+                                                            <a href='<?php echo $link; ?>' class="button button--blue" style="color: white;">
+                                                                Change Password</a>
                                                         </div>
                                                     </td>
                                                 </tr>
