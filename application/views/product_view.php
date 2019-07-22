@@ -59,7 +59,6 @@
                                 });
                             }
                             $('body').on('click', '.viewbtn', function () {
-                                alert('aef');
                                 var id = $(this).data('id');
                                 showtable_view(id);
                             }
