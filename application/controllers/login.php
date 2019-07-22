@@ -31,8 +31,8 @@ class Login extends CI_Controller {
             $user_name = $this->input->post('user_name');
             $password = $this->input->post('password');
             $decode_password = md5($password);
-            $id = $this->Login_model->login($user_name, $decode_password);
-            $userbyid = $this->Login_model->userbyid($id);
+            $id = $this->login_model->login($user_name, $decode_password);
+            $userbyid = $this->login_model->userbyid($id);
             if ($id != FALSE) {
                 $this->load->library('session');
                 $this->session->set_userdata('user_id', $id);
@@ -43,7 +43,7 @@ class Login extends CI_Controller {
                 $result['msg'] = 'Login Successfully';
                 $result['redirect'] = base_url() . "/user";
             } else {
-                $user = $this->Login_model->alltable();
+                $user = $this->login_model->alltable();
                 foreach ($user as $data) {
                     if ($data['user_name'] != $user_name) {
                         $b = 'Invalid Username or Password';
@@ -65,12 +65,12 @@ class Login extends CI_Controller {
 
     public function check_email() {
         $user_name = $this->input->post('user_name');
-        $data = $this->Login_model->check_id($user_name);
+        $data = $this->login_model->check_id($user_name);
         $a = 1;
         if ($data != '') {
             $set = '12345687890abcdefghijklmnopqrstuvwxyz';
             $code = substr(str_shuffle($set), 0, 12);
-            $this->Login_model->update_code($code, $user_name);
+            $this->login_model->update_code($code, $user_name);
             $this->sendMail($user_name, $code, $a, $data);
             $result['status'] = 1;
             $result['msg'] = 'Mail verified';
@@ -119,7 +119,7 @@ class Login extends CI_Controller {
     public function change_pass() {
         $code = $this->uri->segment(3);
         $user = array();
-        $user = $this->Login_model->userbycode($code);
+        $user = $this->login_model->userbycode($code);
         if ($user['code'] == $code) {
             $this->load->view('change_password.php', $user);
         } else {
@@ -132,7 +132,7 @@ class Login extends CI_Controller {
         $id = $this->input->post('id');
         $password = $this->input->post('password');
         $decode_password = md5($password);
-        $this->Login_model->update_password($decode_password, $id);
+        $this->login_model->update_password($decode_password, $id);
         return;
     }
 
