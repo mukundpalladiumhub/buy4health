@@ -44,8 +44,40 @@ class Product_model extends CI_Model {
     public function view($id) {
         $this->db->from('product as p');
         $this->db->join('category as c', 'c.id = p.category', 'left');
-        $this->db->select('p.*, c.category_name');
+        $this->db->join('product_images as pi', 'pi.product_id = p.id', 'left');
+        $this->db->select('p.*, c.category_name, pi.product_image');
         $this->db->where('p.id', $id);
+        $query = $this->db->get()->row();
+        return $query;
+    }
+    
+        public function image($id) {
+        $this->db->from('product_images as pi');
+        $this->db->join('product as p', 'p.id = pi.product_id', 'left');
+        $this->db->select('pi.*, p.product_name');
+        $this->db->where('pi.id', $id);
+        $query = $this->db->get()->row();
+        $abc=$this->db->last_query();
+        echo "<pre>";
+        print_r($abc);
+        die;
+        return $query;
+    }
+        public function price($id) {
+        $this->db->from('product_price_details as pp');
+        $this->db->join('product as p', 'p.id = pp.product_id', 'left');
+        $this->db->select('pp.*, p.product_name');
+//        $this->db->where('pp.id', $id);
+        $query = $this->db->get()->row();echo "<pre>";
+        print_r($query);
+        die;
+        return $query;
+    }
+        public function rent($id) {
+        $this->db->from('product_rent_details as pr');
+        $this->db->join('product as p', 'p.id = pr.product_id', 'left');
+        $this->db->select('pr.*, p.product_name');
+        $this->db->where('pr.id', $id);
         $query = $this->db->get()->row();
         return $query;
     }

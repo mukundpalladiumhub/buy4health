@@ -40,21 +40,19 @@
                                     form: '#change_password',
                                     modules: 'security',
                                     onSuccess: function ($form) {
-                                        $("#submit").on('click', function () {
-                                            $.ajax({
-                                                url: '<?php echo base_url(); ?>user/ChangePasswordbyid',
-                                                method: 'post',
-                                                data: $("#change_password").serialize(),
-                                                success: function (data) {
-                                                    var result = JSON.parse(data);
-                                                    if (result.status == 1) {
-                                                        $("#msg").html(result.msg);
-                                                        window.location.href = '<?php echo base_url(); ?>user';
-                                                    } else {
-                                                        $("#msg").html(result.msg);
-                                                    }
+                                        $.ajax({
+                                            url: '<?php echo base_url(); ?>user/ChangePasswordbyid',
+                                            method: 'post',
+                                            data: $("#change_password").serialize(),
+                                            success: function (data) {
+                                                var result = JSON.parse(data);
+                                                if (result.status == 1) {
+                                                    $("#msg").html(result.msg);
+                                                    window.location.href = '<?php echo base_url(); ?>user';
+                                                } else {
+                                                    $("#msg").html(result.msg);
                                                 }
-                                            });
+                                            }
                                         });
                                     },
                                 });

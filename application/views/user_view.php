@@ -19,9 +19,14 @@
                             <table id="user_table" class="display nowrap table table-hover table-striped table-bordered cms-table table-hover">
                                 <thead>
                                     <tr>
-                                        <th>Full Name</th>
-                                        <th>Email ID</th>
-                                        <th>Password</th>                                            
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Address</th>                                            
+                                        <th>Zipcode</th>                                            
+                                        <th>State</th>                                            
+                                        <th>City</th>                                            
+                                        <th>Mobile No.</th>                                            
+                                        <th>Phone No.</th>                                            
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -51,7 +56,12 @@
                                     "columns": [
                                         {'data': 'name'},
                                         {'data': 'email'},
-                                        {'data': 'password'},
+                                        {'data': 'address'},
+                                        {'data': 'zipcode'},
+                                        {'data': 'state'},
+                                        {'data': 'city'},
+                                        {'data': 'mobile'},
+                                        {'data': 'phone'},
                                     ]
                                 });
                             }

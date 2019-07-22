@@ -1,4 +1,5 @@
 <?php
+
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class User extends CI_Controller {
@@ -10,7 +11,6 @@ class User extends CI_Controller {
 
     public function index() {
         if ($this->session->userdata('user_id')) {
-            $abcd = $this->session->get_userdata('user_name');
             $this->load->view('layout/header.php');
             $this->load->view('layout/sidebar.php');
             $this->load->view('user_view.php');
@@ -24,9 +24,14 @@ class User extends CI_Controller {
             $this->user_model->start = isset($post['start']) ? $post['start'] : '';
             $this->user_model->length = isset($post['length']) ? $post['length'] : '';
             $colnum = array(
-                0 => 'full_name',
-                1 => 'user_name',
-                2 => 'password',
+                0 => 'first_name',
+                1 => 'email',
+                2 => 'address1',
+                3 => 'zipcode',
+                4 => 'state',
+                5 => 'city',
+                6 => 'mobile',
+                7 => 'phone',
             );
             $this->user_model->column = isset($post['order'][0]['column']) ? $colnum[$post['order'][0]['column']] : '';
             $this->user_model->dire = isset($post['order'][0]['dir']) ? $post['order'][0]['dir'] : '';
@@ -37,9 +42,14 @@ class User extends CI_Controller {
             $user_data = array();
             foreach ($result as $array) {
                 $id = $array['id'];
-                $data['name'] = $array['full_name'];
-                $data['email'] = $array['user_name'];
-                $data['password'] = $array['password'];
+                $data['name'] = $array['first_name'] . ' ' . $array['last_name'];
+                $data['email'] = $array['email'];
+                $data['address'] = $array['address1'];
+                $data['zipcode'] = $array['zipcode'];
+                $data['state'] = $array['state'];
+                $data['city'] = $array['city'];
+                $data['mobile'] = $array['mobile'];
+                $data['phone'] = $array['phone'];
                 $user_data[] = $data;
             }
             $json = array(
@@ -54,9 +64,8 @@ class User extends CI_Controller {
     }
 
     public function change_password() {
-        $abcd = $this->session->get_userdata('user_name');
-        $this->load->view('layout/header.php', $abcd);
-        $this->load->view('layout/sidebar.php', $abcd);
+        $this->load->view('layout/header.php');
+        $this->load->view('layout/sidebar.php');
         $this->load->view('change_password_view.php');
         $this->load->view('layout/footer.php');
     }
@@ -78,7 +87,7 @@ class User extends CI_Controller {
         echo json_encode($result);
         exit;
     }
-    
+
     public function logout() {
         $this->session->unset_userdata('user_id');
         redirect(base_url() . 'login');

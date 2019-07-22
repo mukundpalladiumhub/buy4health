@@ -90,7 +90,7 @@ define('RENT4HEALTHID', 1);
 define('ADMIN_ROLE', 1);
 define('USER_ROLE', 2);
 
-define('SMTP_HOST', 'smtp.gmail.com');
+define('SMTP_HOST', 'ssl://smtp.googlemail.com');
 define('SMTP_USER', 'sunny.patel477@gmail.com');
 define('SMTP_PASSWORD', 'S1u7n3ny_');
 
