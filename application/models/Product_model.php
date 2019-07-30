@@ -12,7 +12,7 @@ class Product_model extends CI_Model {
         parent::__construct();
     }
 
-    public function ViewList($conn) {
+    public function ViewList($conn, $category_id) {
         $this->db->from('product as p');
         $this->db->join('category as c', 'c.id = p.category', 'left');
         $this->db->select("p.*, c.category_name ,IF(p.status = 1,'Active','Inactive') as status");
@@ -35,6 +35,48 @@ class Product_model extends CI_Model {
 
             $this->db->limit($this->length, $this->start);
             $result = $this->db->get();
+            return $result->result_array();
+        }
+    }
+
+    public function FilterList($conn, $sort, $filter, $max, $min) {
+        $this->db->from('product as p');
+        $this->db->join('category as c', 'c.id = p.category', 'left');
+        $this->db->select("p.*, c.category_name ,IF(p.status = 1,'Active','Inactive') as status");
+        if ($filter == 1) {
+            $this->db->like('p.product_type',2);   //Filter Buy column
+            if (isset($min) && $min != '' && isset($max) && $max != '') {
+                $this->db->where('p.avg_sale_price >=', $min);  //Filter by Sale_price
+                $this->db->where('p.avg_sale_price <=', $max);
+            }
+        } elseif ($filter == 2) {
+            $this->db->like('p.product_type', 2);   //Filter Rent column
+            if (isset($min) && $min != '' && isset($max) && $max != '') {
+                $this->db->where('p.avg_rent_price >=', $min);  //Filter by Rent_price
+                $this->db->where('p.avg_rent_price <=', $max);
+            }
+        } else {
+            //All
+            if (isset($min) && $min != '' && isset($max) && $max != '') {
+                $this->db->where('p.avg_sale_price >=', $min);  //Filter
+                $this->db->where('p.avg_sale_price <=', $max);
+                $this->db->where('p.avg_rent_price >=', $min);  //Filter by Rent_price
+                $this->db->where('p.avg_rent_price <=', $max);
+            }
+        }
+
+        if ($conn == FALSE) {
+            $result = $this->db->get();
+            return $result->num_rows();
+        } else {
+            if ($sort == 2) {
+                $this->db->order_by('p.product_name', "DESC");  //Z to A
+            } else {
+                $this->db->order_by('p.product_name', "ASC");   //A to Z
+            }
+            $this->db->limit($this->length, $this->start);
+            $result = $this->db->get();
+            $str = $this->db->last_query();
             return $result->result_array();
         }
     }
@@ -111,7 +153,7 @@ class Product_model extends CI_Model {
             return $result->result_array();
         }
     }
-    
+
     public function rent($id) {
         $this->db->from('product_rent_details as pr');
         $this->db->join('product as p', 'p.id = pr.product_id', 'left');
