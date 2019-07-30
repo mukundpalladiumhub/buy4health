@@ -138,60 +138,60 @@ class Api extends CI_Controller {
         }
     }
 
-    /*public function getFilterProduct($category_id = '') {
-        $sort = isset($_GET['sort']) ? $_GET['sort'] : '';
-        $filter = isset($_GET['filter']) ? $_GET['filter'] : '';
-        $min = isset($_GET['min']) ? $_GET['min'] : '';
-        $max = isset($_GET['max']) ? $_GET['max'] : '';
-        $post = $this->input->post();
-        $post = array("start" => 5);
-        if (!empty($post)) {
-            $product_details = $this->product_model->FilterList(true, $sort, $filter, $max, $min);
-            foreach ($product_details as $key => $detail) {
-                $product_price_details = array();
-                $product_rent_details = array();
-                $product_images = $this->product_model->getProductImage($detail['id']);
-                $product_image = array();
-                foreach ($product_images as $image) {
-                    if (isset($image['product_image']) && $image['product_image'] != '' && file_exists(FCPATH . 'assets/uploads/product/' . $image['product_image'])) {
-                        $image['product_image'] = base_url() . 'assets/uploads/product/' . $image['product_image'];
-                    } else {
-                        $image['product_image'] = base_url() . 'assets/images/No-Image.png';
-                    }
-                    $image_path = $image['product_image'];
-                    if (!empty($image_path)) {
-                        $product_image[] = $image_path;
-                    } else {
-                        $product_image = array();
-                    }
-                }
-                $product_price_details = $this->product_model->getProductPrice($detail['id']);
-                if (!empty($product_price_details)) {
-                    $product_price_details[] = $product_price_details;
-                } else {
-                    $product_price_details = array();
-                }
-                $product_rent_details = $this->product_model->getProductRent($detail['id']);
-                if (!empty($product_rent_details)) {
-                    $product_rent_details[] = $product_rent_details;
-                } else {
-                    $product_rent_details = array();
-                }
-                if ($detail['status'] == 1) {
-                    $detail['status'] = 'Active';
-                } else {
-                    $detail['status'] = 'Inactive';
-                }
-                $product_details_all[$key] = $detail;
-                $product_details_all[$key]['product_image'] = $product_image;
-                $product_details_all[$key]['product_price_details'] = $product_price_details;
-                $product_details_all[$key]['product_rent_details'] = $product_rent_details;
-            }
-            $json = array("product" => $product_details_all);
-            echo json_encode($json);
-            exit;
-        }
-    }*/
+    /* public function getFilterProduct($category_id = '') {
+      $sort = isset($_GET['sort']) ? $_GET['sort'] : '';
+      $filter = isset($_GET['filter']) ? $_GET['filter'] : '';
+      $min = isset($_GET['min']) ? $_GET['min'] : '';
+      $max = isset($_GET['max']) ? $_GET['max'] : '';
+      $post = $this->input->post();
+      $post = array("start" => 5);
+      if (!empty($post)) {
+      $product_details = $this->product_model->FilterList(true, $sort, $filter, $max, $min);
+      foreach ($product_details as $key => $detail) {
+      $product_price_details = array();
+      $product_rent_details = array();
+      $product_images = $this->product_model->getProductImage($detail['id']);
+      $product_image = array();
+      foreach ($product_images as $image) {
+      if (isset($image['product_image']) && $image['product_image'] != '' && file_exists(FCPATH . 'assets/uploads/product/' . $image['product_image'])) {
+      $image['product_image'] = base_url() . 'assets/uploads/product/' . $image['product_image'];
+      } else {
+      $image['product_image'] = base_url() . 'assets/images/No-Image.png';
+      }
+      $image_path = $image['product_image'];
+      if (!empty($image_path)) {
+      $product_image[] = $image_path;
+      } else {
+      $product_image = array();
+      }
+      }
+      $product_price_details = $this->product_model->getProductPrice($detail['id']);
+      if (!empty($product_price_details)) {
+      $product_price_details[] = $product_price_details;
+      } else {
+      $product_price_details = array();
+      }
+      $product_rent_details = $this->product_model->getProductRent($detail['id']);
+      if (!empty($product_rent_details)) {
+      $product_rent_details[] = $product_rent_details;
+      } else {
+      $product_rent_details = array();
+      }
+      if ($detail['status'] == 1) {
+      $detail['status'] = 'Active';
+      } else {
+      $detail['status'] = 'Inactive';
+      }
+      $product_details_all[$key] = $detail;
+      $product_details_all[$key]['product_image'] = $product_image;
+      $product_details_all[$key]['product_price_details'] = $product_price_details;
+      $product_details_all[$key]['product_rent_details'] = $product_rent_details;
+      }
+      $json = array("product" => $product_details_all);
+      echo json_encode($json);
+      exit;
+      }
+      } */
 
     public function getProductDetails($id) {
         $post = $this->input->post();
@@ -233,6 +233,7 @@ class Api extends CI_Controller {
     }
 
     public function orderPlace() {
+        $order_array = array("start" => 5);
         $order_array = $this->input->post();
         $result_array = array();
         if (!empty($order_array)) {
@@ -256,6 +257,10 @@ class Api extends CI_Controller {
                     $user_id = $this->db->insert_id();
                 }
                 if (isset($user_id) && $user_id != "") {
+                    
+                    $result_array['status'] = 1;
+                    $result_array['msg'] = "User created successfully.";
+                    
                     if (!empty($order_array['orders'])) {
                         $order_details = $order_array['orders']['order_details'];
                         unset($order_array['orders']['order_id']);
@@ -272,14 +277,12 @@ class Api extends CI_Controller {
                                 }
                             }
                             $result_array['status'] = 1;
-                            $result_array['msg'] = "Product created successfully.";
+                            $result_array['msg'] = "Order placed successfully for given user.";
                         } else {
                             $result_array['status'] = 0;
                             $result_array['msg'] = "Product not created. Please try again.";
                         }
                     }
-                    $result_array['status'] = 1;
-                    $result_array['msg'] = "User created successfully.";
                 } else {
                     $result_array['status'] = 0;
                     $result_array['msg'] = "User not created. Please try again.";
