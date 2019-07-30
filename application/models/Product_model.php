@@ -16,6 +16,9 @@ class Product_model extends CI_Model {
         $this->db->from('product as p');
         $this->db->join('category as c', 'c.id = p.category', 'left');
         $this->db->select("p.*, c.category_name ,IF(p.status = 1,'Active','Inactive') as status");
+        if(isset($category_id) && $category_id > 0){
+            $this->db->where("p.category", $category_id);
+        }
         if (isset($this->search) && $this->search != '') {
             $this->db->group_start()
                     ->like('p.product_type', $this->search)
