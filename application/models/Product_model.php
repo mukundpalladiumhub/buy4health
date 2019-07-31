@@ -240,7 +240,7 @@ class Product_model extends CI_Model {
         $this->db->where('status', 1);
         $this->db->where('product_id', $id);
         $resultQuery = $this->db->get();
-        $resultProductPrice = $resultQuery->row_array();
+        $resultProductPrice = $resultQuery->result_array();
         return $resultProductPrice;
     }
 
@@ -250,7 +250,7 @@ class Product_model extends CI_Model {
         $this->db->where('status', 1);
         $this->db->where('product_id', $id);
         $resultQuery = $this->db->get();
-        $resultProductRent = $resultQuery->row_array();
+        $resultProductRent = $resultQuery->result_array();
         return $resultProductRent;
     }
 

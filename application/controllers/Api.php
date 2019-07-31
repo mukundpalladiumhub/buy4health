@@ -213,8 +213,6 @@ class Api extends CI_Controller {
                     }
                     $product_image[] = $image['product_image'];
                 }
-                $product_price_details[] = $this->product_model->getProductPrice($detail['id']);
-                $product_rent_details[] = $this->product_model->getProductRent($detail['id']);
 
                 if ($detail['status'] == 1) {
                     $detail['status'] = 'Active';
@@ -223,9 +221,24 @@ class Api extends CI_Controller {
                 }
                 $product_details_all = $detail;
                 $product_details_all['product_image'] = $product_image;
-                $product_details_all['product_price_details'] = $product_price_details;
-                $product_details_all['product_rent_details'] = $product_rent_details;
+
+                if (isset($detail['product_type']) && $detail['product_type'] == 1) {
+                    $product_rent_details = $this->product_model->getProductRent($detail['id']);
+                    $product_details_all['product_rent_details'] = $product_rent_details;
+                } else if (isset($detail['product_type']) && $detail['product_type'] == 2) {
+
+                    $product_price_details = $this->product_model->getProductPrice($detail['id']);
+                    $product_details_all['product_price_details'] = $product_price_details;
+                } else if (isset($detail['product_type']) && $detail['product_type'] == 3) {
+                    
+                    $product_price_details = $this->product_model->getProductPrice($detail['id']);
+                    $product_rent_details = $this->product_model->getProductRent($detail['id']);
+                    
+                    $product_details_all['product_price_details'] = $product_price_details;
+                    $product_details_all['product_rent_details'] = $product_rent_details;
+                }
             }
+
             $json = array("product" => $product_details_all);
             echo json_encode($json);
             exit;
@@ -257,10 +270,10 @@ class Api extends CI_Controller {
                     $user_id = $this->db->insert_id();
                 }
                 if (isset($user_id) && $user_id != "") {
-                    
+
                     $result_array['status'] = 1;
                     $result_array['msg'] = "User created successfully.";
-                    
+
                     if (!empty($order_array['orders'])) {
                         $order_details = $order_array['orders']['order_details'];
                         unset($order_array['orders']['order_id']);
