@@ -66,7 +66,7 @@ class User extends CI_Controller {
     public function change_password() {
         $this->load->view('layout/header.php');
         $this->load->view('layout/sidebar.php');
-        $this->load->view('change_password_view.php');
+        $this->load->view('Change_password_view.php');
         $this->load->view('layout/footer.php');
     }
 
