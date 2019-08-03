@@ -6,7 +6,6 @@ class Cron extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-
     }
 
     public function index() {
@@ -91,7 +90,7 @@ class Cron extends CI_Controller {
                                     $image_name = str_replace(' ', '%20', $productImg_value['product_image']);
                                     $path = 'assets/uploads/product/' . $productImg_value['product_image'];
                                     $myfile = file_get_contents('https://www.rent4health.com/uploads/product_images/' . $image_name);
-                                    
+
                                     $uploadfile = file_put_contents($path, $myfile);
                                     unset($productImg_value['id']);
                                     $productImg_value['product_id'] = $product_id;
@@ -102,9 +101,7 @@ class Cron extends CI_Controller {
                                         $this->db->where('id', $check_productImg_exist['id']);
                                         $this->db->update('product_images', $productImg_value);
                                     }
-                                    
                                 }
-
                             }
                         }
                         /*                         * ***** End Product Images ****** */
@@ -169,7 +166,7 @@ class Cron extends CI_Controller {
                                 unset($productPrice_value['size_type_status']);
                                 unset($productPrice_value['size_size']);
                                 unset($productPrice_value['size_status']);
-                                
+
                                 $productPrice_value['product_id'] = $product_id;
 
                                 if (empty($check_productPrice_exist)) {
@@ -181,9 +178,41 @@ class Cron extends CI_Controller {
                             }
                         }
                         /*                         * ***** End Product Price ****** */
+
+
+                        /*                         * ***** For Product Rent Detail ****** */
+                        $product_rent = $otherdb->select('*')
+                                ->from('product_rent_details')
+                                ->where('product_id', $product_id_live_db)
+                                ->get()
+                                ->result_array();
+
+                        if (!empty($product_rent)) {
+
+                            foreach ($product_rent as $productRent_value) {
+
+                                $check_Product_rent = $this->db->select('*')
+                                                ->where('product_id', $productRent_value['product_id'])
+                                                ->where('rent_duration', $productRent_value['rent_duration'])
+                                                ->get('product_rent_details')->row_array();
+                                
+                                
+                         
+                                unset($productRent_value['id']);
+                                $productRent_value['product_id'] = $product_id;
+                                if (empty($check_Product_rent)) {
+                                    $this->db->insert('product_rent_details', $productRent_value);
+                                } else {
+                                    $this->db->where('id', $check_Product_rent['id']);
+                                    $this->db->update('product_rent_details', $productRent_value);
+                                }
+                            }
+                        }
+                        /*                         * ***** End Product Rent Detail ****** */
                     }
                 }
                 /*                 * ***** End Product ****** */
+               
             }
         }
         /*         * ***** End Category ****** */
