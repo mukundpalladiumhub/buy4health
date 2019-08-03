@@ -78,7 +78,7 @@ class Product extends CI_Controller {
         $data['id'] = $id;
         $this->load->view('layout/header.php');
         $this->load->view('layout/sidebar.php');
-        $this->load->view('product_row_image.php', $data);
+        $this->load->view('Product_row_image.php', $data);
         $this->load->view('layout/footer.php');
     }
 
@@ -179,7 +179,7 @@ class Product extends CI_Controller {
         $data = $this->product_model->rent($id);
         $this->load->view('layout/header.php');
         $this->load->view('layout/sidebar.php');
-        $this->load->view('product_row_rent.php', $data);
+        $this->load->view('Product_row_rent.php', $data);
         $this->load->view('layout/footer.php');
     }
 
