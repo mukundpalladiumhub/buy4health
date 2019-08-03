@@ -123,7 +123,7 @@ class Product extends CI_Controller {
         $data = $this->product_model->price($id);
         $this->load->view('layout/header.php');
         $this->load->view('layout/sidebar.php');
-        $this->load->view('product_row_price.php', $data);
+        $this->load->view('Product_row_price.php', $data);
         $this->load->view('layout/footer.php');
     }
 
