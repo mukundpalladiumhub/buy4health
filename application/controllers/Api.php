@@ -250,7 +250,8 @@ class Api extends CI_Controller {
         $order_array = array("start" => 5);
         $order_array = $this->input->post();
         $result_array = array();
-
+        $order_array = (array) json_decode(file_get_contents('php://input'), TRUE);
+        
         $this->load->helper('file');
         write_file("api_order.php", date("H:i:s").' ','a');
         write_file("api_order.php", print_r($order_array,true),'a');
