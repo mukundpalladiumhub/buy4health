@@ -22,11 +22,11 @@ class Api extends CI_Controller {
                 } else {
                     $array['status'] = 'Inactive';
                 }
-                if (isset($array['category_image']) && $array['category_image'] != '' && file_exists(FCPATH . 'assets/uploads/category/' .basename($array['category_image']))) {
-                    $array['category_image'] = base_url() . 'assets/uploads/category/' . basename($array['category_image']);
-                } else {
-                    $array['category_image'] = base_url() . 'assets/images/No-Image.png';
-                }
+//                if (isset($array['category_image']) && $array['category_image'] != '' && file_exists(FCPATH . 'assets/uploads/category/' .basename($array['category_image']))) {
+//                    $array['category_image'] = base_url() . 'assets/uploads/category/' . basename($array['category_image']);
+//                } else {
+//                    $array['category_image'] = base_url() . 'assets/images/No-Image.png';
+//                }
                 $categories[] = $array;
             }
             $json = array("categories" => $categories);
