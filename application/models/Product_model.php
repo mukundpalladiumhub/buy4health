@@ -19,7 +19,8 @@ class Product_model extends CI_Model {
     public function ViewList($conn) {
         $this->db->from('product as p');
         $this->db->join('category as c', 'c.id = p.category', 'left');
-        $this->db->select("p.*, c.category_name ,IF(p.status = 1,'Active','Inactive') as status");
+        $this->db->join('product_price_details as ppd', 'ppd.product_id = p.id', 'left');
+        $this->db->select("p.*, c.category_name ,IF(ppd.quantity > 0,'InStock','out Of Stock') as status");
         if (isset($this->category_id) && $this->category_id > 0) {
             $this->db->where("p.category", $this->category_id);
         }
@@ -215,10 +216,11 @@ class Product_model extends CI_Model {
     }
 
     public function getProductListbyid($id) {
-        $this->db->select('*');
-        $this->db->from('product');
-        $this->db->where('status', 1);
-        $this->db->where('id', $id);
+        $this->db->from('product as p');
+        $this->db->join('product_price_details as ppd', 'ppd.product_id = p.id', 'left');
+        $this->db->select("p.*,IF(ppd.quantity > 0,'InStock','out Of Stock') as status");
+        $this->db->where('p.status', 1);
+        $this->db->where('p.id', $id);
         $resultQuery = $this->db->get();
         $resultProductList = $resultQuery->result_array();
         return $resultProductList;

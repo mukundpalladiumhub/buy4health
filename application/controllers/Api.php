@@ -22,8 +22,8 @@ class Api extends CI_Controller {
                 } else {
                     $array['status'] = 'Inactive';
                 }
-                if (isset($array['category_image']) && $array['category_image'] != '' && file_exists(FCPATH . 'assets/uploads/category/' . $array['category_image'])) {
-                    $array['category_image'] = base_url() . 'assets/uploads/category/' . $array['category_image'];
+                if (isset($array['category_image']) && $array['category_image'] != '' && file_exists(FCPATH . 'assets/uploads/category/' .basename($array['category_image']))) {
+                    $array['category_image'] = base_url() . 'assets/uploads/category/' . basename($array['category_image']);
                 } else {
                     $array['category_image'] = base_url() . 'assets/images/No-Image.png';
                 }
@@ -66,11 +66,11 @@ class Api extends CI_Controller {
                     $product_image[] = $image['product_image'];
                 }
 
-                if ($detail['status'] == 1) {
-                    $detail['status'] = 'Active';
-                } else {
-                    $detail['status'] = 'Inactive';
-                }
+//                if ($detail['status'] == 1) {
+//                    $detail['status'] = 'Active';
+//                } else {
+//                    $detail['status'] = 'Inactive';
+//                }
 
                 $product_details_all[$key] = $detail;
                 $product_details_all[$key]['product_image'] = $product_image;
@@ -214,11 +214,11 @@ class Api extends CI_Controller {
                     $product_image[] = $image['product_image'];
                 }
 
-                if ($detail['status'] == 1) {
-                    $detail['status'] = 'Active';
-                } else {
-                    $detail['status'] = 'Inactive';
-                }
+//                if ($detail['status'] == 1) {
+//                    $detail['status'] = 'Active';
+//                } else {
+//                    $detail['status'] = 'Inactive';
+//                }
                 $product_details_all = $detail;
                 $product_details_all['product_image'] = $product_image;
 
