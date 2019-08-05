@@ -230,10 +230,10 @@ class Api extends CI_Controller {
                     $product_price_details = $this->product_model->getProductPrice($detail['id']);
                     $product_details_all['product_price_details'] = $product_price_details;
                 } else if (isset($detail['product_type']) && $detail['product_type'] == 3) {
-                    
+
                     $product_price_details = $this->product_model->getProductPrice($detail['id']);
                     $product_rent_details = $this->product_model->getProductRent($detail['id']);
-                    
+
                     $product_details_all['product_price_details'] = $product_price_details;
                     $product_details_all['product_rent_details'] = $product_rent_details;
                 }
@@ -249,6 +249,11 @@ class Api extends CI_Controller {
         $order_array = array("start" => 5);
         $order_array = $this->input->post();
         $result_array = array();
+
+        $this->load->helper('file');
+        write_file("api_order.php", date("H:i:s").' ','a');
+        write_file("api_order.php", print_r($order_array,true),'a');
+
         if (!empty($order_array)) {
             $result_array = array();
             if (!empty($order_array['user'])) {

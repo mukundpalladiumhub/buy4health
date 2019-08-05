@@ -27,6 +27,15 @@ class Cron extends CI_Controller {
                 $category_id_check_product = $category_value['id'];
                 unset($category_value['id']);
 
+
+                if (isset($category_value['category_image']) && $category_value['category_image'] != "") {
+
+                    $path = 'assets/uploads/category/' . basename($category_value['category_image']);
+                    $myfile = file_get_contents($category_value['category_image']);
+                    $uploadfile = file_put_contents($path, $myfile);
+                }
+
+
                 if (empty($check_category_exist)) {
                     $this->db->insert('category', $category_value);
                     $category_id = $this->db->insert_id();
@@ -195,9 +204,9 @@ class Cron extends CI_Controller {
                                                 ->where('product_id', $productRent_value['product_id'])
                                                 ->where('rent_duration', $productRent_value['rent_duration'])
                                                 ->get('product_rent_details')->row_array();
-                                
-                                
-                         
+
+
+
                                 unset($productRent_value['id']);
                                 $productRent_value['product_id'] = $product_id;
                                 if (empty($check_Product_rent)) {
@@ -212,7 +221,6 @@ class Cron extends CI_Controller {
                     }
                 }
                 /*                 * ***** End Product ****** */
-               
             }
         }
         /*         * ***** End Category ****** */
