@@ -79,12 +79,12 @@ class Api extends CI_Controller {
 
                     $product_rent_details = $this->product_model->getProductRent($detail['id']);
 
-                    $product_rent_details['id'] = isset($product_rent_details['id']) ? $product_rent_details['id'] : "";
-                    $product_rent_details['product_id'] = isset($product_rent_details['product_id']) ? $product_rent_details['product_id'] : "";
-                    $product_rent_details['rent_duration'] = isset($product_rent_details['rent_duration']) ? $product_rent_details['rent_duration'] : "";
-                    $product_rent_details['rent_amount'] = isset($product_rent_details['rent_amount']) ? $product_rent_details['rent_amount'] : "";
-                    $product_rent_details['advance_amount'] = isset($product_rent_details['advance_amount']) ? $product_rent_details['advance_amount'] : "";
-                    $product_rent_details['status'] = isset($product_rent_details['status']) ? $product_rent_details['status'] : "";
+//                    $product_rent_details['id'] = isset($product_rent_details['id']) ? $product_rent_details['id'] : "";
+//                    $product_rent_details['product_id'] = isset($product_rent_details['product_id']) ? $product_rent_details['product_id'] : "";
+//                    $product_rent_details['rent_duration'] = isset($product_rent_details['rent_duration']) ? $product_rent_details['rent_duration'] : "";
+//                    $product_rent_details['rent_amount'] = isset($product_rent_details['rent_amount']) ? $product_rent_details['rent_amount'] : "";
+//                    $product_rent_details['advance_amount'] = isset($product_rent_details['advance_amount']) ? $product_rent_details['advance_amount'] : "";
+//                    $product_rent_details['status'] = isset($product_rent_details['status']) ? $product_rent_details['status'] : "";
 
                     $product_details_all[$key]['product_rent_details'] = $product_rent_details;
                 }
@@ -92,41 +92,42 @@ class Api extends CI_Controller {
 
                     $product_price_details = $this->product_model->getProductPrice($detail['id']);
 
-                    $product_price_details['id'] = isset($product_price_details['id']) ? $product_price_details['id'] : "";
-                    $product_price_details['product_id'] = isset($product_price_details['product_id']) ? $product_price_details['product_id'] : "";
-                    $product_price_details['size_type'] = isset($product_price_details['size_type']) ? $product_price_details['size_type'] : "";
-                    $product_price_details['size_id'] = isset($product_price_details['size_id']) ? $product_price_details['size_id'] : "";
-                    $product_price_details['quantity'] = isset($product_price_details['quantity']) ? $product_price_details['quantity'] : "";
-                    $product_price_details['low_level'] = isset($product_price_details['low_level']) ? $product_price_details['low_level'] : "";
-                    $product_price_details['service_tax'] = isset($product_price_details['service_tax']) ? $product_price_details['service_tax'] : "";
-                    $product_price_details['mrp'] = isset($product_price_details['mrp']) ? $product_price_details['mrp'] : "";
-                    $product_price_details['price'] = isset($product_price_details['price']) ? $product_price_details['price'] : "";
-                    $product_price_details['status'] = isset($product_price_details['status']) ? $product_price_details['status'] : "";
+//                    $product_price_details['id'] = isset($product_price_details['id']) ? $product_price_details['id'] : "";
+//                    $product_price_details['product_id'] = isset($product_price_details['product_id']) ? $product_price_details['product_id'] : "";
+//                    $product_price_details['size_type'] = isset($product_price_details['size_type']) ? $product_price_details['size_type'] : "";
+//                    $product_price_details['size_id'] = isset($product_price_details['size_id']) ? $product_price_details['size_id'] : "";
+//                    $product_price_details['quantity'] = isset($product_price_details['quantity']) ? $product_price_details['quantity'] : "";
+//                    $product_price_details['low_level'] = isset($product_price_details['low_level']) ? $product_price_details['low_level'] : "";
+//                    $product_price_details['service_tax'] = isset($product_price_details['service_tax']) ? $product_price_details['service_tax'] : "";
+//                    $product_price_details['mrp'] = isset($product_price_details['mrp']) ? $product_price_details['mrp'] : "";
+//                    $product_price_details['price'] = isset($product_price_details['price']) ? $product_price_details['price'] : "";
+//                    $product_price_details['status'] = isset($product_price_details['status']) ? $product_price_details['status'] : "";
 
                     $product_details_all[$key]['product_price_details'] = $product_price_details;
+                    
                 }
                 if (isset($detail['product_type']) && $detail['product_type'] == 3) {
 
                     $product_rent_details = $this->product_model->getProductRent($detail['id']);
                     $product_price_details = $this->product_model->getProductPrice($detail['id']);
 
-                    $product_price_details['id'] = isset($product_price_details['id']) ? $product_price_details['id'] : "";
-                    $product_price_details['product_id'] = isset($product_price_details['product_id']) ? $product_price_details['product_id'] : "";
-                    $product_price_details['size_type'] = isset($product_price_details['size_type']) ? $product_price_details['size_type'] : "";
-                    $product_price_details['size_id'] = isset($product_price_details['size_id']) ? $product_price_details['size_id'] : "";
-                    $product_price_details['quantity'] = isset($product_price_details['quantity']) ? $product_price_details['quantity'] : "";
-                    $product_price_details['low_level'] = isset($product_price_details['low_level']) ? $product_price_details['low_level'] : "";
-                    $product_price_details['service_tax'] = isset($product_price_details['service_tax']) ? $product_price_details['service_tax'] : "";
-                    $product_price_details['mrp'] = isset($product_price_details['mrp']) ? $product_price_details['mrp'] : "";
-                    $product_price_details['price'] = isset($product_price_details['price']) ? $product_price_details['price'] : "";
-                    $product_price_details['status'] = isset($product_price_details['status']) ? $product_price_details['status'] : "";
-
-                    $product_rent_details['id'] = isset($product_rent_details['id']) ? $product_rent_details['id'] : "";
-                    $product_rent_details['product_id'] = isset($product_rent_details['product_id']) ? $product_rent_details['product_id'] : "";
-                    $product_rent_details['rent_duration'] = isset($product_rent_details['rent_duration']) ? $product_rent_details['rent_duration'] : "";
-                    $product_rent_details['rent_amount'] = isset($product_rent_details['rent_amount']) ? $product_rent_details['rent_amount'] : "";
-                    $product_rent_details['advance_amount'] = isset($product_rent_details['advance_amount']) ? $product_rent_details['advance_amount'] : "";
-                    $product_rent_details['status'] = isset($product_rent_details['status']) ? $product_rent_details['status'] : "";
+//                    $product_price_details['id'] = isset($product_price_details['id']) ? $product_price_details['id'] : "";
+//                    $product_price_details['product_id'] = isset($product_price_details['product_id']) ? $product_price_details['product_id'] : "";
+//                    $product_price_details['size_type'] = isset($product_price_details['size_type']) ? $product_price_details['size_type'] : "";
+//                    $product_price_details['size_id'] = isset($product_price_details['size_id']) ? $product_price_details['size_id'] : "";
+//                    $product_price_details['quantity'] = isset($product_price_details['quantity']) ? $product_price_details['quantity'] : "";
+//                    $product_price_details['low_level'] = isset($product_price_details['low_level']) ? $product_price_details['low_level'] : "";
+//                    $product_price_details['service_tax'] = isset($product_price_details['service_tax']) ? $product_price_details['service_tax'] : "";
+//                    $product_price_details['mrp'] = isset($product_price_details['mrp']) ? $product_price_details['mrp'] : "";
+//                    $product_price_details['price'] = isset($product_price_details['price']) ? $product_price_details['price'] : "";
+//                    $product_price_details['status'] = isset($product_price_details['status']) ? $product_price_details['status'] : "";
+//
+//                    $product_rent_details['id'] = isset($product_rent_details['id']) ? $product_rent_details['id'] : "";
+//                    $product_rent_details['product_id'] = isset($product_rent_details['product_id']) ? $product_rent_details['product_id'] : "";
+//                    $product_rent_details['rent_duration'] = isset($product_rent_details['rent_duration']) ? $product_rent_details['rent_duration'] : "";
+//                    $product_rent_details['rent_amount'] = isset($product_rent_details['rent_amount']) ? $product_rent_details['rent_amount'] : "";
+//                    $product_rent_details['advance_amount'] = isset($product_rent_details['advance_amount']) ? $product_rent_details['advance_amount'] : "";
+//                    $product_rent_details['status'] = isset($product_rent_details['status']) ? $product_rent_details['status'] : "";
 
                     $product_details_all[$key]['product_price_details'] = $product_price_details;
                     $product_details_all[$key]['product_rent_details'] = $product_rent_details;
