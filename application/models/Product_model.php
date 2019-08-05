@@ -19,8 +19,7 @@ class Product_model extends CI_Model {
     public function ViewList($conn) {
         $this->db->from('product as p');
         $this->db->join('category as c', 'c.id = p.category', 'left');
-        $this->db->join('product_price_details as ppd', 'ppd.product_id = p.id', 'left');
-        $this->db->select("p.*, c.category_name ,IF(ppd.quantity > 0,'InStock','out Of Stock') as status");
+        $this->db->select("p.*, c.category_name ,IF((SELECT SUM(quantity) FROM `product_price_details` WHERE product_id = p.id) > 0,'InStock','out Of Stock') as status");
         if (isset($this->category_id) && $this->category_id > 0) {
             $this->db->where("p.category", $this->category_id);
         }
