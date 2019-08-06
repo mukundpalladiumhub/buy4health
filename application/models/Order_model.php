@@ -49,10 +49,10 @@ class Order_model extends CI_Model {
     public function OrderDetailList($conn, $id) {
 
         $this->db->from('order_details as od');
-        $this->db->join('orders as o', 'o.order_id = od.order_id', 'left');
+//        $this->db->join('orders as o', 'o.order_id = od.order_id', 'left');
         $this->db->join('product as p', 'p.id = od.product_id', 'left');
         $this->db->join('size as s', 's.id = od.size_id', 'left');
-        $this->db->select("od.*, p.product_name,s.size,o.order_number,IF(od.status = 1,'Active','Inactive') as status");
+        $this->db->select("od.*, p.product_name,s.size,IF(od.status = 1,'Active','Inactive') as status");
         $this->db->where("od.order_id", $id);
 
 
@@ -73,7 +73,7 @@ class Order_model extends CI_Model {
                     ->or_like('od.delivery_date', $this->search)
                     ->or_like('od.pickup_date', $this->search)
                     ->or_like('od.commison', $this->search)
-                    ->or_like('o.order_number', $this->search)
+//                    ->or_like('o.order_number', $this->search)
                     ->group_end();
         }
 
@@ -85,7 +85,7 @@ class Order_model extends CI_Model {
                 $this->db->order_by($this->column, $this->dire);
             }
 
-            $this->db->limit($this->length, $this->start);
+//            $this->db->limit($this->length, $this->start);
             $result = $this->db->get();
             return $result->result_array();
         }
@@ -94,11 +94,13 @@ class Order_model extends CI_Model {
     public function update_status($order_status, $id) {
         $this->db->set('order_status',$order_status);
         $this->db->where('order_id', $id);
-        $this->db->update('orders');
-        return 1;
+        return $this->db->update('orders');
     }
     public function get_order_status() {
-        $data = $this->db->select('*')->from('order_status')->get()->result_array();
+        $data = $this->db->select('*')
+                ->from('order_status')
+                ->where('status', 1)
+                ->get()->result_array();
         return $data;
     }
 
@@ -111,6 +113,19 @@ class Order_model extends CI_Model {
         $query = $this->db->get()->row();
         return $query;
     }
+    
+    public function getProductUser($id) {
+        
+        $this->db->from('orders o');
+        $this->db->join('users as u', 'u.id = o.user_id', 'left');
+        $this->db->select('u.*, o.order_number,o.order_date,o.order_delivery_charge,o.total,o.shipping_rate');
+        $this->db->where('o.order_id', $id);
+        $result = $this->db->get()->row_array();
+        return $result;
+        
+        
+    }
+    
 
 }
 

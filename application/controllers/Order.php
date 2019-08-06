@@ -18,7 +18,7 @@ class Order extends CI_Controller {
             $data['order_status'] = $order_status;
             $this->load->view('layout/header.php', $data);
             $this->load->view('layout/sidebar.php');
-            $this->load->view('order_view.php',$order_status);
+            $this->load->view('order_view.php', $order_status);
             $this->load->view('layout/footer.php');
         } else {
             return redirect('login');
@@ -74,22 +74,40 @@ class Order extends CI_Controller {
         }
     }
 
+    public function save_status() {
+        $result = array();
+
+        $post = $this->input->post();
+
+        if (!empty($post)) {
+            $id = $post['id'];
+            $order_status = $post['order_status'];
+            $update_status = $this->order_model->update_status($order_status, $id);
+
+            if ($update_status) {
+                $result['status'] = 1;
+                $result['msg'] = "Status updated.";
+            } else {
+                $result['status'] = 0;
+                $result['msg'] = "Something went wrong try again.";
+            }
+        }
+        echo json_encode($result);
+        exit;
+    }
+
     public function order_detail_view($id) {
 
+        
+        $user = $this->order_model->getProductUser($id);
+        
         $data['order_id'] = $id;
         $data['title'] = 'Order Detail';
+        $data['user'] = $user;
         $this->load->view('layout/header.php', $data);
         $this->load->view('layout/sidebar.php');
         $this->load->view('order_detail_view.php', $data);
         $this->load->view('layout/footer.php');
-    }
-
-    public function save_status() {
-        $id = $this->input->post('id');
-        $order_status = $this->input->post('order_status');
-        $result['status'] = $this->order_model->update_status($order_status, $id);
-        echo json_encode($result);
-        exit;
     }
 
     public function order_detail($id) {
@@ -99,23 +117,12 @@ class Order extends CI_Controller {
         if (!empty($post)) {
 
             $colnum = array(
-                0 => 'o.order_number',
-                1 => 'od.type',
-                2 => 'p.product_name',
-                3 => 's.size',
-                4 => 'od.quantity',
-                5 => 'od.price',
-                6 => 'od.total_price',
-                7 => 'od.rent_duration',
-                8 => 'od.delivery_charge',
-                9 => 'od.advance_amount',
-                10 => 'od.refund_amount',
-                11 => 'od.damage_amount',
-                12 => 'od.deliver_on',
-                13 => 'od.delivery_date',
-                14 => 'od.pickup_date',
-                15 => 'od.commison',
-                16 => 'od.status',
+                0 => 'od.order_det_id',
+                1 => 'p.product_name',
+                2 => 'od.type',
+                3 => 'od.quantity',
+                4 => 'od.price',
+                5 => 'od.total_price',
             );
 
             $this->order_model->search = isset($post['search']['value']) ? $post['search']['value'] : '';
@@ -131,26 +138,26 @@ class Order extends CI_Controller {
 
             $order_detail_data = array();
 
-            foreach ($order_details_list as $array) {
+            foreach ($order_details_list as $key => $array) {
 
                 $id = $array['order_det_id'];
-                $data['order_number'] = $array['order_number'];
-                $data['type'] = $array['type'];
+
+                if (isset($array['type']) && $array['type'] == 'r') {
+                    $type = 'Rent';
+                } else if (isset($array['type']) && $array['type'] == 's') {
+                    $type = 'Sell';
+                } else {
+                    $type = '';
+                }
+
+
+                $data['sr_no'] = $key + 1;
                 $data['product_name'] = $array['product_name'];
-                $data['size'] = $array['size'];
+                $data['type'] = $type;
                 $data['quantity'] = $array['quantity'];
                 $data['price'] = $array['price'];
                 $data['total_price'] = $array['total_price'];
-                $data['rent_duration'] = $array['rent_duration'];
-                $data['delivery_charge'] = $array['delivery_charge'];
-                $data['advance_amount'] = $array['advance_amount'];
-                $data['refund_amount'] = $array['refund_amount'];
-                $data['damage_amount'] = $array['damage_amount'];
-                $data['deliver_on'] = $array['deliver_on'];
-                $data['delivery_date'] = $array['delivery_date'];
-                $data['pickup_date'] = $array['pickup_date'];
-                $data['commison'] = $array['commison'];
-                $data['status'] = $array['status'];
+
                 $order_detail_data[] = $data;
             }
             $json = array(

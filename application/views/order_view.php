@@ -13,6 +13,7 @@
                 <div class="box">
                     <div class="box-header">
                         <h3 class="box-title">Order List</h3>
+                        <p style="text-align: center;" id="status_msg"></p>
                     </div>
                     <div class="box-body">
                         <div>
@@ -32,8 +33,8 @@
                                                     <select id="order_status" name="order_status" class="form-control">
                                                         <?php
                                                         if (!empty($order_status)) {
-                                                            foreach ($order_status as $order) {
-                                                                ?><option value="<?php echo $order['status_id']; ?>"><?php echo $order['status_name']; ?></option>
+                                                            foreach ($order_status as $order) { ?>
+                                                                <option value="<?php echo $order['status_id']; ?>"><?php echo $order['status_name']; ?></option>
                                                             <?php
                                                             }
                                                         }
@@ -85,7 +86,12 @@
                                         success: function (data) {
                                             var result = JSON.parse(data);
                                             if (result.status == 1) {
+                                                $("#status_msg").css('color','green');
+                                                $("#status_msg").html(result.msg)
                                                 showtable();
+                                            } else {
+                                                $("#status_msg").css('color','red');
+                                                $("#status_msg").html(result.msg)
                                             }
                                         }
                                     })

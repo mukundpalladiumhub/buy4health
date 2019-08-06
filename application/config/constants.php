@@ -94,4 +94,7 @@ define('SMTP_HOST', 'ssl://smtp.googlemail.com');
 define('SMTP_USER', 'sunny.patel477@gmail.com');
 define('SMTP_PASSWORD', 'S1u7n3ny_');
 
+define('PAYMENT_STATUS', 'Done');
+define('ORDER_STATUS', 2);
+
 

@@ -283,9 +283,14 @@ class Api extends CI_Controller {
 
                     if (!empty($order_array['orders'])) {
                         $order_details = $order_array['orders']['order_details'];
+                        
                         unset($order_array['orders']['order_id']);
                         unset($order_array['orders']['order_details']);
+                        
                         $order_array['orders']['user_id'] = $user_id;
+                        $order_array['orders']['payment_status'] = PAYMENT_STATUS;
+                        $order_array['orders']['order_status'] = ORDER_STATUS;
+                        
                         $this->db->insert('orders', $order_array['orders']);
                         $order_id = $this->db->insert_id();
                         if (isset($order_id) && $order_id != "") {
