@@ -13,10 +13,12 @@ class Order extends CI_Controller {
 
         if ($this->session->userdata('user_id')) {
             $abcd = $this->session->get_userdata('user_name');
+            $order_status = $this->order_model->get_order_status();
             $data['title'] = 'Order';
+            $data['order_status'] = $order_status;
             $this->load->view('layout/header.php', $data);
             $this->load->view('layout/sidebar.php');
-            $this->load->view('order_view.php');
+            $this->load->view('order_view.php',$order_status);
             $this->load->view('layout/footer.php');
         } else {
             return redirect('login');
@@ -29,15 +31,9 @@ class Order extends CI_Controller {
             $colnum = array(
                 0 => 'u.first_name',
                 1 => 'o.order_number',
-                2 => 'o.order_delivery_charge',
-                3 => 'o.total',
-                4 => 'o.convenience_charge',
-                5 => 'o.shipping_rate',
-                6 => 'o.order_date',
-                7 => 'o.payment_method',
-                8 => 'o.payment_status',
-                9 => 'o.order_status',
-                10 => 'o.status',
+                2 => 'o.total',
+                3 => 'o.order_date',
+                4 => 'os.status_name',
             );
 
             $this->order_model->search = isset($post['search']['value']) ? $post['search']['value'] : '';
@@ -55,19 +51,16 @@ class Order extends CI_Controller {
 
             foreach ($order_details as $array) {
 
-                $id = $array['order_id'];
+                $order_id = $array['order_id'];
+                $order_status = $array['order_status'];
                 $data['user_name'] = $array['first_name'] . " " . $array['last_name'];
                 $data['order_number'] = $array['order_number'];
-                $data['order_delivery_charge'] = $array['order_delivery_charge'];
-                $data['total'] = $array['total'];
-                $data['convenience_charge'] = $array['convenience_charge'];
-                $data['shipping_rate'] = $array['shipping_rate'];
+                $data['total'] = '&#8377; ' . $array['total'];
                 $data['order_date'] = $array['order_date'];
-                $data['payment_method'] = $array['payment_method'];
-                $data['payment_status'] = $array['payment_status'];
-                $data['order_status'] = $array['order_status'];
-                $data['status'] = $array['status'];
-                $data['action'] = '<a href="' . base_url() . 'order/order_detail_view/' . $id . '" class="btn btn-xs btn-info"> View</a>';
+                $data['status_name'] = $array['status_name'];
+                $data['action'] = '<a href="' . base_url() . 'order/order_detail_view/' . $order_id . '" class="btn btn-xs btn-info"> View</a>&nbsp;';
+                $data['action'] .= "<input type='button' class='btn btn-xs btn-warning edit_status' data-id='" . $order_status . "'data-order_id='" . $order_id . "' value='Edit'>";
+
                 $order_data[] = $data;
             }
             $json = array(
@@ -89,6 +82,14 @@ class Order extends CI_Controller {
         $this->load->view('layout/sidebar.php');
         $this->load->view('order_detail_view.php', $data);
         $this->load->view('layout/footer.php');
+    }
+
+    public function save_status() {
+        $id = $this->input->post('id');
+        $order_status = $this->input->post('order_status');
+        $result['status'] = $this->order_model->update_status($order_status, $id);
+        echo json_encode($result);
+        exit;
     }
 
     public function order_detail($id) {
@@ -127,7 +128,7 @@ class Order extends CI_Controller {
             $count = $this->order_model->OrderDetailList($conn, $id);
             $conn = true;
             $order_details_list = $this->order_model->OrderDetailList($conn, $id);
-            
+
             $order_detail_data = array();
 
             foreach ($order_details_list as $array) {

@@ -16,21 +16,17 @@ class Order_model extends CI_Model {
 
         $this->db->from('orders as o');
         $this->db->join('users as u', 'u.id = o.user_id', 'left');
-        $this->db->select("o.*, u.first_name, u.last_name,IF(o.status = 1,'Active','Inactive') as status");
+        $this->db->join('order_status as os', 'os.status_id = o.order_status', 'left');
+        $this->db->select("o.*, u.first_name, os.status_name, u.last_name,IF(o.status = 1,'Active','Inactive') as status");
 
         if (isset($this->search) && $this->search != '') {
             $this->db->group_start()
                     ->like('u.first_name', $this->search)
                     ->or_like('u.last_name', $this->search)
                     ->or_like('o.order_number', $this->search)
-                    ->or_like('o.order_delivery_charge', $this->search)
                     ->or_like('o.total', $this->search)
-                    ->or_like('o.convenience_charge', $this->search)
-                    ->or_like('o.shipping_rate', $this->search)
                     ->or_like('o.order_date', $this->search)
-                    ->or_like('o.payment_method', $this->search)
-                    ->or_like('o.payment_status', $this->search)
-                    ->or_like('o.order_status', $this->search)
+                    ->or_like('os.status_name', $this->search)
                     ->group_end();
         }
 
@@ -40,6 +36,8 @@ class Order_model extends CI_Model {
         } else {
             if (isset($this->column) && $this->column != '') {
                 $this->db->order_by($this->column, $this->dire);
+            } else {
+                $this->db->order_by('order_id', 'DESC');
             }
 
             $this->db->limit($this->length, $this->start);
@@ -91,6 +89,17 @@ class Order_model extends CI_Model {
             $result = $this->db->get();
             return $result->result_array();
         }
+    }
+
+    public function update_status($order_status, $id) {
+        $this->db->set('order_status',$order_status);
+        $this->db->where('order_id', $id);
+        $this->db->update('orders');
+        return 1;
+    }
+    public function get_order_status() {
+        $data = $this->db->select('*')->from('order_status')->get()->result_array();
+        return $data;
     }
 
     public function view($id) {
