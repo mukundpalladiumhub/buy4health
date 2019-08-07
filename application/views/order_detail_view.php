@@ -80,6 +80,8 @@
                                     $type = 'Rent';
                                 } else if (isset($row['type']) && ($row['type'] == 's' || $row['type'] == 2)) {
                                     $type = 'Sell';
+                                } else if (isset($row['type']) && $row['type'] == 3) {
+                                    $type = 'Rent & Sell';
                                 } else {
                                     $type = '';
                                 }
