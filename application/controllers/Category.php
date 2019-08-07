@@ -46,10 +46,17 @@ class Category extends CI_Controller {
             $category_data = array();
             foreach ($result as $array) {
 
+                $image= "";
+                if(isset($array['category_image']) && $array['category_image'] != ""){
+                    $image = $array['category_image'];
+                } else {
+                    $image = base_url('assets/images/No-Image.png');
+                }
+                
                 $id = $array['id'];
                 $data['category_name'] = $array['category_name'];
                 $data['category_tag'] = $array['category_tag'];
-                $data['category_image'] = $array['category_image'];
+                $data['category_image'] = '<img src="'.$image.'" alt="No Image" height="42" width="42" />';
                 $data['status'] = $array['status'];
                 $category_data[] = $data;
             }

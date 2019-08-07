@@ -33,7 +33,7 @@
                 <div class="row">
                     <div class="col-xs-12">
                         <h2 class="page-header">
-                            <i class="fa fa-globe"></i> Rent4Health
+                            <i class="fa fa-globe"></i>  <img src="<?php echo base_url('assets/images/value4health_logo.png')?>" height="42" width="110"> 
                             <small class="pull-right">Date: <?php echo date('m/d/Y'); ?></small>
                         </h2>
                     </div>
@@ -95,9 +95,9 @@
                                         if (isset($row['type']) && ($row['type'] == 'r' || $row['type'] == 1)) {
                                             $type = 'Rent';
                                         } else if (isset($row['type']) && ($row['type'] == 's' || $row['type'] == 2)) {
-                                            $type = 'Sell';
+                                            $type = 'Buy';
                                         } else if (isset($row['type']) && $row['type'] == 3) {
-                                            $type = 'Rent & Sell';
+                                            $type = 'Rent & Buy';
                                         } else {
                                             $type = '';
                                         }
@@ -126,7 +126,7 @@
                     </div>
                     <!-- /.col -->
                     <div class="col-xs-6">
-                        <p class="lead">Amount Due <?php echo $user['order_date']; ?></p>
+                        <!--<p class="lead">Amount Due <?php echo $user['order_date']; ?></p>-->
 
                         <div class="table-responsive">
                             <table class="table">
