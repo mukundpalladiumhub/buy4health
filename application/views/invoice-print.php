@@ -92,15 +92,17 @@
                                 <?php
                                 if (!empty($table)) {
                                     foreach ($table as $key => $row) {
-                                        if (isset($row['type']) && $row['type'] == 'r') {
+                                        if (isset($row['type']) && ($row['type'] == 'r' || $row['type'] == 1)) {
                                             $type = 'Rent';
-                                        } else if (isset($row['type']) && $row['type'] == 's') {
+                                        } else if (isset($row['type']) && ($row['type'] == 's' || $row['type'] == 2)) {
                                             $type = 'Sell';
+                                        } else if (isset($row['type']) && $row['type'] == 3) {
+                                            $type = 'Rent & Sell';
                                         } else {
                                             $type = '';
                                         }
                                         ?><tr>
-                                            <td><?php echo $key+1; ?></td>
+                                            <td><?php echo $key + 1; ?></td>
                                             <td><?php echo $row['product_name']; ?></td>
                                             <td><?php echo $type; ?></td>
                                             <td><?php echo $row['quantity']; ?></td>
