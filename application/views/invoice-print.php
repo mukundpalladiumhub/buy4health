@@ -90,9 +90,8 @@
                             </thead>
                             <tbody>
                                 <?php
-                                if (isset($table)) {
-                                    $no = 0;
-                                    foreach ($table as $row) {
+                                if (!empty($table)) {
+                                    foreach ($table as $key => $row) {
                                         if (isset($row['type']) && $row['type'] == 'r') {
                                             $type = 'Rent';
                                         } else if (isset($row['type']) && $row['type'] == 's') {
@@ -100,9 +99,8 @@
                                         } else {
                                             $type = '';
                                         }
-                                        $no++;
                                         ?><tr>
-                                            <td><?php echo $no; ?></td>
+                                            <td><?php echo $key+1; ?></td>
                                             <td><?php echo $row['product_name']; ?></td>
                                             <td><?php echo $type; ?></td>
                                             <td><?php echo $row['quantity']; ?></td>
@@ -123,16 +121,6 @@
                 <div class="row">
                     <!-- accepted payments column -->
                     <div class="col-xs-6">
-<!--                        <p class="lead">Payment Methods:</p>
-                        <img src="<?php echo base_url(); ?>/assets/dist/img/credit/visa.png" alt="Visa">
-                        <img src="<?php echo base_url(); ?>/assets/dist/img/credit/mastercard.png" alt="Mastercard">
-                        <img src="<?php echo base_url(); ?>/assets/dist/img/credit/american-express.png" alt="American Express">
-                        <img src="<?php echo base_url(); ?>/assets/dist/img/credit/paypal2.png" alt="Paypal">
-
-                        <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
-                            Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles, weebly ning heekya handango imeem plugg dopplr
-                            jibjab, movity jajah plickers sifteo edmodo ifttt zimbra.
-                        </p>-->
                     </div>
                     <!-- /.col -->
                     <div class="col-xs-6">
@@ -164,8 +152,8 @@
                                 <tr>
                                     <th>Total:</th>
                                     <td><?php
-                                        $total = (int) $user['total'] + (int) $user['shipping_rate'] + (int) $user['order_delivery_charge'];
-                                        echo '&#8377; ' . $total;
+                                        $full_total = (int) $user['total'] + (int) $user['shipping_rate'] + (int) $user['order_delivery_charge'];
+                                        echo '&#8377; ' . $full_total;
                                         ?></td>
                                 </tr>
                             </table>
