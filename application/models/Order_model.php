@@ -92,15 +92,16 @@ class Order_model extends CI_Model {
     }
 
     public function update_status($order_status, $id) {
-        $this->db->set('order_status',$order_status);
+        $this->db->set('order_status', $order_status);
         $this->db->where('order_id', $id);
         return $this->db->update('orders');
     }
+
     public function get_order_status() {
         $data = $this->db->select('*')
-                ->from('order_status')
-                ->where('status', 1)
-                ->get()->result_array();
+                        ->from('order_status')
+                        ->where('status', 1)
+                        ->get()->result_array();
         return $data;
     }
 
@@ -113,19 +114,27 @@ class Order_model extends CI_Model {
         $query = $this->db->get()->row();
         return $query;
     }
-    
+
     public function getProductUser($id) {
-        
         $this->db->from('orders o');
         $this->db->join('users as u', 'u.id = o.user_id', 'left');
         $this->db->select('u.*, o.order_number,o.order_date,o.order_delivery_charge,o.total,o.shipping_rate');
         $this->db->where('o.order_id', $id);
         $result = $this->db->get()->row_array();
         return $result;
-        
-        
     }
-    
+
+    public function OrderDetailList_print($id) {
+        $this->db->from('order_details as od');
+//        $this->db->join('orders as o', 'o.order_id = od.order_id', 'left');
+        $this->db->join('product as p', 'p.id = od.product_id', 'left');
+        $this->db->join('size as s', 's.id = od.size_id', 'left');
+        $this->db->select("od.*, p.product_name");
+        $this->db->where("od.order_id", $id);
+        $this->db->order_by('od.deliver_on', 'ASC');
+        $result = $this->db->get()->result_array();
+        return $result;
+    }
 
 }
 

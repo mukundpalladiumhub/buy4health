@@ -97,10 +97,8 @@ class Order extends CI_Controller {
     }
 
     public function order_detail_view($id) {
-
-        
         $user = $this->order_model->getProductUser($id);
-        
+
         $data['order_id'] = $id;
         $data['title'] = 'Order Detail';
         $data['user'] = $user;
@@ -108,6 +106,16 @@ class Order extends CI_Controller {
         $this->load->view('layout/sidebar.php');
         $this->load->view('order_detail_view.php', $data);
         $this->load->view('layout/footer.php');
+    }
+
+    public function order_detail_print($id) {
+        $user = $this->order_model->getProductUser($id);
+        $table = $this->order_model->OrderDetailList_print($id);
+        $data['order_id'] = $id;
+        $data['title'] = 'Order Detail';
+        $data['user'] = $user;
+        $data['table'] = $table;
+        $this->load->view('invoice-print.php', $data);
     }
 
     public function order_detail($id) {
