@@ -76,9 +76,9 @@
                         <?php
                         if (!empty($table)) {
                             foreach ($table as $key => $row) {
-                                if (isset($row['type']) && $row['type'] == 'r') {
+                                if (isset($row['type']) && ($row['type'] == 'r' || $row['type'] == 1)) {
                                     $type = 'Rent';
-                                } else if (isset($row['type']) && $row['type'] == 's') {
+                                } else if (isset($row['type']) && ($row['type'] == 's' || $row['type'] == 2)) {
                                     $type = 'Sell';
                                 } else {
                                     $type = '';
