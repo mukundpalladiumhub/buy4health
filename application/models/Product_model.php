@@ -255,6 +255,14 @@ class Product_model extends CI_Model {
         $resultProductRent = $resultQuery->result_array();
         return $resultProductRent;
     }
+    
+    public function getProductName($id) {
+        $this->db->select('id,product_name,product_code');
+        $this->db->from('product');
+        $this->db->where('id', $id);
+        $resultQuery = $this->db->get();
+        return $resultQuery->row_array();
+    }
 
 }
 

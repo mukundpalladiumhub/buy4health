@@ -97,4 +97,7 @@ define('SMTP_PASSWORD', 'S1u7n3ny_');
 define('PAYMENT_STATUS', 'Done');
 define('ORDER_STATUS', 2);
 
+define("SHIPROCKET_URL", "https://apiv2.shiprocket.in/v1/");
 
+define('SHIPROCKET_EMAIL', 'sanket.jayani@gmail.com');
+define('SHIPROCKET_PASS', 'S@nket@123#');
