@@ -12,49 +12,44 @@ class Cron_new extends CI_Controller {
 
     public function index() {
 
-        $url = "https://www.buy4health.com/wp/wp-json/wc/v3/products/categories";
+        $otherdb = $this->load->database('db_buy4health', TRUE);
 
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_POST, false);
-        curl_setopt($ch, CURLOPT_HEADER, true);
-//        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'Authorization:' . AUTHORIZATION_TOKEN));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HEADER, false);
-        curl_exec($ch);
-        $category_list = json_decode(curl_exec($ch), true);
-        curl_close($ch);
+        $category = $otherdb->select('wt.*,wtt.description')
+                ->from('wp_terms as wt')
+                ->join('wp_term_taxonomy as wtt', 'wtt.term_id = wt.term_id', 'left')
+                ->where('wtt.taxonomy', 'product_cat')
+                ->get()
+                ->result_array();
 
+//        $product_price = $otherdb->select('pm.*')
+//                ->from('wp_posts as p')
+//                ->join('wp_postmeta as pm', 'pm.post_id = p.ID', 'left')
+//                ->where('p.ID', 82)
+//                ->group_start()
+//                ->where('pm.meta_key', '_price')
+//                ->or_where('pm.meta_key', '_regular_price')
+//                ->group_end()
+//                ->get()
+//                ->result_array();
+//        
+////        echo $otherdb->last_query();
+////        exit;
+//        
+//
 
-        if (!empty($category_list)) {
+        /*         * ***** For Category ****** */
+        if (!empty($category)) {
 
-            foreach ($category_list as $key => $category_value) {
-
-                if (!empty($category_value['image'])) {
-
-                    if (isset($category_value['image']['src']) && $category_value['image']['src'] != "") {
-
-                        $pathinfo = pathinfo($category_value['image']['src']);
-
-                        if (!empty($pathinfo)) {
-
-                            $image_name = str_replace(' ', '%20', $pathinfo['basename']);
-                            $path = 'assets/uploads/category/' . $pathinfo['basename'];
-                            $myfile = file_get_contents('https://www.rent4health.com/uploads/product_images/' . $image_name);
-                            $uploadfile = file_put_contents($path, $myfile);
-
-                            $category_data['category_image'] = $pathinfo['basename'];
-                        }
-                    }
-                }
-                
-                $category_id_check_product = $category_value['id'];
-
-                $category_data['category_name'] = $category_value['name'];
-                $category_data['category_description'] = $category_value['description'];
-                $category_data['category_tag'] = '';
-                $category_data['status'] = '';
+            foreach ($category as $category_value) {
 
                 $check_category_exist = $this->db->select('category_name,id')->where("category_name", $category_value['name'])->get('category')->row_array();
+
+                $category_id_check_product = $category_value['term_id'];
+//                unset($category_value['id']);
+
+                $category_data['category_name'] = isset($category_value['name']) ? $category_value['name'] : "";
+                $category_data['category_description'] = isset($category_value['description']) ? $category_value['description'] : "";
+                $category_data['status'] = 1;
 
                 if (empty($check_category_exist)) {
                     $this->db->insert('category', $category_data);
@@ -64,182 +59,134 @@ class Cron_new extends CI_Controller {
                     $this->db->where('id', $check_category_exist['id']);
                     $this->db->update('category', $category_data);
                 }
+
+                $products = $otherdb->select('*')
+                        ->from('wp_posts as wp')
+                        ->join('wp_term_relationships as wtr', 'wtr.object_id = wp.ID', 'inner')
+                        ->join('wp_terms as wt', 'wt.term_id = wtr.term_taxonomy_id', 'inner')
+                        ->where('post_type', 'product')
+                        ->where('post_status', 'publish')
+                        ->where('wtr.term_taxonomy_id', $category_id_check_product)
+                        ->get()
+                        ->result_array();
+
+//                echo $otherdb->last_query();
+//                
+//                
+//                echo '<pre>';
+//                print_r($products);
+//                die;
+
+                if (!empty($products)) {
+
+                    foreach ($products as $product_value) {
+
+                        $check_product_exist = $this->db->select('product_code,id')
+//                                        ->where("product_code", $product_value['product_code'])
+                                        ->where("product_name", $product_value['post_title'])
+                                        ->where("site_id", BUY4HEALTH)
+                                        ->where('category', $category_id)
+                                        ->get('product')->row_array();
+
+                        $product_id_live_db = $product_value['ID'];
+//                        unset($product_value['id']);
+
+                        $product_data['site_id'] = BUY4HEALTH;
+                        $product_data['product_type'] = "";
+                        $product_data['product_code'] = "";
+                        $product_data['vendor_id'] = "";
+                        $product_data['product_name'] = isset($product_value['post_title']) ? $product_value['post_title'] : "";
+                        $product_data['brand '] = "";
+                        $product_data['category'] = $category_id;
+                        $product_data['sub_category'] = "";
+                        $product_data['sub_sub_category'] = "";
+                        $product_data['sub_sub_minor_category'] = "";
+                        $product_data['product_description'] = isset($product_value['post_content']) ? $product_value['post_content'] : "";
+                        $product_data['product_info'] = "";
+                        $product_data['product_weight'] = "";
+                        $product_data['product_tags'] = "";
+                        $product_data['product_vat'] = "";
+                        $product_data['service_tax'] = "";
+                        $product_data['delivery_charges'] = "";
+                        $product_data['cod_amount'] = "";
+                        $product_data['packing_charges'] = "";
+                        $product_data['size_type'] = "";
+                        $product_data['vehicle'] = "";
+                        $product_data['cod'] = "";
+                        $product_data['sale_dispatch_time'] = "";
+                        $product_data['meta_title'] = "";
+                        $product_data['meta_keyword'] = "";
+                        $product_data['meta_description'] = "";
+                        $product_data['amazon_price'] = "";
+                        $product_data['flipkart_price'] = "";
+                        $product_data['call_to_enquire'] = "";
+                        $product_data['avg_rating'] = "";
+                        $product_data['rent_del_pickup_charges'] = "";
+                        $product_data['avg_sale_price'] = "";
+                        $product_data['avg_rent_price'] = "";
+                        $product_data['refill_product_id'] = "";
+                        $product_data['products_bought_together'] = "";
+                        $product_data['status'] = "";
+
+                        if (empty($check_product_exist)) {
+                            $this->db->insert('product', $product_data);
+                            $product_id = $this->db->insert_id();
+                        } else {
+                            $product_id = $check_product_exist['id'];
+                            $this->db->where('id', $check_product_exist['id']);
+                            $this->db->update('product', $product_data);
+                        }
+
+
+//                        $product_price = $otherdb->select('pm.*')
+//                                ->from('wp_posts as p')
+//                                ->join('wp_postmeta as pm', 'pm.post_id = p.ID', 'left')
+//                                ->where('pm.meta_key', '_price')
+//                                ->or_where('pm.meta_key', '_thumbnail_id')
+//                                ->where('p.ID', 69)
+////                                ->where('p.ID', $product_id_live_db)
+//                                ->get()
+//                                ->result_array();
+
+                        $product_price = $otherdb->select('pm.*')
+                                ->from('wp_postmeta as pm')
+                                ->join('wp_posts as p', 'p.ID = pm.post_id', 'left')
+                                ->where('pm.post_id', 69)
+                                ->group_start() // Open bracket
+                                ->where('pm.meta_key', '_price')
+                                ->or_where('pm.meta_key', '_thumbnail_id')
+                                ->group_end()
+//                                ->where('p.ID', $product_id_live_db)
+                                ->get()
+                                ->result_array();
+
+                        echo $otherdb->last_query();
+
+                        echo '<pre>';
+                        print_r($product_price);
+                        die;
+                    }
+                }
+
+
+//                echo '<pre>';
+//                print_r($product);
+//                die;
+//                SELECT * FROM `wp_posts` as post INNER JOIN wp_term_relationships rs ON rs.object_id = post.ID 
+//                    INNER JOIN wp_terms t ON t.term_id = rs.term_taxonomy_id WHERE `post_type` = "product" AND `post_status` = "publish" AND 
+//                        rs.term_taxonomy_id = 15 ORDER BY post_date DESC LIMIT 5 
             }
-
-
-
-
-
-
-
-
-            /*             * ***** For Product ****** */
-
-
-            echo $url = "https://www.buy4health.com/wp/wp-json/wc/v3/products/";
-//                    .$category_id_check_product;
-            echo "<br>";
-
-            $ch = curl_init($url);
-            curl_setopt($ch, CURLOPT_POST, false);
-            curl_setopt($ch, CURLOPT_HEADER, true);
-//        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'Authorization:' . AUTHORIZATION_TOKEN));
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_HEADER, false);
-            curl_exec($ch);
-            $products = json_decode(curl_exec($ch), true);
-            curl_close($ch);
-
-            echo '<pre>';
-            print_r($products);
-            exit;
-
-
-
-//            $products = $otherdb->select('*')
-//                    ->from('product')
-//                    ->where('category', $category_id_check_product)
-//                    ->get()
-//                    ->result_array();
-
-//            if (!empty($products)) {
-//
-//                foreach ($products as $product_value) {
-//
-//                    $check_product_exist = $this->db->select('product_code,id')
-//                                    ->where("product_code", $product_value['product_code'])
-//                                    ->where("product_name", $product_value['product_name'])
-//                                    ->where("site_id", RENT4HEALTH)
-//                                    ->where('category', $category_id)
-//                                    ->get('product')->row_array();
-//
-//                    $product_id_live_db = $product_value['id'];
-//                    unset($product_value['id']);
-//
-//                    $product_value['site_id'] = RENT4HEALTH;
-//                    $product_value['category'] = $category_id;
-//
-//                    if (empty($check_product_exist)) {
-//                        $this->db->insert('product', $product_value);
-//                        $product_id = $this->db->insert_id();
-//                    } else {
-//                        $product_id = $check_product_exist['id'];
-//                        $this->db->where('id', $check_product_exist['id']);
-//                        $this->db->update('product', $product_value);
-//                    }
-//
-//
-//                    /*                     * ***** For Product Images ****** */
-//                    $product_images = $otherdb->select('*')
-//                                    ->where('product_id', $product_id_live_db)
-//                                    ->get('product_images')->result_array();
-//
-//                    if (!empty($product_images)) {
-//
-//                        foreach ($product_images as $productImg_value) {
-//
-//                            $check_productImg_exist = $this->db->select('product_image,id')
-//                                            ->where("product_image", $productImg_value['product_image'])
-//                                            ->where('product_id', $product_id)
-//                                            ->get('product_images')->row_array();
-//
-//                            if (isset($productImg_value['product_image']) && $productImg_value['product_image'] != "") {
-//
-//                                $image_name = str_replace(' ', '%20', $productImg_value['product_image']);
-//                                $path = 'assets/uploads/product/' . $productImg_value['product_image'];
-//                                $myfile = file_get_contents('https://www.rent4health.com/uploads/product_images/' . $image_name);
-//                                $uploadfile = file_put_contents($path, $myfile);
-//                            }
-//
-//                            unset($productImg_value['id']);
-//                            $productImg_value['product_id'] = $product_id;
-//
-//                            if (empty($check_productImg_exist)) {
-//                                $this->db->insert('product_images', $productImg_value);
-//                            } else {
-//                                $this->db->where('id', $check_productImg_exist['id']);
-//                                $this->db->update('product_images', $productImg_value);
-//                            }
-//                        }
-//                    }
-//                    /*                     * ***** End Product Images ****** */
-//
-//
-//                    /*                     * ***** For Product Price ****** */
-//                    $product_price = $otherdb->select('p.*,st.size_type as size_type_name,st.status as size_type_status,s.size as size_size,s.status as size_status')
-//                            ->from('product_price_details as p')
-//                            ->where('product_id', $product_id_live_db)
-//                            ->join('size_type st', 'st.id = p.size_type', 'left')
-//                            ->join('size s', 's.id = p.size_id', 'left')
-//                            ->get()
-//                            ->result_array();
-//
-//                    if (!empty($product_price)) {
-//
-//                        foreach ($product_price as $productPrice_value) {
-//
-//                            $check_size_type = $this->db->select('*')
-//                                            ->where('size_type', $productPrice_value['size_type_name'])
-//                                            ->get('size_type')->row_array();
-//
-//
-//                            if (empty($check_size_type)) {
-//                                $size_type_data['size_type'] = $productPrice_value['size_type_name'];
-//                                $size_type_data['status'] = $productPrice_value['size_type_status'];
-//
-//
-//                                $this->db->insert('size_type', $size_type_data);
-//                                $size_type_id = $this->db->insert_id();
-//                            } else {
-//                                $size_type_id = $check_size_type['id'];
-//                            }
-//
-//
-//                            $check_size = $this->db->select('*')
-//                                            ->where('size_type', $size_type_id)
-//                                            ->get('size')->row_array();
-//
-//
-//                            if (empty($check_size)) {
-//                                $size_data['size_type'] = $size_type_id;
-//                                $size_data['size'] = $productPrice_value['size_size'];
-//                                $size_data['status'] = $productPrice_value['size_status'];
-//
-//                                $this->db->insert('size', $size_data);
-//                                $size_id = $this->db->insert_id();
-//                            } else {
-//                                $size_id = $check_size['id'];
-//                            }
-//
-//
-//                            $check_productPrice_exist = $this->db->select('*')
-//                                    ->where('size_type', $size_type_id)
-//                                    ->where('size_id', $size_id)
-//                                    ->get('product_price_details')
-//                                    ->row_array();
-//
-//
-//                            unset($productPrice_value['id']);
-//                            unset($productPrice_value['size_type_name']);
-//                            unset($productPrice_value['size_type_status']);
-//                            unset($productPrice_value['size_size']);
-//                            unset($productPrice_value['size_status']);
-//
-//                            $productPrice_value['product_id'] = $product_id;
-//
-//                            if (empty($check_productPrice_exist)) {
-//                                $this->db->insert('product_price_details', $productPrice_value);
-//                            } else {
-//                                $this->db->where('id', $check_productPrice_exist['id']);
-//                                $this->db->update('product_price_details', $productPrice_value);
-//                            }
-//                        }
-//                    }
-//                    /*                     * ***** End Product Price ****** */
-//                }
-//            }
-            /*             * ***** End Product ****** */
         }
+
+        echo '<pre>';
+        print_r($category_data);
+        die;
+
+
+//        SELECT wp_terms.*
+//        FROM wp_terms
+//        LEFT JOIN wp_term_taxonomy ON wp_terms.term_id = wp_term_taxonomy.term_id
+//        WHERE wp_term_taxonomy.taxonomy = 'product_cat';
     }
 
 }
