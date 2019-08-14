@@ -86,6 +86,15 @@ defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest auto
 define('EMAIL_LOGO', 'assets/images/value4health_logo.png');  
 
 define('RENT4HEALTHID', 1);
+define('BUY4HEALTHID', 2);
+
+
+
+define('RENT', 1);
+define('BUY', 2);
+define('RENT_BUY', 3);
+
+
 
 define('ADMIN_ROLE', 1);
 define('USER_ROLE', 2);
@@ -97,4 +106,7 @@ define('SMTP_PASSWORD', 'S1u7n3ny_');
 define('PAYMENT_STATUS', 'Done');
 define('ORDER_STATUS', 2);
 
+define("SHIPROCKET_URL", "https://apiv2.shiprocket.in/v1/");
 
+define('SHIPROCKET_EMAIL', 'sanket.jayani@gmail.com');
+define('SHIPROCKET_PASS', 'S@nket@123#');

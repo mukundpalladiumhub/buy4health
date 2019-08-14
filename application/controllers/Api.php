@@ -22,11 +22,6 @@ class Api extends CI_Controller {
                 } else {
                     $array['status'] = 'Inactive';
                 }
-//                if (isset($array['category_image']) && $array['category_image'] != '' && file_exists(FCPATH . 'assets/uploads/category/' .basename($array['category_image']))) {
-//                    $array['category_image'] = base_url() . 'assets/uploads/category/' . basename($array['category_image']);
-//                } else {
-//                    $array['category_image'] = base_url() . 'assets/images/No-Image.png';
-//                }
                 $categories[] = $array;
             }
             $json = array("categories" => $categories);
@@ -66,12 +61,6 @@ class Api extends CI_Controller {
                     $product_image[] = $image['product_image'];
                 }
 
-//                if ($detail['status'] == 1) {
-//                    $detail['status'] = 'Active';
-//                } else {
-//                    $detail['status'] = 'Inactive';
-//                }
-
                 $product_details_all[$key] = $detail;
                 $product_details_all[$key]['product_image'] = $product_image;
 
@@ -79,55 +68,18 @@ class Api extends CI_Controller {
 
                     $product_rent_details = $this->product_model->getProductRent($detail['id']);
 
-//                    $product_rent_details['id'] = isset($product_rent_details['id']) ? $product_rent_details['id'] : "";
-//                    $product_rent_details['product_id'] = isset($product_rent_details['product_id']) ? $product_rent_details['product_id'] : "";
-//                    $product_rent_details['rent_duration'] = isset($product_rent_details['rent_duration']) ? $product_rent_details['rent_duration'] : "";
-//                    $product_rent_details['rent_amount'] = isset($product_rent_details['rent_amount']) ? $product_rent_details['rent_amount'] : "";
-//                    $product_rent_details['advance_amount'] = isset($product_rent_details['advance_amount']) ? $product_rent_details['advance_amount'] : "";
-//                    $product_rent_details['status'] = isset($product_rent_details['status']) ? $product_rent_details['status'] : "";
-
                     $product_details_all[$key]['product_rent_details'] = $product_rent_details;
                 }
                 if (isset($detail['product_type']) && $detail['product_type'] == 2) {
 
                     $product_price_details = $this->product_model->getProductPrice($detail['id']);
 
-//                    $product_price_details['id'] = isset($product_price_details['id']) ? $product_price_details['id'] : "";
-//                    $product_price_details['product_id'] = isset($product_price_details['product_id']) ? $product_price_details['product_id'] : "";
-//                    $product_price_details['size_type'] = isset($product_price_details['size_type']) ? $product_price_details['size_type'] : "";
-//                    $product_price_details['size_id'] = isset($product_price_details['size_id']) ? $product_price_details['size_id'] : "";
-//                    $product_price_details['quantity'] = isset($product_price_details['quantity']) ? $product_price_details['quantity'] : "";
-//                    $product_price_details['low_level'] = isset($product_price_details['low_level']) ? $product_price_details['low_level'] : "";
-//                    $product_price_details['service_tax'] = isset($product_price_details['service_tax']) ? $product_price_details['service_tax'] : "";
-//                    $product_price_details['mrp'] = isset($product_price_details['mrp']) ? $product_price_details['mrp'] : "";
-//                    $product_price_details['price'] = isset($product_price_details['price']) ? $product_price_details['price'] : "";
-//                    $product_price_details['status'] = isset($product_price_details['status']) ? $product_price_details['status'] : "";
-
                     $product_details_all[$key]['product_price_details'] = $product_price_details;
-                    
                 }
                 if (isset($detail['product_type']) && $detail['product_type'] == 3) {
 
                     $product_rent_details = $this->product_model->getProductRent($detail['id']);
                     $product_price_details = $this->product_model->getProductPrice($detail['id']);
-
-//                    $product_price_details['id'] = isset($product_price_details['id']) ? $product_price_details['id'] : "";
-//                    $product_price_details['product_id'] = isset($product_price_details['product_id']) ? $product_price_details['product_id'] : "";
-//                    $product_price_details['size_type'] = isset($product_price_details['size_type']) ? $product_price_details['size_type'] : "";
-//                    $product_price_details['size_id'] = isset($product_price_details['size_id']) ? $product_price_details['size_id'] : "";
-//                    $product_price_details['quantity'] = isset($product_price_details['quantity']) ? $product_price_details['quantity'] : "";
-//                    $product_price_details['low_level'] = isset($product_price_details['low_level']) ? $product_price_details['low_level'] : "";
-//                    $product_price_details['service_tax'] = isset($product_price_details['service_tax']) ? $product_price_details['service_tax'] : "";
-//                    $product_price_details['mrp'] = isset($product_price_details['mrp']) ? $product_price_details['mrp'] : "";
-//                    $product_price_details['price'] = isset($product_price_details['price']) ? $product_price_details['price'] : "";
-//                    $product_price_details['status'] = isset($product_price_details['status']) ? $product_price_details['status'] : "";
-//
-//                    $product_rent_details['id'] = isset($product_rent_details['id']) ? $product_rent_details['id'] : "";
-//                    $product_rent_details['product_id'] = isset($product_rent_details['product_id']) ? $product_rent_details['product_id'] : "";
-//                    $product_rent_details['rent_duration'] = isset($product_rent_details['rent_duration']) ? $product_rent_details['rent_duration'] : "";
-//                    $product_rent_details['rent_amount'] = isset($product_rent_details['rent_amount']) ? $product_rent_details['rent_amount'] : "";
-//                    $product_rent_details['advance_amount'] = isset($product_rent_details['advance_amount']) ? $product_rent_details['advance_amount'] : "";
-//                    $product_rent_details['status'] = isset($product_rent_details['status']) ? $product_rent_details['status'] : "";
 
                     $product_details_all[$key]['product_price_details'] = $product_price_details;
                     $product_details_all[$key]['product_rent_details'] = $product_rent_details;
@@ -215,11 +167,6 @@ class Api extends CI_Controller {
                     $product_image[] = $image['product_image'];
                 }
 
-//                if ($detail['status'] == 1) {
-//                    $detail['status'] = 'Active';
-//                } else {
-//                    $detail['status'] = 'Inactive';
-//                }
                 $product_details_all = $detail;
                 $product_details_all['product_image'] = $product_image;
 
@@ -251,10 +198,7 @@ class Api extends CI_Controller {
         $order_array = $this->input->post();
         $result_array = array();
         $order_array = (array) json_decode(file_get_contents('php://input'), TRUE);
-        
-        $this->load->helper('file');
-        write_file("api_order.php", date("H:i:s").' ','a');
-        write_file("api_order.php", print_r($order_array,true),'a');
+        $shipRocket_array = $order_array;
 
         if (!empty($order_array)) {
             $result_array = array();
@@ -283,14 +227,14 @@ class Api extends CI_Controller {
 
                     if (!empty($order_array['orders'])) {
                         $order_details = $order_array['orders']['order_details'];
-                        
+
                         unset($order_array['orders']['order_id']);
                         unset($order_array['orders']['order_details']);
-                        
+
                         $order_array['orders']['user_id'] = $user_id;
                         $order_array['orders']['payment_status'] = PAYMENT_STATUS;
                         $order_array['orders']['order_status'] = ORDER_STATUS;
-                        
+
                         $this->db->insert('orders', $order_array['orders']);
                         $order_id = $this->db->insert_id();
                         if (isset($order_id) && $order_id != "") {
@@ -303,6 +247,8 @@ class Api extends CI_Controller {
                             }
                             $result_array['status'] = 1;
                             $result_array['msg'] = "Order placed successfully for given user.";
+
+                            $this->shiprocket($shipRocket_array);
                         } else {
                             $result_array['status'] = 0;
                             $result_array['msg'] = "Product not created. Please try again.";
@@ -316,6 +262,93 @@ class Api extends CI_Controller {
         }
         echo json_encode($result_array);
         exit;
+    }
+
+    public function shiprocket($shipRocket_array) {
+
+        if (!empty($shipRocket_array)) {
+
+            include APPPATH . 'libraries/ShipRocket.php';
+
+            $shiprocket = new ShipRocket;
+
+            $ordermaster = (array) $shipRocket_array['orders'];
+            $delivery = (array) $shipRocket_array['user'];
+            $order_product = (array) $ordermaster['order_details'];
+
+            $url = "external/orders/create/adhoc";
+
+            $tmpProductDetais = array();
+            $w = 0;
+            $weight = 1;
+            foreach ($order_product as $product_detais) {
+
+                $product = $this->product_model->getProductName($product_detais['product_id']);
+
+                $tmpProductDetais[$w] = array(
+                    "name" => $product['product_name'],
+                    "sku" => $product['product_code'],
+                    "units" => $product_detais['quantity'],
+                    "selling_price" => $product_detais['total_price'],
+                    "discount" => "",
+                    "tax" => "",
+                    "hsn" => ""
+                );
+                $weight+= 0;
+                $w++;
+            }
+            $itemArr = $tmpProductDetais;
+
+            if ($ordermaster['payment_method'] == "Cash On Delivery") {
+                $payMethod = "COD";
+            } else {
+                $payMethod = "Prepaid";
+            }
+            $orderData = array(
+                "order_id" => $ordermaster['order_number'],
+                "order_date" => $ordermaster['order_date'],
+                "pickup_location" => "Primary",
+                "channel_id" => "CUSTOM",
+                "comment" => "Reseller: Rent4health",
+                "billing_customer_name" => $delivery['first_name'],
+                "billing_last_name" => $delivery['last_name'],
+                "billing_address" => $delivery['address1'],
+                "billing_address_2" => "",
+                "billing_city" => $delivery['city'],
+                "billing_pincode" => $delivery['zipcode'],
+                "billing_state" => $delivery['state'],
+                "billing_country" => "India",
+                "billing_email" => $delivery['email'],
+                "billing_phone" => $delivery['mobile'],
+                "shipping_is_billing" => true,
+                "shipping_customer_name" => $delivery['first_name'],
+                "shipping_last_name" => $delivery['last_name'],
+                "shipping_address" => $delivery['address1'],
+                "shipping_address_2" => "",
+                "shipping_city" => $delivery['city'],
+                "shipping_pincode" => $delivery['zipcode'],
+                "shipping_country" => "India",
+                "shipping_state" => $delivery['state'],
+                "shipping_email" => $delivery['email'],
+                "shipping_phone" => $delivery['mobile'],
+                "order_items" => $itemArr,
+                "payment_method" => $payMethod,
+                "shipping_charges" => $ordermaster['order_delivery_charge'],
+                "giftwrap_charges" => "0",
+                "transaction_charges" => "0",
+                "total_discount" => "0",
+                "sub_total" => $ordermaster['total'],
+                "length" => "1",
+                "breadth" => "1",
+                "height" => "1",
+                "weight" => $weight
+            );
+
+            $resposne = $shiprocket->sendCURL($url, $orderData);
+
+            echo json_encode($resposne);
+            exit;
+        }
     }
 
 }

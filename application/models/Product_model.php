@@ -20,6 +20,7 @@ class Product_model extends CI_Model {
         $this->db->from('product as p');
         $this->db->join('category as c', 'c.id = p.category', 'left');
         $this->db->select("p.*, c.category_name ,IF((SELECT SUM(quantity) FROM `product_price_details` WHERE product_id = p.id) > 0,'InStock','out Of Stock') as status");
+        $this->db->where("p.status", 1);
         if (isset($this->category_id) && $this->category_id > 0) {
             $this->db->where("p.category", $this->category_id);
         }
@@ -253,6 +254,14 @@ class Product_model extends CI_Model {
         $resultQuery = $this->db->get();
         $resultProductRent = $resultQuery->result_array();
         return $resultProductRent;
+    }
+    
+    public function getProductName($id) {
+        $this->db->select('id,product_name,product_code');
+        $this->db->from('product');
+        $this->db->where('id', $id);
+        $resultQuery = $this->db->get();
+        return $resultQuery->row_array();
     }
 
 }

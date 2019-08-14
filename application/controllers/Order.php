@@ -96,19 +96,22 @@ class Order extends CI_Controller {
         exit;
     }
 
-    public function order_detail_view($id) {
+    public function order_detail_view($id = 0) {
+        
         $user = $this->order_model->getProductUser($id);
-
+        $table = $this->order_model->OrderDetailList_print($id);
         $data['order_id'] = $id;
         $data['title'] = 'Order Detail';
         $data['user'] = $user;
+        $data['table'] = $table;
         $this->load->view('layout/header.php', $data);
         $this->load->view('layout/sidebar.php');
         $this->load->view('order_detail_view.php', $data);
         $this->load->view('layout/footer.php');
+        
     }
 
-    public function order_detail_print($id) {
+    public function order_detail_print($id = 0) {
         $user = $this->order_model->getProductUser($id);
         $table = $this->order_model->OrderDetailList_print($id);
         $data['order_id'] = $id;
@@ -118,7 +121,7 @@ class Order extends CI_Controller {
         $this->load->view('invoice-print.php', $data);
     }
 
-    public function order_detail($id) {
+    /*public function order_detail($id) {
 
         $post = $this->input->post();
 
@@ -163,8 +166,8 @@ class Order extends CI_Controller {
                 $data['product_name'] = $array['product_name'];
                 $data['type'] = $type;
                 $data['quantity'] = $array['quantity'];
-                $data['price'] = $array['price'];
-                $data['total_price'] = $array['total_price'];
+                $data['price'] = '&#8377; '.$array['price'];
+                $data['total_price'] = '&#8377; '.$array['total_price'];
 
                 $order_detail_data[] = $data;
             }
@@ -177,7 +180,7 @@ class Order extends CI_Controller {
             echo json_encode($json);
             exit;
         }
-    }
+    }*/
 
     public function view($id) {
         $data = $this->order_model->view($id);

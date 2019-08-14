@@ -42,7 +42,7 @@
                     <?php echo $user['address1']; ?>,<br>
                     <?php echo $user['zipcode']; ?><br>
                     <?php echo $user['city'] . ',' . $user['state']; ?><br>
-                    Phone : <?php echo $user['phone'] . ' , ' . $user['mobile']; ?><br>
+                    Phone : <?php echo (isset($user['phone']) && $user['phone'] != '') ? $user['phone'] . ' , ' : ''; echo isset($user['mobile']) ? $user['mobile'] : ''; ?><br>
                     Email: <?php echo $user['email']; ?>
                 </address>
             </div>
@@ -61,7 +61,7 @@
         <!-- Table row -->
         <div class="row">
             <div class="col-xs-12 table-responsive">
-                <table class="table table-striped" id="order_detail_table" width="100%">
+                <table class="table table-striped">
                     <thead>
                         <tr>
                             <th>Sr No.</th>
@@ -73,6 +73,30 @@
                         </tr>
                     </thead>
                     <tbody>
+                        <?php
+                        if (!empty($table)) {
+                            foreach ($table as $key => $row) {
+                                if (isset($row['type']) && ($row['type'] == 'r' || $row['type'] == 1)) {
+                                    $type = 'Rent';
+                                } else if (isset($row['type']) && ($row['type'] == 's' || $row['type'] == 2)) {
+                                    $type = 'Buy';
+                                } else if (isset($row['type']) && $row['type'] == 3) {
+                                    $type = 'Rent & Buy';
+                                } else {
+                                    $type = '';
+                                }
+                                ?><tr>
+                                    <td><?php echo $key + 1; ?></td>
+                                    <td><?php echo $row['product_name']; ?></td>
+                                    <td><?php echo $type; ?></td>
+                                    <td><?php echo $row['quantity']; ?></td>
+                                    <td><?php echo '&#8377; ' . $row['price']; ?></td>
+                                    <td><?php echo '&#8377; ' . $row['total_price']; ?></td>
+                                </tr>
+                                <?php
+                            }
+                        }
+                        ?>
                     </tbody>
                 </table>
             </div>
@@ -96,25 +120,35 @@
             </div>
             <!-- /.col -->
             <div class="col-xs-6">
-                <p class="lead">Amount Due <?php echo $user['order_date']; ?></p>
+                <!--<p class="lead">Amount Due <?php echo $user['order_date']; ?></p>-->
 
                 <div class="table-responsive">
                     <table class="table">
                         <tr>
                             <th style="width:50%">Subtotal:</th>
                             <td><?php echo $user['total']; ?></td>
-                        </tr>
+                        </tr>                       
                         <tr>
                             <th>Shipping:</th>
-                            <td><?php echo $user['shipping_rate']; ?></td>
+                            <td><?php
+                                $shipping_rate = isset($user['shipping_rate']) && ($user['shipping_rate'] != '') ? $user['shipping_rate'] : "0";
+                                echo '&#8377; ' . $shipping_rate;
+                                ?></td>
                         </tr>
                         <tr>
                             <th>Delivery Charge:</th>
-                            <td><?php echo $user['order_delivery_charge']; ?></td>
+                            <td><?php
+                                $order_delivery_charge = isset($user['order_delivery_charge']) && ($user['order_delivery_charge'] != '') ? $user['order_delivery_charge'] : "0";
+                                echo '&#8377; ' . $order_delivery_charge;
+                                ?></td>
                         </tr>
                         <tr>
                             <th>Total:</th>
-                            <td><?php echo (int) $user['total'] + (int) $user['shipping_rate'] + (int) $user['order_delivery_charge']; ?></td>
+                            <td><?php
+//                            echo '&#8377; '.(int)$user['total'] + (int)$user['shipping_rate'] + (int)$user['order_delivery_charge'];
+                                $full_total = (int) $user['total'] + (int) $user['shipping_rate'] + (int) $user['order_delivery_charge'];
+                                echo '&#8377; ' . $full_total;
+                                ?></td>
                         </tr>
                     </table>
                 </div>
@@ -126,7 +160,7 @@
         <!-- this row will not appear when printing -->
         <div class="row no-print">
             <div class="col-xs-12">
-                <a href="invoice-print.html" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Print</a>
+                <a href="<?php echo base_url('order/order_detail_print/' . $order_id); ?>" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Print</a>
       <!--          <button type="button" class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Submit Payment
                 </button>
                 <button type="button" class="btn btn-primary pull-right" style="margin-right: 5px;">
@@ -141,7 +175,7 @@
 <!-- /.content-wrapper -->
 
 
-<script>
+<!--<script>
     $(document).ready(function () {
         showtable();
     });
@@ -172,4 +206,4 @@
             ]
         });
     }
-</script>
+</script>-->

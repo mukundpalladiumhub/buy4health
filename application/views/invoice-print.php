@@ -33,7 +33,7 @@
                 <div class="row">
                     <div class="col-xs-12">
                         <h2 class="page-header">
-                            <i class="fa fa-globe"></i> Rent4Health
+                            <i class="fa fa-globe"></i>  <img src="<?php echo base_url('assets/images/value4health_logo.png')?>" height="42" width="110"> 
                             <small class="pull-right">Date: <?php echo date('m/d/Y'); ?></small>
                         </h2>
                     </div>
@@ -61,7 +61,7 @@
                             <?php echo $user['address1']; ?>,<br>
                             <?php echo $user['zipcode']; ?><br>
                             <?php echo $user['city'] . ' , ' . $user['state']; ?><br>
-                            Phone : <?php echo $user['phone'] . ' , ' . $user['mobile']; ?><br>
+                            Phone : <?php echo (isset($user['phone']) && $user['phone'] != '') ? $user['phone'] . ' , ' : ''; echo isset($user['mobile']) ? $user['mobile'] : ''; ?><br>
                             Email: <?php echo $user['email']; ?>
                         </address>
                     </div>
@@ -90,19 +90,19 @@
                             </thead>
                             <tbody>
                                 <?php
-                                if (isset($table)) {
-                                    $no = 0;
-                                    foreach ($table as $row) {
-                                        if (isset($row['type']) && $row['type'] == 'r') {
+                                if (!empty($table)) {
+                                    foreach ($table as $key => $row) {
+                                        if (isset($row['type']) && ($row['type'] == 'r' || $row['type'] == 1)) {
                                             $type = 'Rent';
-                                        } else if (isset($row['type']) && $row['type'] == 's') {
-                                            $type = 'Sell';
+                                        } else if (isset($row['type']) && ($row['type'] == 's' || $row['type'] == 2)) {
+                                            $type = 'Buy';
+                                        } else if (isset($row['type']) && $row['type'] == 3) {
+                                            $type = 'Rent & Buy';
                                         } else {
                                             $type = '';
                                         }
-                                        $no++;
                                         ?><tr>
-                                            <td><?php echo $no; ?></td>
+                                            <td><?php echo $key + 1; ?></td>
                                             <td><?php echo $row['product_name']; ?></td>
                                             <td><?php echo $type; ?></td>
                                             <td><?php echo $row['quantity']; ?></td>
@@ -123,20 +123,10 @@
                 <div class="row">
                     <!-- accepted payments column -->
                     <div class="col-xs-6">
-<!--                        <p class="lead">Payment Methods:</p>
-                        <img src="<?php echo base_url(); ?>/assets/dist/img/credit/visa.png" alt="Visa">
-                        <img src="<?php echo base_url(); ?>/assets/dist/img/credit/mastercard.png" alt="Mastercard">
-                        <img src="<?php echo base_url(); ?>/assets/dist/img/credit/american-express.png" alt="American Express">
-                        <img src="<?php echo base_url(); ?>/assets/dist/img/credit/paypal2.png" alt="Paypal">
-
-                        <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
-                            Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles, weebly ning heekya handango imeem plugg dopplr
-                            jibjab, movity jajah plickers sifteo edmodo ifttt zimbra.
-                        </p>-->
                     </div>
                     <!-- /.col -->
                     <div class="col-xs-6">
-                        <p class="lead">Amount Due <?php echo $user['order_date']; ?></p>
+                        <!--<p class="lead">Amount Due <?php echo $user['order_date']; ?></p>-->
 
                         <div class="table-responsive">
                             <table class="table">
@@ -164,8 +154,8 @@
                                 <tr>
                                     <th>Total:</th>
                                     <td><?php
-                                        $total = (int) $user['total'] + (int) $user['shipping_rate'] + (int) $user['order_delivery_charge'];
-                                        echo '&#8377; ' . $total;
+                                        $full_total = (int) $user['total'] + (int) $user['shipping_rate'] + (int) $user['order_delivery_charge'];
+                                        echo '&#8377; ' . $full_total;
                                         ?></td>
                                 </tr>
                             </table>

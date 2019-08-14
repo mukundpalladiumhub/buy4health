@@ -46,7 +46,7 @@ class Order_model extends CI_Model {
         }
     }
 
-    public function OrderDetailList($conn, $id) {
+    /*public function OrderDetailList($conn, $id) {
 
         $this->db->from('order_details as od');
 //        $this->db->join('orders as o', 'o.order_id = od.order_id', 'left');
@@ -89,7 +89,7 @@ class Order_model extends CI_Model {
             $result = $this->db->get();
             return $result->result_array();
         }
-    }
+    }*/
 
     public function update_status($order_status, $id) {
         $this->db->set('order_status', $order_status);
@@ -126,12 +126,9 @@ class Order_model extends CI_Model {
 
     public function OrderDetailList_print($id) {
         $this->db->from('order_details as od');
-//        $this->db->join('orders as o', 'o.order_id = od.order_id', 'left');
         $this->db->join('product as p', 'p.id = od.product_id', 'left');
-        $this->db->join('size as s', 's.id = od.size_id', 'left');
         $this->db->select("od.*, p.product_name");
         $this->db->where("od.order_id", $id);
-        $this->db->order_by('od.deliver_on', 'ASC');
         $result = $this->db->get()->result_array();
         return $result;
     }

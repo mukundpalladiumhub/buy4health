@@ -26,10 +26,11 @@
                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                 <h4 class="modal-title">Change Order Status</h4>
                                             </div>
-                                            <div class="row form-group">
+                                                <div class="modal-body">
+                                            <div class="row">
                                                 <div class="col-sm-1"></div>
                                                 <label class="col-sm-3">Order Status</label>
-                                                <div class="col-sm-7">
+                                                <div class="col-sm-7 form-group">
                                                     <select id="order_status" name="order_status" class="form-control">
                                                         <?php
                                                         if (!empty($order_status)) {
@@ -43,6 +44,7 @@
                                                 </div>
                                                 <div class="col-sm-1"></div>
                                             </div>
+                                                </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-default" data-dismiss="modal" id="save_status">Save</button>
                                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
