@@ -38,11 +38,11 @@
             <div class="col-sm-4 invoice-col">
                 To
                 <address>
-                    <strong><?php echo $user['first_name'].' '.$user['last_name'];?></strong><br>
+                    <strong><?php echo $user['first_name'] . ' ' . $user['last_name']; ?></strong><br>
                     <?php echo $user['address1']; ?>,<br>
                     <?php echo $user['zipcode']; ?><br>
-                    <?php echo $user['city'].','.$user['state']; ?><br>
-                    Phone : <?php echo $user['phone'].' , '.$user['mobile']; ?><br>
+                    <?php echo $user['city'] . ',' . $user['state']; ?><br>
+                    Phone : <?php echo $user['phone'] . ' , ' . $user['mobile']; ?><br>
                     Email: <?php echo $user['email']; ?>
                 </address>
             </div>
@@ -63,15 +63,15 @@
             <div class="col-xs-12 table-responsive">
                 <table class="table table-striped" id="order_detail_table" width="100%">
                     <thead>
-                                    <tr>
-                                        <th>Sr No.</th>
-                                        <th>Product Name</th>
-                                        <th>Type (Buy & Rent)</th>
-                                        <th>Quantity</th>
-                                        <th>Unit Price</th>
-                                        <th>Total Price</th>
-                                    </tr>
-                                </thead>
+                        <tr>
+                            <th>Sr No.</th>
+                            <th>Product Name</th>
+                            <th>Type (Buy & Rent)</th>
+                            <th>Quantity</th>
+                            <th>Unit Price</th>
+                            <th>Total Price</th>
+                        </tr>
+                    </thead>
                     <tbody>
                     </tbody>
                 </table>
@@ -102,19 +102,19 @@
                     <table class="table">
                         <tr>
                             <th style="width:50%">Subtotal:</th>
-                            <td><?php echo $user['total'];?></td>
+                            <td><?php echo $user['total']; ?></td>
                         </tr>
                         <tr>
                             <th>Shipping:</th>
-                            <td><?php echo $user['shipping_rate'];?></td>
+                            <td><?php echo $user['shipping_rate']; ?></td>
                         </tr>
                         <tr>
                             <th>Delivery Charge:</th>
-                            <td><?php echo $user['order_delivery_charge'];?></td>
+                            <td><?php echo $user['order_delivery_charge']; ?></td>
                         </tr>
                         <tr>
                             <th>Total:</th>
-                            <td><?php echo (int)$user['total'] + (int)$user['shipping_rate'] + (int)$user['order_delivery_charge'];?></td>
+                            <td><?php echo (int) $user['total'] + (int) $user['shipping_rate'] + (int) $user['order_delivery_charge']; ?></td>
                         </tr>
                     </table>
                 </div>
@@ -156,7 +156,7 @@
             "destroy": true,
             "processData": false,
             "responsive": true,
-            "bInfo" : false,
+            "bInfo": false,
             "bFilter": false,
             "ajax": {
                 "url": '<?php echo base_url() . '/order/order_detail/' . $order_id; ?>',
