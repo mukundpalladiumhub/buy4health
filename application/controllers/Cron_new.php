@@ -11,7 +11,7 @@ class Cron_new extends CI_Controller {
     public function index() {
 
         $category_list = $this->categoryList();
-
+        
         if (!empty($category_list)) {
 
 
@@ -37,12 +37,16 @@ class Cron_new extends CI_Controller {
 
                 $category_id_check_product = $category_value['id'];
 
+                $category_data['site_id'] = BUY4HEALTHID;
                 $category_data['category_name'] = $category_value['name'];
                 $category_data['category_description'] = $category_value['description'];
                 $category_data['category_tag'] = '';
-                $category_data['status'] = '';
+                $category_data['status'] = 1;
 
-                $check_category_exist = $this->db->select('category_name,id')->where("category_name", $category_value['name'])->get('category')->row_array();
+                $check_category_exist = $this->db->select('category_name,id')
+                        ->where("category_name", $category_value['name'])
+                        ->where("site_id", BUY4HEALTHID)
+                        ->get('category')->row_array();
 
                 if (empty($check_category_exist)) {
                     $this->db->insert('category', $category_data);
@@ -71,13 +75,15 @@ class Cron_new extends CI_Controller {
                     $categoryId = $this->db->select('*')
                                     ->from('category')
                                     ->where("category_name", $category_name)
+                                    ->where("site_id", BUY4HEALTHID)
                                     ->get()->row_array();
 
                     if (empty($categoryId)) {
+                        $category_data['site_id'] = BUY4HEALTHID;
                         $category_data['category_name'] = $category_name;
                         $category_data['category_description'] = '';
                         $category_data['category_tag'] = '';
-                        $category_data['status'] = '';
+                        $category_data['status'] = 1;
 
                         $this->db->insert('category', $category_data);
                         $category_id = $this->db->insert_id();
@@ -158,73 +164,83 @@ class Cron_new extends CI_Controller {
                         }
                     }
                     /*                     * ***** End Product Images ****** */
-
-                    $productVariations_list = $this->getProductVariations($b4hproduct_id);
-
+                    $productVariations_list = $this->getProductVariations($product_value['id']);
                     if (!empty($productVariations_list)) {
 
                         foreach ($productVariations_list as $productVariations) {
+                            if($productVariations['purchasable'] == true)
+                            {
 
-                            $sizeType = $this->db->select('*')
-                                            ->from('size_type')
-                                            ->where("size_type", 'General')
-                                            ->get()->row_array();
-
-                            if (!empty($sizeType)) {
-                                $sizeTypeid = $sizeType['id'];
-                            } else {
-                                $size_type_data['size_type'] = 'General';
-                                $size_type_data['status'] = 1;
-                                $this->db->insert('size_type', $size_type_data);
-                                $sizeTypeid = $this->db->insert_id();
-                            }
-
-                            $productAtt = $productVariations['attributes'];
-                            if (!empty($productAtt)) {
-
-                                $option1 = isset($productAtt[0]['option']) ? $productAtt[0]['option'] : "";
-                                $option2 = isset($productAtt[1]['option']) ? $productAtt[1]['option'] : "";
-                                $size = $option1 . '-' . $option2;
-
-                                $sizeCheck = $this->db->select('*')
-                                                ->from('size')
-                                                ->where("size_type", $sizeTypeid)
-                                                ->where("size", $size)
+                                $sizeType = $this->db->select('*')
+                                                ->from('size_type')
+                                                ->where("size_type", 'General')
                                                 ->get()->row_array();
 
-                                if (empty($sizeCheck)) {
-                                    $size_data['size_type'] = $sizeTypeid;
-                                    $size_data['size'] = $size;
-                                    $size_data['status'] = 1;
-
-                                    $this->db->insert('size', $size_data);
-                                    $sizeId = $this->db->insert_id();
+                                if (!empty($sizeType)) {
+                                    $sizeTypeid = $sizeType['id'];
                                 } else {
-                                    $sizeId = $sizeCheck['id'];
+                                    $size_type_data['size_type'] = 'General';
+                                    $size_type_data['status'] = 1;
+                                    $this->db->insert('size_type', $size_type_data);
+                                    $sizeTypeid = $this->db->insert_id();
                                 }
 
-                                $checkProductPriceExist = $this->db->select('*')
-                                        ->where('size_type', $sizeTypeid)
-                                        ->where('size_id', $sizeId)
-                                        ->where('product_id', $b4hproduct_id)
-                                        ->get('product_price_details')
-                                        ->row_array();
 
-                                $productPriceData['product_id'] = $b4hproduct_id;
-                                $productPriceData['size_type'] = $sizeTypeid;
-                                $productPriceData['size_id'] = $sizeId;
-                                $productPriceData['quantity'] = isset($productVariations['stock_quantity']) ? $productVariations['stock_quantity'] : 0;
-                                $productPriceData['low_level'] = 0;
-                                $productPriceData['service_tax'] = 0;
-                                $productPriceData['mrp'] = isset($productVariations['regular_price']) ? $productVariations['regular_price'] : 0;
-                                $productPriceData['price'] = isset($productVariations['price']) ? $productVariations['price'] : 0;
-                                $productPriceData['status'] = 1;
+                                $productAtt = $productVariations['attributes'];
+                                if (!empty($productAtt)) {
 
-                                if (empty($checkProductPriceExist)) {
-                                    $this->db->insert('product_price_details', $productPriceData);
-                                } else {
-                                    $this->db->where('id', $checkProductPriceExist['id']);
-                                    $this->db->update('product_price_details', $productPriceData);
+                                    $option1 = isset($productAtt[0]['option']) ? $productAtt[0]['option'] : "";
+                                    $option2 = isset($productAtt[1]['option']) ? $productAtt[1]['option'] : "";
+                                    
+                                    $size = '';
+                                    if(isset($option1) && $option1!=''){
+                                        $size .= $option1;
+                                    }
+                                    if(isset($option2) && $option2!=''){
+                                        $size .= " - ".$option2;
+                                    }
+
+                                    //$size = $option1." - ".$option2;
+                                    $sizeCheck = $this->db->select('*')
+                                                    ->from('size')
+                                                    ->where("size_type", $sizeTypeid)
+                                                    ->where("size", $size)
+                                                    ->get()->row_array();
+
+                                    if (empty($sizeCheck)) {
+                                        $size_data['size_type'] = $sizeTypeid;
+                                        $size_data['size'] = $size;
+                                        $size_data['status'] = 1;
+
+                                        $this->db->insert('size', $size_data);
+                                        $sizeId = $this->db->insert_id();
+                                    } else {
+                                        $sizeId = $sizeCheck['id'];
+                                    }
+
+                                    $checkProductPriceExist = $this->db->select('*')
+                                            ->where('size_type', $sizeTypeid)
+                                            ->where('size_id', $sizeId)
+                                            ->where('product_id', $b4hproduct_id)
+                                            ->get('product_price_details')
+                                            ->row_array();
+
+                                    $productPriceData['product_id'] = $b4hproduct_id;
+                                    $productPriceData['size_type'] = $sizeTypeid;
+                                    $productPriceData['size_id'] = $sizeId;
+                                    $productPriceData['quantity'] = isset($productVariations['stock_quantity']) ? $productVariations['stock_quantity'] : 0;
+                                    $productPriceData['low_level'] = 0;
+                                    $productPriceData['service_tax'] = 0;
+                                    $productPriceData['mrp'] = isset($productVariations['regular_price']) ? $productVariations['regular_price'] : 0;
+                                    $productPriceData['price'] = isset($productVariations['price']) ? $productVariations['price'] : 0;
+                                    $productPriceData['status'] = 1;
+
+                                    if (empty($checkProductPriceExist)) {
+                                        $this->db->insert('product_price_details', $productPriceData);
+                                    } else {
+                                        $this->db->where('id', $checkProductPriceExist['id']);
+                                        $this->db->update('product_price_details', $productPriceData);
+                                    }
                                 }
                             }
                         }
@@ -271,11 +287,11 @@ class Cron_new extends CI_Controller {
                         $productPriceData['product_id'] = $b4hproduct_id;
                         $productPriceData['size_type'] = $sizeTypeid;
                         $productPriceData['size_id'] = $sizeId;
-                        $productPriceData['quantity'] = isset($productVariations['stock_quantity']) ? $productVariations['stock_quantity'] : 0;
+                        $productPriceData['quantity'] = isset($product_value['stock_quantity']) ? $product_value['stock_quantity'] : 0;
                         $productPriceData['low_level'] = 0;
                         $productPriceData['service_tax'] = 0;
-                        $productPriceData['mrp'] = isset($productVariations['regular_price']) ? $productVariations['regular_price'] : 0;
-                        $productPriceData['price'] = isset($productVariations['price']) ? $productVariations['price'] : 0;
+                        $productPriceData['mrp'] = isset($product_value['regular_price']) ? $product_value['regular_price'] : 0;
+                        $productPriceData['price'] = isset($product_value['price']) ? $product_value['price'] : 0;
                         $productPriceData['status'] = 1;
 
                         if (empty($checkProductPriceExist)) {
@@ -285,124 +301,11 @@ class Cron_new extends CI_Controller {
                             $this->db->update('product_price_details', $productPriceData);
                         }
                     }
-
-                    /* if (isset($product_value['type']) && $product_value['type'] != "") {
-
-                      $check_size_type = $this->db->select('*')
-                      ->where('size_type', $product_value['type'])
-                      ->get('size_type')->row_array();
-
-                      if (empty($check_size_type)) {
-                      $b4hsize_type_data['size_type'] = $product_value['type'];
-                      $b4hsize_type_data['status'] = 1;
-
-                      $this->db->insert('size_type', $b4hsize_type_data);
-                      $size_type_id = $this->db->insert_id();
-                      } else {
-                      $size_type_id = $check_size_type['id'];
-                      }
-
-
-                      if (!empty($product_value['attributes'])) {
-                      foreach ($product_value['attributes'] as $k => $sizeType_array) {
-
-                      if (isset($sizeType_array['name']) && $sizeType_array['name'] == 'Size') {
-
-                      if (!empty($sizeType_array['options'])) {
-
-                      foreach ($sizeType_array['options'] as $key => $size_array) {
-
-                      $check_size = $this->db->select('*')
-                      ->where('size_type', $size_type_id)
-                      ->where('size', $size_array)
-                      ->get('size')->row_array();
-
-
-                      if (empty($check_size)) {
-                      $size_data['size_type'] = $size_type_id;
-                      $size_data['size'] = $size_array;
-                      $size_data['status'] = 1;
-
-                      $this->db->insert('size', $size_data);
-                      $size_id = $this->db->insert_id();
-                      } else {
-                      $size_id = $check_size['id'];
-                      }
-
-                      $check_productPrice_exist = $this->db->select('*')
-                      ->where('size_type', $size_type_id)
-                      ->where('size_id', $size_id)
-                      ->where('product_id', $b4hproduct_id)
-                      ->get('product_price_details')
-                      ->row_array();
-
-
-                      $productPrice_data['product_id'] = $b4hproduct_id;
-                      $productPrice_data['size_type'] = $size_type_id;
-                      $productPrice_data['size_id'] = $size_id;
-                      $productPrice_data['quantity'] = (isset($product_value['stock_quantity']) && ($product_value['stock_quantity'] != "")) ? $product_value['stock_quantity'] : 0;
-                      $productPrice_data['low_level'] = 1;
-                      $productPrice_data['service_tax'] = 1;
-                      $productPrice_data['mrp'] = $product_value['regular_price'];
-                      $productPrice_data['price'] = $product_value['sale_price'];
-                      $productPrice_data['status'] = 1;
-
-                      if (empty($check_productPrice_exist)) {
-                      $this->db->insert('product_price_details', $productPrice_data);
-                      } else {
-                      $this->db->where('id', $check_productPrice_exist['id']);
-                      $this->db->update('product_price_details', $productPrice_data);
-                      }
-                      }
-                      }
-                      }
-                      }
-                      } else {
-
-                      $check_size = $this->db->select('*')
-                      ->where('size_type', $size_type_id)
-                      ->get('size')->row_array();
-
-                      if (empty($check_size)) {
-                      $size_data['size_type'] = $size_type_id;
-                      $size_data['size'] = $product_value['type'];
-                      $size_data['status'] = 1;
-
-                      $this->db->insert('size', $size_data);
-                      $size_id = $this->db->insert_id();
-                      } else {
-                      $size_id = $check_size['id'];
-                      }
-
-                      $check_productPrice_exist = $this->db->select('*')
-                      ->where('size_type', $size_type_id)
-                      ->where('size_id', $size_id)
-                      ->where('product_id', $b4hproduct_id)
-                      ->get('product_price_details')
-                      ->row_array();
-
-
-                      $productPrice_data['product_id'] = $b4hproduct_id;
-                      $productPrice_data['size_type'] = $size_type_id;
-                      $productPrice_data['size_id'] = $size_id;
-                      $productPrice_data['quantity'] = (isset($product_value['stock_quantity']) && ($product_value['stock_quantity'] != "")) ? $product_value['stock_quantity'] : 0;
-                      $productPrice_data['low_level'] = 1;
-                      $productPrice_data['service_tax'] = 1;
-                      $productPrice_data['mrp'] = $product_value['regular_price'];
-                      $productPrice_data['price'] = $product_value['sale_price'];
-                      $productPrice_data['status'] = 1;
-
-                      if (empty($check_productPrice_exist)) {
-                      $this->db->insert('product_price_details', $productPrice_data);
-                      } else {
-                      $this->db->where('id', $check_productPrice_exist['id']);
-                      $this->db->update('product_price_details', $productPrice_data);
-                      }
-                      }
-                      } */
                 }
             }
         }
+        
+        echo "Records inserted successfully.";exit;
         /*         * ***** End Product ****** */
     }
 

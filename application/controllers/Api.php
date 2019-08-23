@@ -10,11 +10,47 @@ class Api extends CI_Controller {
         $this->load->model('product_model');
     }
 
+    public function getRSAPublicKey($orderId) {
+        $url = "https://secure.ccavenue.com/transaction/getRSAKey";
+        $accessCode = "AVMB87GH26BO73BMOB";
+        $fields = array(
+            'access_code' => $accessCode,
+            'order_id' => $orderId
+        );
+
+        $postvars = '';
+        $sep = '';
+        foreach ($fields as $key => $value) {
+            $postvars .= $sep . urlencode($key) . '=' . urlencode($value);
+            $sep = '&';
+        }
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, $url);
+        $ipAddress = "160.153.71.161"; //Custom IP here
+        //curl_setopt($ch, CURLOPT_HTTPHEADER, ["REMOTE_ADDR: $ipAddress", "HTTP_X_FORWARDED_FOR: $ipAddress"]);
+        curl_setopt($ch, CURLOPT_INTERFACE, $ipAddress);
+        curl_setopt($ch, CURLOPT_POST, count($fields));
+        //curl_setopt($ch, CURLOPT_CAINFO, 'replace this with your cacert.pem file path here');
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $postvars);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        $result = curl_exec($ch);
+
+        $result_array = array();
+        $result_array['secret_key'] = $result;
+        echo json_encode($result_array);
+        exit;
+    }
+
     public function getCategoriesList() {
         $post = $this->input->post();
         $post = array("start" => 5);
         if (!empty($post)) {
-            $result = $this->category_model->getCategoryList();
+            $display_type = isset($_GET['display_type']) ? $_GET['display_type'] : '';
+            $result = $this->category_model->getCategoryList($display_type);
             $categories = array();
             foreach ($result as $array) {
                 if ($array['status'] == 1) {
@@ -40,6 +76,7 @@ class Api extends CI_Controller {
             $this->product_model->type = isset($_GET['type']) ? $_GET['type'] : '';
             $this->product_model->min = isset($_GET['min']) ? $_GET['min'] : '';
             $this->product_model->max = isset($_GET['max']) ? $_GET['max'] : '';
+            $this->product_model->display_type = isset($_GET['display_type']) ? $_GET['display_type'] : '';
             $product_details = $this->product_model->ViewList(true);
 
             foreach ($product_details as $key => $detail) {
@@ -261,6 +298,52 @@ class Api extends CI_Controller {
             }
         }
         echo json_encode($result_array);
+        exit;
+    }
+
+    public function cancel_url() {
+        
+        echo '<!DOCTYPE html>
+                <html lang="en">
+                <head>
+                   <meta charset="utf-8">
+                   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                   <meta name="viewport" content="width=device-width, initial-scale=1">
+                   <!-- The above 3 meta tags must come first in the head; any other head content must come after these tags -->
+                   <meta name="description" content="">
+                   <meta name="author" content="">
+                   <title>Please wait..</title>
+                </head>
+
+                <body>
+                </body>
+                <script type="text/javascript">
+                   Payment.onFailure("");
+                </script>
+                </html>';
+        exit;
+    }
+
+    public function return_url() {
+        
+        echo '<!DOCTYPE html>
+                <html lang="en">
+                <head>
+                   <meta charset="utf-8">
+                   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                   <meta name="viewport" content="width=device-width, initial-scale=1">
+                   <!-- The above 3 meta tags must come first in the head; any other head content must come after these tags -->
+                   <meta name="description" content="">
+                   <meta name="author" content="">
+                   <title>Please wait..</title>
+                </head>
+
+                <body>
+                </body>
+                <script type="text/javascript">
+                   Payment.onSuccess("");
+                </script>
+                </html>';
         exit;
     }
 

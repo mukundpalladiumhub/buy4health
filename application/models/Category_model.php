@@ -39,10 +39,18 @@ class Category_model extends CI_Model {
         }
     }
 
-    public function getCategoryList() {
+    public function getCategoryList($display_type) {
+        
         $this->db->select('*');
         $this->db->from('category');
-        $this->db->where('status', 1);
+        
+        if(isset($display_type) && $display_type == "Buy"){
+            $this->db->where('site_id', BUY4HEALTHID);
+        }
+        if(isset($display_type) && $display_type == "Rent"){
+            $this->db->where('site_id', RENT4HEALTHID);
+        }
+//        $this->db->where('status', 1);
         $resultQuery = $this->db->get();
         $resultCategoryList = $resultQuery->result_array();
         return $resultCategoryList;

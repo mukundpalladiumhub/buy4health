@@ -11,6 +11,7 @@ class Product_model extends CI_Model {
     public $sort;
     public $type;
     public $min;
+    public $display_type;
 
     public function __construct() {
         parent::__construct();
@@ -23,6 +24,12 @@ class Product_model extends CI_Model {
         $this->db->where("p.status", 1);
         if (isset($this->category_id) && $this->category_id > 0) {
             $this->db->where("p.category", $this->category_id);
+        }
+        if (isset($this->display_type) && $this->display_type == 'Buy') {
+            $this->db->where("p.site_id", BUY4HEALTHID);
+        }
+        if (isset($this->display_type) && $this->display_type == 'Rent') {
+            $this->db->where("p.site_id", RENT4HEALTHID);
         }
         if (isset($this->sort) && $this->sort == 1) {
             $this->db->order_by("p.product_name", 'ASC');

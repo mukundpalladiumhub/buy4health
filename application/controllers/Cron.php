@@ -22,11 +22,15 @@ class Cron extends CI_Controller {
 
             foreach ($category as $category_value) {
 
-                $check_category_exist = $this->db->select('category_name,id')->where("category_name", $category_value['category_name'])->get('category')->row_array();
+                $check_category_exist = $this->db->select('category_name,id')
+                        ->where("category_name", $category_value['category_name'])
+                        ->where("site_id", RENT4HEALTHID)
+                        ->get('category')->row_array();
 
                 $category_id_check_product = $category_value['id'];
                 unset($category_value['id']);
 
+                $category_value['site_id'] = RENT4HEALTHID;
                 if (empty($check_category_exist)) {
                     $this->db->insert('category', $category_value);
                     $category_id = $this->db->insert_id();
