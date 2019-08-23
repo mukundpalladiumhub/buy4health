@@ -73,7 +73,7 @@
                                 var result = JSON.parse(data);
                                 if (result.status == 1) {
                                     $("#msg").html(result.msg);
-                                    window.location.href = '<?php echo base_url(); ?>user';
+                                    window.location.href = '<?php echo base_url(); ?>dashboard';
                                 } else {
                                     $("#msg").html(result.msg);
                                 }
