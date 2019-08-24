@@ -61,7 +61,11 @@
                             <?php echo $user['address1']; ?>,<br>
                             <?php echo $user['zipcode']; ?><br>
                             <?php echo $user['city'] . ' , ' . $user['state']; ?><br>
-                            Phone : <?php echo (isset($user['phone']) && $user['phone'] != '') ? $user['phone'] . ' , ' : ''; echo isset($user['mobile']) ? $user['mobile'] : ''; ?><br>
+                            Phone : <?php 
+                            echo (isset($user['phone']) && $user['phone'] != '') ? $user['phone'] : '';
+                            echo (isset($user['mobile']) && $user['mobile'] != $user['phone']) ? ' , ' . $user['mobile'] : '';
+                            ?>
+                            <br>
                             Email: <?php echo $user['email']; ?>
                         </address>
                     </div>
