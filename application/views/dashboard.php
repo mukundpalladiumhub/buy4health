@@ -12,7 +12,7 @@
                     <div class="icon">
                         <i class="ion ion-pie-graph"></i>
                     </div>
-                    <a href="<?php echo base_url(); ?>category" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                    <a href="<?php echo base_url(); ?>category" class="small-box-footer">View all categories <i class="fa fa-arrow-circle-right"></i></a>
                 </div>
             </div>
             <!-- ./col -->
@@ -26,7 +26,7 @@
                     <div class="icon">
                         <i class="ion ion-bag"></i>
                     </div>
-                    <a href="<?php echo base_url(); ?>product" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                    <a href="<?php echo base_url(); ?>product" class="small-box-footer">View all products <i class="fa fa-arrow-circle-right"></i></a>
                 </div>
             </div>
             <!-- ./col -->
@@ -40,7 +40,7 @@
                     <div class="icon">
                         <i class="ion ion-person-add"></i>
                     </div>
-                    <a href="<?php echo base_url(); ?>order" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                    <a href="<?php echo base_url(); ?>order" class="small-box-footer">View all orders <i class="fa fa-arrow-circle-right"></i></a>
                 </div>
             </div>
         </div>
@@ -53,10 +53,11 @@
                     <div class="box-body table-responsive no-padding">
                         <table class="table table-hover">
                             <tr>
-                                <th>Name</th>
+                                <th>Customer Name</th>
                                 <th>Number</th>
                                 <th>Total</th>
                                 <th>Date</th>
+                                <th>Order Status</th>
                             </tr>
                             <?php foreach($orders as $order){ ?>
                             <tr>
@@ -64,6 +65,7 @@
                                 <td><?php echo $order['order_number']; ?></td>
                                 <td><?php echo '&#8377; ' .$order['total']; ?></td>
                                 <td><?php echo $order['order_date']; ?></td>
+                                <td><?php echo $order['status_name']; ?></td>
                             </tr>
                             <?php } ?>
                         </table>

@@ -23,13 +23,14 @@ class Product extends CI_Controller {
         $post = $this->input->post();
         if (!empty($post)) {
             $colnum = array(
-                0 => 'product_type',
-                1 => 'product_code',
-                2 => 'product_name',
-                3 => 'category',
-                4 => 'sub_category',
+                0 => 'site_id',
+                1 => 'product_name',
+                2 => 'category',
+                3 => 'sub_category',
+                4 => 'stock_status',
                 5 => 'status',
             );
+            $this->product_model->site_id = isset($post['site_id']) ? $post['site_id'] : '';
             $this->product_model->search = isset($post['search']['value']) ? $post['search']['value'] : '';
             $this->product_model->start = isset($post['start']) ? $post['start'] : '';
             $this->product_model->length = isset($post['length']) ? $post['length'] : '';
@@ -41,17 +42,27 @@ class Product extends CI_Controller {
             $result = $this->product_model->ViewList($conn);
             $product_data = array();
             foreach ($result as $array) {
+
+                $site = "";
+                if (isset($array['site_id']) && $array['site_id'] == RENT4HEALTHID) {
+                    $site = "Rent4health";
+                } else if (isset($array['site_id']) && $array['site_id'] == BUY4HEALTHID) {
+                    $site = "Buy4health";
+                }
+
                 $id = $array['id'];
+                $data['site_id'] = $site;
                 $data['product_type'] = $array['product_type'];
                 $data['product_code'] = $array['product_code'];
                 $data['product_name'] = $array['product_name'];
                 $data['category'] = $array['category_name'];
                 $data['sub_category'] = $array['sub_category'];
+                $data['stock_status'] = $array['stock_status'];
                 $data['status'] = $array['status'];
-                $data['action'] = '<div class="col-sm-3"><a href="' . base_url() . 'product/view/' . $id . '" class="btn btn-xs btn-info viewbtn"> View</a></div>';
-                $data['action'] .= '<div class="col-sm-3"><a href="' . base_url() . 'product/image/' . $id . '" class="btn btn-xs btn-success imagebtn"> Images</a></div>';
-                $data['action'] .= '<div class="col-sm-3"><a href="' . base_url() . 'product/price/' . $id . '" class="btn btn-xs btn-warning pricebtn"> Prices</a></div>';
-                $data['action'] .= '<div class="col-sm-3"><a class="btn btn-xs btn-primary rentbtn"> Rent</a></div>';
+                $data['action'] = '<div style="display:flex;"><a href="' . base_url() . 'product/view/' . $id . '" class="btn btn-xs btn-info viewbtn"> View</a>&nbsp;';
+                $data['action'] .= '<a href="' . base_url() . 'product/image/' . $id . '" class="btn btn-xs btn-success imagebtn"> Images</a>&nbsp;';
+                $data['action'] .= '<a href="' . base_url() . 'product/price/' . $id . '" class="btn btn-xs btn-warning pricebtn"> Prices</a>&nbsp;';
+                $data['action'] .= '<a href="' . base_url() . 'product/rent/' . $id . '" class="btn btn-xs btn-primary rentbtn"> Rent</a></div>';
 //                $data['action'] .= '<div class="col-sm-3"><a href="' . base_url() . 'product/rent/' . $id . '" class="btn btn-xs btn-primary rentbtn"> Rent</a></div>';
                 $product_data[] = $data;
             }
@@ -131,8 +142,8 @@ class Product extends CI_Controller {
         $post = $this->input->post();
         if (!empty($post)) {
             $colnum = array(
-                0 => 'pp.size_type',
-                1 => 'pp.size_id',
+                0 => 'st.size_type',
+                1 => 's.size',
                 2 => 'pp.quantity',
                 3 => 'pp.low_level',
                 4 => 'pp.service_tax',
@@ -149,11 +160,12 @@ class Product extends CI_Controller {
             $count = $this->product_model->ProductPriceList($conn, $id);
             $conn = true;
             $product_price = $this->product_model->ProductPriceList($conn, $id);
+
             $product_price_data = array();
             foreach ($product_price as $array) {
                 $id = $array['id'];
                 $data['size_type'] = $array['size_type'];
-                $data['size_id'] = $array['size_id'];
+                $data['size_id'] = $array['size'];
                 $data['quantity'] = $array['quantity'];
                 $data['low_level'] = $array['low_level'];
                 $data['service_tax'] = $array['service_tax'];
@@ -174,13 +186,51 @@ class Product extends CI_Controller {
             exit;
         }
     }
-    
+
     public function rent($id) {
-        $data = $this->product_model->rent($id);
+        $data = $this->product_model->price($id);
         $this->load->view('layout/header.php');
         $this->load->view('layout/sidebar.php');
         $this->load->view('Product_row_rent.php', $data);
         $this->load->view('layout/footer.php');
+    }
+
+    public function view_rent($id) {
+        $post = $this->input->post();
+        if (!empty($post)) {
+            $colnum = array(
+                0 => 'pr.rent_duration',
+                1 => 'pr.rent_amount',
+                2 => 'pr.advance_amount',
+                3 => 'pr.status',
+            );
+            $this->product_model->search = isset($post['search']['value']) ? $post['search']['value'] : '';
+            $this->product_model->start = isset($post['start']) ? $post['start'] : '';
+            $this->product_model->length = isset($post['length']) ? $post['length'] : '';
+            $this->product_model->column = isset($post['order'][0]['column']) ? $colnum[$post['order'][0]['column']] : '';
+            $this->product_model->dire = isset($post['order'][0]['dir']) ? $post['order'][0]['dir'] : '';
+            $conn = FALSE;
+            $count = $this->product_model->ProductRentList($conn, $id);
+            $conn = true;
+            $product_rent = $this->product_model->ProductRentList($conn, $id);
+            $product_rent_data = array();
+            foreach ($product_rent as $array) {
+                $id = $array['id'];
+                $data['rent_duration'] = $array['rent_duration'];
+                $data['rent_amount'] = $array['rent_amount'];
+                $data['advance_amount'] = $array['advance_amount'];
+                $data['status'] = $array['status'];
+                $product_rent_data[] = $data;
+            }
+            $json = array(
+                "draw" => $_POST['draw'],
+                "data" => $product_rent_data,
+                "recordsFiltered" => intval($count),
+                "recordsTotal" => intval($count),
+            );
+            echo json_encode($json);
+            exit;
+        }
     }
 
 }

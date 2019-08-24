@@ -7,16 +7,20 @@ class Category_model extends CI_Model {
     public $start;
     public $column;
     public $dire;
+    public $site_id;
 
     public function __construct() {
         parent::__construct();
     }
 
-
     public function CategoryList($conn) {
 
         $this->db->select("*,IF(status = 1,'Active','Inactive') as status");
         $this->db->from('category');
+
+        if (isset($this->site_id) && $this->site_id != "") {
+            $this->db->where('site_id', $this->site_id);
+        }
 
         if (isset($this->search) && $this->search != '') {
             $this->db->group_start()->like("category_name", $this->search)
@@ -40,14 +44,14 @@ class Category_model extends CI_Model {
     }
 
     public function getCategoryList($display_type) {
-        
+
         $this->db->select('*');
         $this->db->from('category');
-        
-        if(isset($display_type) && $display_type == "Buy"){
+
+        if (isset($display_type) && $display_type == "Buy") {
             $this->db->where('site_id', BUY4HEALTHID);
         }
-        if(isset($display_type) && $display_type == "Rent"){
+        if (isset($display_type) && $display_type == "Rent") {
             $this->db->where('site_id', RENT4HEALTHID);
         }
 //        $this->db->where('status', 1);

@@ -5,8 +5,13 @@
     <section class="content-header">
         <h1>
             Invoice
-            <!--<small>#007612</small>-->
         </h1>
+            <!--<small>#007612</small>-->
+        <ol class="breadcrumb">
+            <li><a href="<?php echo base_url('dashboard'); ?>"><i class="fa fa-dashboard"></i>Dashboard</a></li>
+            <li><a href="<?php echo base_url('order'); ?>">Order List</a></li>
+            <li><a href="JavaScript:Void(0);">Invoice</a></li>
+        </ol>
     </section>
 
     <!-- Main content -->
@@ -42,7 +47,10 @@
                     <?php echo $user['address1']; ?>,<br>
                     <?php echo $user['zipcode']; ?><br>
                     <?php echo $user['city'] . ',' . $user['state']; ?><br>
-                    Phone : <?php echo (isset($user['phone']) && $user['phone'] != '') ? $user['phone'] . ' , ' : ''; echo isset($user['mobile']) ? $user['mobile'] : ''; ?><br>
+                    Phone : <?php
+                    echo (isset($user['phone']) && $user['phone'] != '') ? $user['phone'] : '';
+                    echo (isset($user['mobile']) && $user['mobile'] != $user['phone']) ? ' , ' . $user['mobile'] : '';
+                    ?><br>
                     Email: <?php echo $user['email']; ?>
                 </address>
             </div>

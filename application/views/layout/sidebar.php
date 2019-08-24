@@ -26,8 +26,8 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">MAIN NAVIGATION</li>
-            <li><a href="<?php echo base_url() ?>dashboard"><i class="fa fa-laptop"></i> <span>Dashboard</span></a></li>
-            <li><a href="<?php echo base_url() ?>user"><i class="fa fa-dashboard"></i> <span>User</span></a></li>
+            <li><a href="<?php echo base_url() ?>dashboard"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
+            <li><a href="<?php echo base_url() ?>user"><i class="fa fa-user"></i> <span>User</span></a></li>
             <li><a href="<?php echo base_url() ?>category"><i class="fa fa-files-o"></i> <span>Category</span></a></li>
             <li><a href="<?php echo base_url() ?>product"><i class="fa fa-th"></i> <span>Product</span></a></li>
             <li><a href="<?php echo base_url() ?>order"><i class="fa fa-book"></i> <span>Order</span></a></li>

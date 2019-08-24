@@ -1,11 +1,11 @@
 <div class="content-wrapper">
     <section class="content-header">
-        <h1>Product View<small>advanced tables</small></h1>
-        <!--        <ol class="breadcrumb">
-                    <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                    <li><a href="#">Tables</a></li>
-                    <li class="active">Product View</li>
-                </ol>-->
+        <h1>Product Detail</h1>
+        <ol class="breadcrumb">
+            <li><a href="<?php echo base_url('dashboard'); ?>"><i class="fa fa-dashboard"></i>Dashboard</a></li>
+            <li><a href="<?php echo base_url('product'); ?>">Product</a></li>
+            <li><a href="JavaScript:Void(0);">Product Detail</a></li>
+        </ol>
     </section>
     <section class="content">
         <div class="row">

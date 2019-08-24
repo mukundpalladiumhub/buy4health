@@ -1,22 +1,27 @@
 <div class="content-wrapper">
     <section class="content-header">
-        <h1>Product Price Detail List</h1>
+        <h1>Product Price Details</h1>
+        <ol class="breadcrumb">
+            <li><a href="<?php echo base_url('dashboard'); ?>"><i class="fa fa-dashboard"></i>Dashboard</a></li>
+            <li><a href="<?php echo base_url('product'); ?>">Product</a></li>
+            <li><a href="JavaScript:Void(0);">Product Price Details</a></li>
+        </ol>
     </section>
     <section class="content">
         <div class="row">
             <div class="col-xs-12">
                 <div class="box">
                     <div class="box-header">
-                        <h3 class="box-title"><?php echo $product_name; ?></h3>
+                        <h3 class="box-title">Product Name : <?php echo $product_name; ?></h3>
                     </div>
                     <div class="box-body">
-                        <div class="div_table" style="overflow-x:auto;">
+                        <div class="div_table">
                             <table id="product_price_table" class="display nowrap table table-hover table-striped table-bordered cms-table table-hover">
                                 <thead>
                                     <tr>
-                                        <th>Product Size Type</th>
-                                        <th>Product Size ID</th>
-                                        <th>Product Quantity</th>
+                                        <th>Size Type</th>
+                                        <th>Size</th>
+                                        <th>Quantity</th>
                                         <th>Low Level</th>
                                         <th>Service Tax</th>
                                         <th>M.R.P.</th>
@@ -44,7 +49,7 @@
                                     "processData": false,
                                     "responsive": true,
                                     "ajax": {
-                                        "url": '<?php echo base_url() . '/product/view_price/' . $id; ?>',
+                                        "url": '<?php echo base_url() . 'product/view_price/' . $id; ?>',
                                         "type": 'POST',
                                     },
                                     "columns": [

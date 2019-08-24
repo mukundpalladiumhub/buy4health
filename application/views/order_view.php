@@ -1,11 +1,10 @@
 <div class="content-wrapper">
     <section class="content-header">
         <h1>Order List</h1>
-        <!--        <ol class="breadcrumb">
-                    <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                    <li><a href="#">Tables</a></li>
-                    <li class="active">Order tables</li>
-                </ol>-->
+        <ol class="breadcrumb">
+            <li><a href="<?php echo base_url('dashboard'); ?>"><i class="fa fa-dashboard"></i>Dashboard</a></li>
+            <li><a href="JavaScript:Void(0);">Order List</a></li>
+        </ol>
     </section>
     <section class="content">
         <div class="row">
@@ -26,25 +25,26 @@
                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                 <h4 class="modal-title">Change Order Status</h4>
                                             </div>
-                                                <div class="modal-body">
-                                            <div class="row">
-                                                <div class="col-sm-1"></div>
-                                                <label class="col-sm-3">Order Status</label>
-                                                <div class="col-sm-7 form-group">
-                                                    <select id="order_status" name="order_status" class="form-control">
-                                                        <?php
-                                                        if (!empty($order_status)) {
-                                                            foreach ($order_status as $order) { ?>
-                                                                <option value="<?php echo $order['status_id']; ?>"><?php echo $order['status_name']; ?></option>
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <div class="col-sm-1"></div>
+                                                    <label class="col-sm-3">Order Status</label>
+                                                    <div class="col-sm-7 form-group">
+                                                        <select id="order_status" name="order_status" class="form-control">
                                                             <?php
+                                                            if (!empty($order_status)) {
+                                                                foreach ($order_status as $order) {
+                                                                    ?>
+                                                                    <option value="<?php echo $order['status_id']; ?>"><?php echo $order['status_name']; ?></option>
+                                                                    <?php
+                                                                }
                                                             }
-                                                        }
-                                                        ?>
-                                                    </select>
+                                                            ?>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-1"></div>
                                                 </div>
-                                                <div class="col-sm-1"></div>
                                             </div>
-                                                </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-default" data-dismiss="modal" id="save_status">Save</button>
                                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -88,11 +88,11 @@
                                         success: function (data) {
                                             var result = JSON.parse(data);
                                             if (result.status == 1) {
-                                                $("#status_msg").css('color','green');
+                                                $("#status_msg").css('color', 'green');
                                                 $("#status_msg").html(result.msg)
                                                 showtable();
                                             } else {
-                                                $("#status_msg").css('color','red');
+                                                $("#status_msg").css('color', 'red');
                                                 $("#status_msg").html(result.msg)
                                             }
                                         }
