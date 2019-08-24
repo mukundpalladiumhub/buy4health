@@ -28,7 +28,7 @@
                         </div>
                     </div>
                     <div class="box-body">
-                        <div class="div_table">
+                        <div class="div_table" style="overflow-x: auto;">
                             <table id="product_table" class="display nowrap table table-hover table-striped table-bordered cms-table table-hover">
                                 <thead>
                                     <tr>
@@ -81,35 +81,35 @@
                                     ]
                                 });
                             }
-                            $('body').on('click', '.viewbtn', function () {
-                                var id = $(this).data('id');
-                                showtable_view(id);
-                            }
-                            );
-                            function showtable_view(id) {
-                                $("#product_table").DataTable({
-                                    "processing": true,
-                                    "serverSide": true,
-                                    "paging": true,
-                                    "searching": true,
-                                    "order": [],
-                                    "pageLength": 10,
-                                    "destroy": true,
-                                    "processData": false,
-                                    "ajax": {
-                                        "url": '<?php echo base_url(); ?>product/view/' + id,
-                                        "type": 'POST',
-                                    },
-                                    "columns": [
-                                        {'data': 'product_name'},
-                                        {'data': 'category'},
-                                        {'data': 'sub_category'},
-                                        {'data': 'stock_status'},
-                                        {'data': 'status'},
-                                        {'data': 'action', 'orderable': false},
-                                    ]
-                                });
-                            }
+//                            $('body').on('click', '.viewbtn', function () {
+//                                var id = $(this).data('id');
+//                                showtable_view(id);
+//                            }
+//                            );
+//                            function showtable_view(id) {
+//                                $("#product_table").DataTable({
+//                                    "processing": true,
+//                                    "serverSide": true,
+//                                    "paging": true,
+//                                    "searching": true,
+//                                    "order": [],
+//                                    "pageLength": 10,
+//                                    "destroy": true,
+//                                    "processData": false,
+//                                    "ajax": {
+//                                        "url": '<?php echo base_url(); ?>product/view/' + id,
+//                                        "type": 'POST',
+//                                    },
+//                                    "columns": [
+//                                        {'data': 'product_name'},
+//                                        {'data': 'category'},
+//                                        {'data': 'sub_category'},
+//                                        {'data': 'stock_status'},
+//                                        {'data': 'status'},
+//                                        {'data': 'action', 'orderable': false},
+//                                    ]
+//                                });
+//                            }
                         </script>
                     </div>
                 </div>
