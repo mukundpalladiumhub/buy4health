@@ -1,10 +1,10 @@
 <div class="content-wrapper">
     <section class="content-header">
         <h1>Category List</h1>
-        <ol class="breadcrumb">
+<!--        <ol class="breadcrumb">
             <li><a href="<?php echo base_url('dashboard'); ?>"><i class="fa fa-dashboard"></i>Dashboard</a></li>
             <li><a href="JavaScript:Void(0);">Category</a></li>
-        </ol>
+        </ol>-->
     </section>
     <section class="content">
         <div class="row">

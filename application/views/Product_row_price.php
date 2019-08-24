@@ -1,11 +1,11 @@
 <div class="content-wrapper">
     <section class="content-header">
         <h1>Product Price Details</h1>
-        <ol class="breadcrumb">
+<!--        <ol class="breadcrumb">
             <li><a href="<?php echo base_url('dashboard'); ?>"><i class="fa fa-dashboard"></i>Dashboard</a></li>
             <li><a href="<?php echo base_url('product'); ?>">Product</a></li>
             <li><a href="JavaScript:Void(0);">Product Price Details</a></li>
-        </ol>
+        </ol>-->
     </section>
     <section class="content">
         <div class="row">
@@ -13,6 +13,9 @@
                 <div class="box">
                     <div class="box-header">
                         <h3 class="box-title">Product Name : <?php echo $product_name; ?></h3>
+                        <div class="box-tools">
+                            <a href="<?php echo base_url('product'); ?>" class="btn btn-primary">Back to Product</a>
+                        </div>
                     </div>
                     <div class="box-body">
                         <div class="div_table">

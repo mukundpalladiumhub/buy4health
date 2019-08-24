@@ -15,6 +15,8 @@ class User_model extends CI_Model {
     public function UserList($conn) {
         $this->db->select('*');
         $this->db->from('users');
+        $this->db->where('role_id',USER_ROLE);
+        
         $search = $this->search;
         $length = $this->length;
         $start = $this->start;

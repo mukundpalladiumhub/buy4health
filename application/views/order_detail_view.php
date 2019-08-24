@@ -6,12 +6,15 @@
         <h1>
             Invoice
         </h1>
-            <!--<small>#007612</small>-->
-        <ol class="breadcrumb">
-            <li><a href="<?php echo base_url('dashboard'); ?>"><i class="fa fa-dashboard"></i>Dashboard</a></li>
-            <li><a href="<?php echo base_url('order'); ?>">Order List</a></li>
-            <li><a href="JavaScript:Void(0);">Invoice</a></li>
-        </ol>
+        <div class="box-tools breadcrumb">
+            <a href="<?php echo base_url('order'); ?>" class="btn btn-primary" style="margin-top: -10px;">Back to Orders</a>
+        </div>
+<!--<small>#007612</small>-->
+        <!--        <ol class="breadcrumb">
+                    <li><a href="<?php echo base_url('dashboard'); ?>"><i class="fa fa-dashboard"></i>Dashboard</a></li>
+                    <li><a href="<?php echo base_url('order'); ?>">Order List</a></li>
+                    <li><a href="JavaScript:Void(0);">Invoice</a></li>
+                </ol>-->
     </section>
 
     <!-- Main content -->

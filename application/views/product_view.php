@@ -1,17 +1,11 @@
-<style>
-    .datatable td {
-        overflow: hidden; /* this is what fixes the expansion */
-        text-overflow: ellipsis; /* not supported in all browsers, but I accepted the tradeoff */
-        white-space: nowrap;
-    }
-</style>
+
 <div class="content-wrapper">
     <section class="content-header">
         <h1>Product List</h1>
-        <ol class="breadcrumb">
+<!--        <ol class="breadcrumb">
             <li><a href="<?php echo base_url('dashboard'); ?>"><i class="fa fa-dashboard"></i>Dashboard</a></li>
             <li><a href="JavaScript:Void(0);">Product</a></li>
-        </ol>
+        </ol>-->
     </section>
     <section class="content">
         <div class="row">
@@ -64,7 +58,6 @@
                                     "pageLength": 10,
                                     "destroy": true,
                                     "processData": false,
-                                    "scrollX": true,
                                     "ajax": {
                                         "url": '<?php echo base_url(); ?>product',
                                         "type": 'POST',
