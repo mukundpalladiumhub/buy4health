@@ -69,26 +69,48 @@ class Cron_new extends CI_Controller {
 
                 foreach ($product as $product_key => $product_value) {
 
-                    $category_name = isset($product_value['categories'][0]['name']) ? $product_value['categories'][0]['name'] : "";
 
-                    $categoryId = $this->db->select('*')
-                                    ->from('category')
-                                    ->where("category_name", $category_name)
-                                    ->where("site_id", BUY4HEALTHID)
-                                    ->get()->row_array();
+                    if (!empty($product_value['categories'])) {
 
-                    if (empty($categoryId)) {
-                        $category_data['site_id'] = BUY4HEALTHID;
-                        $category_data['category_name'] = $category_name;
-                        $category_data['category_description'] = '';
-                        $category_data['category_tag'] = '';
-                        $category_data['status'] = 1;
+                        foreach ($product_value['categories'] as $catName) {
 
-                        $this->db->insert('category', $category_data);
-                        $category_id = $this->db->insert_id();
-                    } else {
-                        $category_id = $categoryId['id'];
+                            $categoryId = $this->db->select('*')
+                                            ->from('category')
+                                            ->where("category_name", $catName['name'])
+                                            ->where("site_id", BUY4HEALTHID)
+                                            ->get()->row_array();
+
+                            if (!empty($categoryId)) {
+                                $category_id = $categoryId['id'];
+                                $category_name = $categoryId['category_name'];
+                                break;
+                            }
+                        }
                     }
+
+//                    if(isset($categoryId) && $categoryId != ""){
+//                        
+//                    }
+//                    $category_name = isset($product_value['categories'][0]['name']) ? $product_value['categories'][0]['name'] : "";
+//
+//                    $categoryId = $this->db->select('*')
+//                                    ->from('category')
+//                                    ->where("category_name", $category_name)
+//                                    ->where("site_id", BUY4HEALTHID)
+//                                    ->get()->row_array();
+//
+//                    if (empty($categoryId)) {
+//                        $category_data['site_id'] = BUY4HEALTHID;
+//                        $category_data['category_name'] = $category_name;
+//                        $category_data['category_description'] = '';
+//                        $category_data['category_tag'] = '';
+//                        $category_data['status'] = 1;
+//
+//                        $this->db->insert('category', $category_data);
+//                        $category_id = $this->db->insert_id();
+//                    } else {
+//                        $category_id = $categoryId['id'];
+//                    }
 
                     $b4hcheck_product_exist = $this->db->select('p.product_code,p.id')
                                     ->from('product as p')
