@@ -11,50 +11,49 @@ class Cron_new extends CI_Controller {
     public function index() {
 
         $category_list = $this->categoryList();
-        
+
         if (!empty($category_list)) {
 
 
             foreach ($category_list as $category_value) {
 
-                if (!empty($category_value['image'])) {
+                if (isset($category_value['parent']) && $category_value['parent'] == 0) {
 
-                    if (isset($category_value['image']['src']) && $category_value['image']['src'] != "") {
+                    if (!empty($category_value['image'])) {
 
-                        $pathinfo = pathinfo($category_value['image']['src']);
+                        if (isset($category_value['image']['src']) && $category_value['image']['src'] != "") {
 
-                        if (!empty($pathinfo)) {
+                            $category_data['category_image'] = $category_value['image']['src'];
+                        } else {
 
-                            $image_name = str_replace(' ', '%20', $pathinfo['basename']);
-                            $path = 'assets/uploads/category/' . $pathinfo['basename'];
-                            $myfile = file_get_contents('https://www.rent4health.com/uploads/product_images/' . $image_name);
-                            $uploadfile = file_put_contents($path, $myfile);
-
-                            $category_data['category_image'] = $pathinfo['basename'];
+                            $category_data['category_image'] = 'https://www.buy4health.com/wp/wp-content/uploads/2019/07/woocommerce-placeholder.png';
                         }
+                    } else {
+                        $category_data['category_image'] = 'https://www.buy4health.com/wp/wp-content/uploads/2019/07/woocommerce-placeholder.png';
                     }
-                }
 
-                $category_id_check_product = $category_value['id'];
+                    $category_id_check_product = $category_value['id'];
 
-                $category_data['site_id'] = BUY4HEALTHID;
-                $category_data['category_name'] = $category_value['name'];
-                $category_data['category_description'] = $category_value['description'];
-                $category_data['category_tag'] = '';
-                $category_data['status'] = 1;
+                    $category_data['site_id'] = BUY4HEALTHID;
+                    $category_data['category_name'] = $category_value['name'];
+                    $category_data['category_description'] = $category_value['description'];
+                    $category_data['category_tag'] = '';
+                    $category_data['status'] = 1;
 
-                $check_category_exist = $this->db->select('category_name,id')
-                        ->where("category_name", $category_value['name'])
-                        ->where("site_id", BUY4HEALTHID)
-                        ->get('category')->row_array();
 
-                if (empty($check_category_exist)) {
-                    $this->db->insert('category', $category_data);
-                    $category_id = $this->db->insert_id();
-                } else {
-                    $category_id = $check_category_exist['id'];
-                    $this->db->where('id', $check_category_exist['id']);
-                    $this->db->update('category', $category_data);
+                    $check_category_exist = $this->db->select('category_name,id')
+                                    ->where("category_name", $category_value['name'])
+                                    ->where("site_id", BUY4HEALTHID)
+                                    ->get('category')->row_array();
+
+                    if (empty($check_category_exist)) {
+                        $this->db->insert('category', $category_data);
+                        $category_id = $this->db->insert_id();
+                    } else {
+                        $category_id = $check_category_exist['id'];
+                        $this->db->where('id', $check_category_exist['id']);
+                        $this->db->update('category', $category_data);
+                    }
                 }
             }
         }
@@ -168,8 +167,7 @@ class Cron_new extends CI_Controller {
                     if (!empty($productVariations_list)) {
 
                         foreach ($productVariations_list as $productVariations) {
-                            if($productVariations['purchasable'] == true)
-                            {
+                            if ($productVariations['purchasable'] == true) {
 
                                 $sizeType = $this->db->select('*')
                                                 ->from('size_type')
@@ -191,13 +189,13 @@ class Cron_new extends CI_Controller {
 
                                     $option1 = isset($productAtt[0]['option']) ? $productAtt[0]['option'] : "";
                                     $option2 = isset($productAtt[1]['option']) ? $productAtt[1]['option'] : "";
-                                    
+
                                     $size = '';
-                                    if(isset($option1) && $option1!=''){
+                                    if (isset($option1) && $option1 != '') {
                                         $size .= $option1;
                                     }
-                                    if(isset($option2) && $option2!=''){
-                                        $size .= " - ".$option2;
+                                    if (isset($option2) && $option2 != '') {
+                                        $size .= " - " . $option2;
                                     }
 
                                     //$size = $option1." - ".$option2;
@@ -304,8 +302,9 @@ class Cron_new extends CI_Controller {
                 }
             }
         }
-        
-        echo "Records inserted successfully.";exit;
+
+        echo "Records inserted successfully.";
+        exit;
         /*         * ***** End Product ****** */
     }
 
@@ -333,6 +332,7 @@ class Cron_new extends CI_Controller {
                 }
             }
             $x++;
+//        } while (count($category) > 10);
         } while (count($category) > 0);
 
         return $category_list;
