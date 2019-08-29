@@ -235,9 +235,28 @@ class Api extends CI_Controller {
         $order_array = $this->input->post();
         $result_array = array();
         $order_array = (array) json_decode(file_get_contents('php://input'), TRUE);
+
         $shipRocket_array = $order_array;
 
         if (!empty($order_array)) {
+            if (isset($order_array['orders']['vandor_id']) && $order_array['orders']['vandor_id'] != "") {
+
+                $vandor = $this->db->from('vandor_master')
+                                ->select('*')
+                                ->where('vandor_id', $order_array['orders']['vandor_id'])
+                                ->get()->row_array();
+                if (empty($vandor)) {
+                    $result_array['status'] = 0;
+                    $result_array['msg'] = "Vandor id not available.";
+                    echo json_encode($result_array);
+                    exit;
+                }
+            } else {
+                $result_array['status'] = 0;
+                $result_array['msg'] = "Please Provide Vandor Id.";
+                echo json_encode($result_array);
+                exit;
+            }
             $result_array = array();
             if (!empty($order_array['user'])) {
                 $email = isset($order_array['user']['email']) ? $order_array['user']['email'] : "";
@@ -302,7 +321,7 @@ class Api extends CI_Controller {
     }
 
     public function cancel_url() {
-        
+
         echo '<!DOCTYPE html>
                 <html lang="en">
                 <head>
@@ -325,7 +344,7 @@ class Api extends CI_Controller {
     }
 
     public function return_url() {
-        
+
         echo '<!DOCTYPE html>
                 <html lang="en">
                 <head>
@@ -433,97 +452,90 @@ class Api extends CI_Controller {
             exit;
         }
     }
-	
-	/*Start  Added By Sanket */ 
-	public function registerVandor()
-	{
-		$vandor_array = $this->input->post();
+
+    /* Start  Added By Sanket */
+
+    public function registerVandor() {
+        $vandor_array = $this->input->post();
         $vandor_array = (array) json_decode(file_get_contents('php://input'), TRUE);
         $resposeArr = array();
-		if(isset($vandor_array['vandor']) && is_array($vandor_array['vandor']))
-		{
-			$vandor_name	=	$vandor_array['vandor']['vandor_name'];
-			$business_name	=	$vandor_array['vandor']['business_name'];
-			$email_address	=	$vandor_array['vandor']['email_address'];
-			$location		=	$vandor_array['vandor']['location'];
-			$phone_number	=	$vandor_array['vandor']['phone_number'];
-			$gstn			=	$vandor_array['vandor']['gstn'];
-			
-			if($vandor_name == '')
-			{
-				$resposeArr = array('status'=>0,'msg'=>'Please Provide The Vandor Name.');
-				echo json_encode($resposeArr);exit;
-			}
-			
-			if($business_name == '')
-			{
-				$resposeArr = array('status'=>0,'msg'=>'Please Provide The Business Name.');
-				echo json_encode($resposeArr);exit;
-			}
-			
-			if($email_address == '')
-			{
-				$resposeArr = array('status'=>0,'msg'=>'Please Provide The Email Address.');
-				echo json_encode($resposeArr);exit;
-			}
-			
-			if($location == '')
-			{
-				$resposeArr = array('status'=>0,'msg'=>'Please Provide The Vandor Location.');
-				echo json_encode($resposeArr);exit;
-			}
-			
-			if($phone_number == '')
-			{
-				$resposeArr = array('status'=>0,'msg'=>'Please Provide The Phone Number.');
-				echo json_encode($resposeArr);exit;
-			}
-			
-			
-			if($vandor_name != '' && $business_name != '' && $email_address != '' && $location != '' && $phone_number != '')
-			{
-				$vanArr['vandor_code'] 		= "VNDR".time();
-				$vanArr['vandor_name'] 		= $vandor_name;
-				$vanArr['business_name'] 	= $business_name;
-				$vanArr['phone_numer'] 		= $phone_number;
-				$vanArr['email_address'] 	= $email_address;
-				$vanArr['GSTN'] 			= $gstn;
-				$vanArr['location'] 		= $location;
-				$vanArr['created_date'] 	= date('Y-m-d H:i:s');
-				
-				$this->db->insert('vandor_master', $vanArr);
-				$vandor_id = $this->db->insert_id();
-				
-				if($vandor_id > 0)
-				{
-					$vandorData = $this->db->select('*')
-                        ->from('vandor_master')
-                        ->where('vandor_id', $vandor_id)
-                        ->get()
-                        ->row_array();
-					$resposeArr = array('status'=>1,'msg'=>'Vandor Created Successfully.','data'=>$vandorData);
-					echo json_encode($resposeArr);exit;
-				}else
-				{
-					$resposeArr = array('status'=>0,'msg'=>'Vandor Can Not Be Created. Please Try Again!!');
-					echo json_encode($resposeArr);exit;
-				}
-			}else
-			{
-				$resposeArr = array('status'=>0,'msg'=>'Invalid Data Format. Please Try Again!!');
-				echo json_encode($resposeArr);exit;
-			}
-			
-		}else
-		{ 
-			$resposeArr = array('status'=>0,'msg'=>'Invalid Data Format. Please Try Again.');
-			echo json_encode($resposeArr);exit;
-		}
-		echo "<pre>";
-		print_r($order_array);
-		
-	}
-	
-	/*End  Added By Sanket */ 
+        if (isset($vandor_array['vandor']) && is_array($vandor_array['vandor'])) {
+            $vandor_name = $vandor_array['vandor']['vandor_name'];
+            $business_name = $vandor_array['vandor']['business_name'];
+            $email_address = $vandor_array['vandor']['email_address'];
+            $location = $vandor_array['vandor']['location'];
+            $phone_number = $vandor_array['vandor']['phone_number'];
+            $gstn = $vandor_array['vandor']['gstn'];
 
+            if ($vandor_name == '') {
+                $resposeArr = array('status' => 0, 'msg' => 'Please Provide The Vandor Name.');
+                echo json_encode($resposeArr);
+                exit;
+            }
+
+            if ($business_name == '') {
+                $resposeArr = array('status' => 0, 'msg' => 'Please Provide The Business Name.');
+                echo json_encode($resposeArr);
+                exit;
+            }
+
+            if ($email_address == '') {
+                $resposeArr = array('status' => 0, 'msg' => 'Please Provide The Email Address.');
+                echo json_encode($resposeArr);
+                exit;
+            }
+
+            if ($location == '') {
+                $resposeArr = array('status' => 0, 'msg' => 'Please Provide The Vandor Location.');
+                echo json_encode($resposeArr);
+                exit;
+            }
+
+            if ($phone_number == '') {
+                $resposeArr = array('status' => 0, 'msg' => 'Please Provide The Phone Number.');
+                echo json_encode($resposeArr);
+                exit;
+            }
+
+
+            if ($vandor_name != '' && $business_name != '' && $email_address != '' && $location != '' && $phone_number != '') {
+                $vanArr['vandor_code'] = "VNDR" . time();
+                $vanArr['vandor_name'] = $vandor_name;
+                $vanArr['business_name'] = $business_name;
+                $vanArr['phone_numer'] = $phone_number;
+                $vanArr['email_address'] = $email_address;
+                $vanArr['GSTN'] = $gstn;
+                $vanArr['location'] = $location;
+                $vanArr['created_date'] = date('Y-m-d H:i:s');
+
+                $this->db->insert('vandor_master', $vanArr);
+                $vandor_id = $this->db->insert_id();
+
+                if ($vandor_id > 0) {
+                    $vandorData = $this->db->select('*')
+                            ->from('vandor_master')
+                            ->where('vandor_id', $vandor_id)
+                            ->get()
+                            ->row_array();
+                    $resposeArr = array('status' => 1, 'msg' => 'Vandor Created Successfully.', 'data' => $vandorData);
+                    echo json_encode($resposeArr);
+                    exit;
+                } else {
+                    $resposeArr = array('status' => 0, 'msg' => 'Vandor Can Not Be Created. Please Try Again!!');
+                    echo json_encode($resposeArr);
+                    exit;
+                }
+            } else {
+                $resposeArr = array('status' => 0, 'msg' => 'Invalid Data Format. Please Try Again!!');
+                echo json_encode($resposeArr);
+                exit;
+            }
+        } else {
+            $resposeArr = array('status' => 0, 'msg' => 'Invalid Data Format. Please Try Again.');
+            echo json_encode($resposeArr);
+            exit;
+        }
+    }
+
+    /* End  Added By Sanket */
 }

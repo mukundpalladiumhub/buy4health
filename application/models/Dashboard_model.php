@@ -30,10 +30,11 @@ class Dashboard_model extends CI_Model {
     }
 
     public function RecentOrders() {
-        $query = $this->db->select('o.order_number,o.total,o.order_date,o.order_id,u.first_name,u.last_name,os.status_name')
+        $query = $this->db->select('o.order_number,o.total,o.order_date,o.order_id,u.first_name,u.last_name,os.status_name,vm.business_name')
                         ->from('orders as o')
                         ->join('users as u', 'u.id = o.user_id', 'LEFT')
                         ->join('order_status as os', 'os.status_id = o.order_status', 'left')
+                        ->join('vandor_master as vm', 'vm.vandor_id = o.vandor_id', 'left')
                         ->order_by('o.order_id', "desc")->limit(10)
                         ->get()->result_array();
         return $query;

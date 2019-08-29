@@ -17,7 +17,8 @@ class Order_model extends CI_Model {
         $this->db->from('orders as o');
         $this->db->join('users as u', 'u.id = o.user_id', 'left');
         $this->db->join('order_status as os', 'os.status_id = o.order_status', 'left');
-        $this->db->select("o.*, u.first_name, os.status_name, u.last_name,IF(o.status = 1,'Active','Inactive') as status");
+        $this->db->join('vandor_master as vm', 'vm.vandor_id = o.vandor_id', 'left');
+        $this->db->select("o.*, u.first_name, os.status_name, u.last_name,IF(o.status = 1,'Active','Inactive') as status,vm.business_name");
 
         if (isset($this->search) && $this->search != '') {
             $this->db->group_start()
@@ -27,6 +28,7 @@ class Order_model extends CI_Model {
                     ->or_like('o.total', $this->search)
                     ->or_like('o.order_date', $this->search)
                     ->or_like('os.status_name', $this->search)
+                    ->or_like('vm.business_name', $this->search)
                     ->group_end();
         }
 
@@ -118,7 +120,8 @@ class Order_model extends CI_Model {
     public function getProductUser($id) {
         $this->db->from('orders o');
         $this->db->join('users as u', 'u.id = o.user_id', 'left');
-        $this->db->select('u.*, o.order_number,o.order_date,o.order_delivery_charge,o.total,o.shipping_rate');
+        $this->db->join('vandor_master as vm', 'vm.vandor_id = o.vandor_id', 'left');
+        $this->db->select('u.*, o.order_number,o.order_date,o.order_delivery_charge,o.total,o.shipping_rate,vm.business_name');
         $this->db->where('o.order_id', $id);
         $result = $this->db->get()->row_array();
         return $result;

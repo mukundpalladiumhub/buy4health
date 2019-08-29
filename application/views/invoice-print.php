@@ -72,6 +72,7 @@
                     <!-- /.col -->
                     <div class="col-sm-4 invoice-col">
                         <b>Order ID : </b> <?php echo $user['order_number']; ?><br>
+                        <b>Business Name : </b> <?php echo $user['business_name']; ?><br>
                         <b>Payment Due : </b> <?php echo $user['order_date']; ?><br>
                     </div>
                     <!-- /.col -->

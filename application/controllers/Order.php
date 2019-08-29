@@ -31,9 +31,10 @@ class Order extends CI_Controller {
             $colnum = array(
                 0 => 'u.first_name',
                 1 => 'o.order_number',
-                2 => 'o.total',
-                3 => 'o.order_date',
-                4 => 'os.status_name',
+                2 => 'vm.business_name',
+                3 => 'o.total',
+                4 => 'o.order_date',
+                5 => 'os.status_name',
             );
 
             $this->order_model->search = isset($post['search']['value']) ? $post['search']['value'] : '';
@@ -55,6 +56,7 @@ class Order extends CI_Controller {
                 $order_status = $array['order_status'];
                 $data['user_name'] = $array['first_name'] . " " . $array['last_name'];
                 $data['order_number'] = $array['order_number'];
+                $data['business_name'] = $array['business_name'];
                 $data['total'] = '&#8377; ' . $array['total'];
                 $data['order_date'] = $array['order_date'];
                 $data['status_name'] = $array['status_name'];

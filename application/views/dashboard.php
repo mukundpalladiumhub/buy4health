@@ -54,6 +54,7 @@
                         <table class="table table-hover">
                             <tr>
                                 <th>Customer Name</th>
+                                <th>Business Name</th>
                                 <th>Number</th>
                                 <th>Total</th>
                                 <th>Date</th>
@@ -62,6 +63,7 @@
                             <?php foreach($orders as $order){ ?>
                             <tr>
                                 <td><?php echo $order['first_name'] . ' ' . $order['last_name']; ?></td>
+                                <td><?php echo $order['business_name']; ?></td>
                                 <td><?php echo $order['order_number']; ?></td>
                                 <td><?php echo '&#8377; ' .$order['total']; ?></td>
                                 <td><?php echo $order['order_date']; ?></td>

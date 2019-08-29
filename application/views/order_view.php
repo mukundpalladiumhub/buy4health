@@ -60,6 +60,7 @@
                                     <tr>
                                         <th>Customer Name</th>
                                         <th>Order Number</th>
+                                        <th>Business Name</th>
                                         <th>Order Total</th>
                                         <th>Order Date</th>
                                         <th>Order Status</th>
@@ -117,6 +118,7 @@
                                     "columns": [
                                         {'data': 'user_name'},
                                         {'data': 'order_number'},
+                                        {'data': 'business_name'},
                                         {'data': 'total'},
                                         {'data': 'order_date'},
                                         {'data': 'status_name'},

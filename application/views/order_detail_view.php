@@ -62,6 +62,7 @@
                 <!--<b>Invoice #007612</b><br>-->
                 <br>
                 <b>Order ID : </b> <?php echo $user['order_number']; ?><br>
+                <b>Business Name : </b> <?php echo $user['business_name']; ?><br>
                 <b>Payment Due : </b> <?php echo $user['order_date']; ?><br>
                 <!--<b>Account:</b> 968-34567-->
             </div>
