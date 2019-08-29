@@ -433,5 +433,97 @@ class Api extends CI_Controller {
             exit;
         }
     }
+	
+	/*Start  Added By Sanket */ 
+	public function registerVandor()
+	{
+		$vandor_array = $this->input->post();
+        $vandor_array = (array) json_decode(file_get_contents('php://input'), TRUE);
+        $resposeArr = array();
+		if(isset($vandor_array['vandor']) && is_array($vandor_array['vandor']))
+		{
+			$vandor_name	=	$vandor_array['vandor']['vandor_name'];
+			$business_name	=	$vandor_array['vandor']['business_name'];
+			$email_address	=	$vandor_array['vandor']['email_address'];
+			$location		=	$vandor_array['vandor']['location'];
+			$phone_number	=	$vandor_array['vandor']['phone_number'];
+			$gstn			=	$vandor_array['vandor']['gstn'];
+			
+			if($vandor_name == '')
+			{
+				$resposeArr = array('status'=>0,'msg'=>'Please Provide The Vandor Name.');
+				echo json_encode($resposeArr);exit;
+			}
+			
+			if($business_name == '')
+			{
+				$resposeArr = array('status'=>0,'msg'=>'Please Provide The Business Name.');
+				echo json_encode($resposeArr);exit;
+			}
+			
+			if($email_address == '')
+			{
+				$resposeArr = array('status'=>0,'msg'=>'Please Provide The Email Address.');
+				echo json_encode($resposeArr);exit;
+			}
+			
+			if($location == '')
+			{
+				$resposeArr = array('status'=>0,'msg'=>'Please Provide The Vandor Location.');
+				echo json_encode($resposeArr);exit;
+			}
+			
+			if($phone_number == '')
+			{
+				$resposeArr = array('status'=>0,'msg'=>'Please Provide The Phone Number.');
+				echo json_encode($resposeArr);exit;
+			}
+			
+			
+			if($vandor_name != '' && $business_name != '' && $email_address != '' && $location != '' && $phone_number != '')
+			{
+				$vanArr['vandor_code'] 		= "VNDR".time();
+				$vanArr['vandor_name'] 		= $vandor_name;
+				$vanArr['business_name'] 	= $business_name;
+				$vanArr['phone_numer'] 		= $phone_number;
+				$vanArr['email_address'] 	= $email_address;
+				$vanArr['GSTN'] 			= $gstn;
+				$vanArr['location'] 		= $location;
+				$vanArr['created_date'] 	= date('Y-m-d H:i:s');
+				
+				$this->db->insert('vandor_master', $vanArr);
+				$vandor_id = $this->db->insert_id();
+				
+				if($vandor_id > 0)
+				{
+					$vandorData = $this->db->select('*')
+                        ->from('vandor_master')
+                        ->where('vandor_id', $vandor_id)
+                        ->get()
+                        ->row_array();
+					$resposeArr = array('status'=>1,'msg'=>'Vandor Created Successfully.','data'=>$vandorData);
+					echo json_encode($resposeArr);exit;
+				}else
+				{
+					$resposeArr = array('status'=>0,'msg'=>'Vandor Can Not Be Created. Please Try Again!!');
+					echo json_encode($resposeArr);exit;
+				}
+			}else
+			{
+				$resposeArr = array('status'=>0,'msg'=>'Invalid Data Format. Please Try Again!!');
+				echo json_encode($resposeArr);exit;
+			}
+			
+		}else
+		{ 
+			$resposeArr = array('status'=>0,'msg'=>'Invalid Data Format. Please Try Again.');
+			echo json_encode($resposeArr);exit;
+		}
+		echo "<pre>";
+		print_r($order_array);
+		
+	}
+	
+	/*End  Added By Sanket */ 
 
 }
