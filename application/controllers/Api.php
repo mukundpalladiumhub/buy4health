@@ -86,14 +86,14 @@ class Api extends CI_Controller {
                 $product_images = $this->product_model->getProductImage($detail['id']);
                 $product_image = array();
                 if (empty($product_images)) {
-                    $image['product_image'] = base_url() . 'assets/images/No-Image.png';
+                    $image['product_image'] = 'https://www.buy4health.com/wp/wp-content/uploads/2019/07/woocommerce-placeholder.png';
                     $product_image[] = $image['product_image'];
                 }
                 foreach ($product_images as $image) {
                     if (isset($image['product_image']) && $image['product_image'] != '' && file_exists(FCPATH . 'assets/uploads/product/' . $image['product_image'])) {
                         $image['product_image'] = base_url() . 'assets/uploads/product/' . $image['product_image'];
                     } else {
-                        $image['product_image'] = base_url() . 'assets/images/No-Image.png';
+                        $image['product_image'] = 'https://www.buy4health.com/wp/wp-content/uploads/2019/07/woocommerce-placeholder.png';
                     }
                     $product_image[] = $image['product_image'];
                 }
@@ -199,7 +199,7 @@ class Api extends CI_Controller {
                     if (isset($image['product_image']) && $image['product_image'] != '' && file_exists(FCPATH . 'assets/uploads/product/' . $image['product_image'])) {
                         $image['product_image'] = base_url() . 'assets/uploads/product/' . $image['product_image'];
                     } else {
-                        $image['product_image'] = base_url() . 'assets/images/No-Image.png';
+                        $image['product_image'] = 'https://www.buy4health.com/wp/wp-content/uploads/2019/07/woocommerce-placeholder.png';
                     }
                     $product_image[] = $image['product_image'];
                 }
